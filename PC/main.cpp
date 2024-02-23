@@ -32,13 +32,13 @@ int main(){
     string raw_msg;
 
     // Initialisation du port de communication
-    string com;
+    /*string com;
     cout << "Entrer le port de communication du Arduino: ";
     cin >> com;
-    arduino = new SerialPort(com.c_str(), BAUD);
+    arduino = new SerialPort(com.c_str(), BAUD);*/
     
-    //const char com = "\\\\.\\COM3";
-    //SerialPort arduino = SerialPort("\\\\.\\COM3");
+    char com[] = "\\\\.\\COM4"; 
+    arduino = new SerialPort(com, BAUD);
     if(!arduino->isConnected()){
         cerr << "Impossible de se connecter au port "<< string(com) <<". Fermeture du programme!" <<endl;
         exit(1);
@@ -49,14 +49,8 @@ int main(){
     json j_msg_send, j_msg_rcv;
 
     // Boucle pour tester la communication bidirectionnelle Arduino-PC
-    for(int i=0; i<10; i++){
-        // Envoie message Arduino
-        j_msg_send["led"] = led_state;
-        if(!SendToSerial(arduino, j_msg_send)){
-            cerr << "Erreur lors de l'envoie du message. " << endl;
-        }
-        // Reception message Arduino
-        j_msg_rcv.clear(); // effacer le message precedent
+    while(1)
+    {
         if(!RcvFromSerial(arduino, raw_msg)){
             cerr << "Erreur lors de la reception du message. " << endl;
         }
@@ -69,10 +63,6 @@ int main(){
             cout << "Message de l'Arduino: " << j_msg_rcv << endl;
         }
         
-        //Changement de l'etat led
-        led_state = !led_state;
-
-        // Bloquer le fil pour environ 1 sec
         Sleep(1000); // 1000ms
     }
     return 0;

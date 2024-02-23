@@ -16,11 +16,8 @@
 volatile bool shouldSend_ = false;  // Drapeau prêt à envoyer un message
 volatile bool shouldRead_ = false;  // Drapeau prêt à lire un message
 
-int ledState = 0;
-int potValue = 0;
 
-int pinLED = 7;
-int pinPOT = A0;
+int pinLED = 38;
 
 
 /*------------------------- Prototypes de fonctions -------------------------*/
@@ -32,18 +29,27 @@ void serialEvent();
 void setup() {
   Serial.begin(BAUD);               // Initialisation de la communication serielle
   pinMode(pinLED, OUTPUT);
-  digitalWrite(pinLED, ledState);
+  digitalWrite(pinLED, 1);
+
+  pinMode(22, INPUT_PULLUP);
 }
 
 /* Boucle principale (infinie) */
 void loop() {
 
-  if(shouldRead_){
-    readMsg();
-    sendMsg();
-  }
+  
+  if(digitalRead(22) == LOW)
+  {
+    while(digitalRead(22) == LOW){delay(10);}
+    StaticJsonDocument<500> doc;
+    // Serialisation
+    doc["BoutonOn"] = 22;
+    serializeJson(doc, Serial);
 
-  potValue = analogRead(pinPOT);
+    // Envoie
+    Serial.println();
+
+  }
   //Serial.println(potValue);          // debug
   delay(10);  // delais de 10 ms
 }
@@ -63,7 +69,6 @@ void sendMsg() {
   StaticJsonDocument<500> doc;
   // Elements du message
   doc["time"] = millis();
-  doc["analog"] = potValue;
 
   // Serialisation
   serializeJson(doc, Serial);
