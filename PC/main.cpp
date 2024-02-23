@@ -49,7 +49,7 @@ int main(){
     json j_msg_send, j_msg_rcv;
 
     // Boucle pour tester la communication bidirectionnelle Arduino-PC
-    /*for(int i=0; i<10; i++){
+    for(int i=0; i<10; i++){
         // Envoie message Arduino
         j_msg_send["led"] = led_state;
         if(!SendToSerial(arduino, j_msg_send)){
@@ -74,28 +74,7 @@ int main(){
 
         // Bloquer le fil pour environ 1 sec
         Sleep(1000); // 1000ms
-    }*/
-
-    while(1)
-    {
-        // Reception message Arduino
-        j_msg_rcv.clear(); // effacer le message precedent
-        if(!RcvFromSerial(arduino, raw_msg)){
-            cerr << "Erreur lors de la reception du message. " << endl;
-        }
-
-        // Impression du message de l'Arduino si valide
-        if(raw_msg.size()>0){
-            //cout << "raw_msg: " << raw_msg << endl;  // debug
-            // Transfert du message en json
-            j_msg_rcv = json::parse(raw_msg);
-            cout << "Message de l'Arduino: " << j_msg_rcv << endl;
-        }
-
-        // Bloquer le fil pour environ 1 sec
-        Sleep(1000); // 1000ms
     }
-
     return 0;
 }
 

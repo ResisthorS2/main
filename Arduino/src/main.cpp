@@ -6,8 +6,6 @@
 /*------------------------------ Librairies ---------------------------------*/
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include "myLibraries/test.h"
-#include "C:\Users\arthu\OneDrive\Universite\Udes\S2\Projet\Code_Arduino_PC\main\Arduino\myLibraries\param.h"
 
 /*------------------------------ Constantes ---------------------------------*/
 
@@ -35,27 +33,18 @@ void setup() {
   Serial.begin(BAUD);               // Initialisation de la communication serielle
   pinMode(pinLED, OUTPUT);
   digitalWrite(pinLED, ledState);
-
-  Pin pin;
-
-  //bouton
-  pinMode(pin.btn_devant, INPUT_PULLUP);
-  pinMode(pin.btn_droit, INPUT_PULLUP);
-  pinMode(pin.btn_gauche, INPUT_PULLUP);
-  pinMode(pin.btn_180, INPUT_PULLUP);
-
-
 }
 
 /* Boucle principale (infinie) */
 void loop() {
-  StaticJsonDocument<500> doc;
 
-  int bouton = test_bouton();     // debug
-  doc["BoutonON"] = bouton;
-  
-  
-  serializeJson(doc, Serial);
+  if(shouldRead_){
+    readMsg();
+    sendMsg();
+  }
+
+  potValue = analogRead(pinPOT);
+  //Serial.println(potValue);          // debug
   delay(10);  // delais de 10 ms
 }
 
