@@ -2,15 +2,17 @@
 	ATTENTIONS SI + DE 20 ROOM NE PAS OUBLIER D'AUGMENTER MAXROOM
 */
 
-#ifndef CELL_H
-#include "cell.h"
-#endif
-
+#ifndef MAP_H
 #define MAP_H
 
+#include "cell.h"
 
 
-#include <vector>
+
+
+
+
+//#include <vector>
 
 const int nord=0;
 const int sud=1;
@@ -54,4 +56,4 @@ private:
 	int coY;
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
 };
-
+#endif

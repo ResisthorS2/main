@@ -28,68 +28,82 @@ SerialPort * arduino; //doit etre un objet global!
 
 /*----------------------------- Fonction "Main" -----------------------------*/
 
+
 #include "./src/map.h"
+
 
 Map map;
 
 int main(){
-    std::string raw_msg;
-
-    // Initialisation du port de communication
-    /*std::string com;
-    std::cout << "Entrer le port de communication du Arduino: ";
-    cin >> com;
-    arduino = new SerialPort(com.c_str(), BAUD);*/
     
-    char com[] = "\\\\.\\COM4"; 
-    arduino = new SerialPort(com, BAUD);
-    if(!arduino->isConnected()){
-        std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
-        exit(1);
-    }
-    
-    // Structure de donnees JSON pour envoie et reception
-    int led_state = 1;
-    json j_msg_send, j_msg_rcv;
+    #define TEST 1
 
-    // Boucle pour tester la communication bidirectionnelle Arduino-PC
-    while(1)
+    if(!TEST)
     {
-        if(!RcvFromSerial(arduino, raw_msg)){
-            std::cerr << "Erreur lors de la reception du message. " << std::endl;
+        std::string raw_msg;
+
+        // Initialisation du port de communication
+        /*std::string com;
+        std::cout << "Entrer le port de communication du Arduino: ";
+        cin >> com;
+        arduino = new SerialPort(com.c_str(), BAUD);*/
+        
+        char com[] = "\\\\.\\COM4"; 
+        arduino = new SerialPort(com, BAUD);
+        if(!arduino->isConnected()){
+            std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
+            exit(1);
         }
         
-        // Impression du message de l'Arduino si valide
-        if(raw_msg.size()>0){
-            //std::cout << "raw_msg: " << raw_msg << std::endl;  // debug
-            // Transfert du message en json
-            j_msg_rcv = json::parse(raw_msg);
-            std::cout << "Message de l'Arduino: " << j_msg_rcv << std::endl;
-        }
+        // Structure de donnees JSON pour envoie et reception
+        int led_state = 1;
+        json j_msg_send, j_msg_rcv;
 
-        if(j_msg_rcv["btn_180"] == "HIGH")
+        // Boucle pour tester la communication bidirectionnelle Arduino-PC
+        while(1)
         {
-            map.move180();
-        }
+            if(!RcvFromSerial(arduino, raw_msg)){
+                std::cerr << "Erreur lors de la reception du message. " << std::endl;
+            }
+            
+            // Impression du message de l'Arduino si valide
+            if(raw_msg.size()>0){
+                //std::cout << "raw_msg: " << raw_msg << std::endl;  // debug
+                // Transfert du message en json
+                j_msg_rcv = json::parse(raw_msg);
+                std::cout << "Message de l'Arduino: " << j_msg_rcv << std::endl;
+            }
 
-        if(j_msg_rcv["btn_up"] == "HIGH")
-        {
-            map.moveUp();
-        }
+            if(j_msg_rcv["btn_180"] == "HIGH")
+            {
+                map.move180();
+            }
 
-        if(j_msg_rcv["btn_left"] == "HIGH")
-        {
-            map.moveLeft();
-        }
+            if(j_msg_rcv["btn_up"] == "HIGH")
+            {
+                map.moveUp();
+            }
 
-        if(j_msg_rcv["btn_right"] == "HIGH")
-        {
-            map.moveRight();
+            if(j_msg_rcv["btn_left"] == "HIGH")
+            {
+                map.moveLeft();
+            }
+
+            if(j_msg_rcv["btn_right"] == "HIGH")
+            {
+                map.moveRight();
+            }
+            
+            map.printMap();
+            Sleep(1000); // 1000ms
         }
-        
-        map.printMap();
-        Sleep(1000); // 1000ms
     }
+
+    if(TEST)
+    {
+        map.printMap();
+    }
+
     return 0;
 }
 
