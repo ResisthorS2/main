@@ -44,19 +44,20 @@ Map::Map()
 		coordonne[i] = new int[largeur];
 	}
 
-		for(int i=0;i<hauteur;i++)					//Assigne le fichier de map au tableau coordonne
-		{
-			for(int j=0;j<largeur;j++)
+	for(int y=0; y<hauteur; y++)					//Assigne le fichier de map au tableau coordonne
+	{
+		for(int x=0; x<largeur;x++)
 			{
-				if(j==largeur-1)
+				if(x==largeur-1)
 				{
 					std::getline(carte, lecture);
-				}else if(j<largeur-1)
+				}
+				
+				else if(x<largeur-1)
 				{ 
 					std::getline(carte, lecture, '\t');
 				}
-				coordonne[i][j] = std::stoi(lecture);
-				cell[i][j] = Cell(TypeCell::couloir, 0);	//Assigne le type de cellule à chaque case de la map (couloir, vide, piece, intersection, etc.
+				cell[x][y] = Cell(std::stoi(lecture), UNLOCKED, x, y);
 				
 				//std::cout<<coordonne[i][j]<<" "<<std::endl;
 			}
@@ -106,15 +107,20 @@ void Map::exitPiece()
 
 void Map::printMap()
 {
-	for(int i=0;i<hauteur;i++)
+	system("clear");
+	std::string mapImage;
+	for(int x=0;x<hauteur;x++)
 	{
-		for(int j=0;j<largeur;j++)
+		for(int i=0;i<3;i++)
 		{
-			std::cout<<coordonne[i][j]<<" ";
+			for(int y=0;y<largeur;y++)
+			{
+				mapImage=cell[y][x].printCell(i);
+				std::cout<<mapImage;
+				std::cout<<std::endl;
+			}
 		}
-		std::cout<<std::endl;
 	}
-	std::cout<<std::endl;
 }
 
 int Map::getCoordonneX()

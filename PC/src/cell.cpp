@@ -20,34 +20,37 @@ using namespace std;
 
 Cell::Cell()
 {
-    this->type = TypeCell::vide;
+    this->type = VIDE;
     this->locked = UNLOCKED;
     this->setImageCell(type, locked);
 }
 
-Cell::Cell(TypeCell type, int locked)
+Cell::Cell(int type, int locked, int c_x, int c_y)
 {
-    this->type = TypeCell::couloir;
+    this->type = COULOIR;
     this->locked = locked;
+    this->coordonne.x = c_x;
+    this->coordonne.y = c_y;
     this->setImageCell(type, locked);
 }
 
 
-void Cell::setImageCell(TypeCell type, int locked)
+
+void Cell::setImageCell(int type, int locked)
 {
     string color;
     
-    if(type == TypeCell::vide)
+    if(type == VIDE)
     {
         color = BLACK;
     }
 
-    if(type == TypeCell::couloir)
+    if(type == COULOIR)
     {
         color == WHITE;
     }
 
-    if(type == TypeCell::classe)
+    if(type == CLASSE)
     {
         if(locked == LOCKED)
         {
@@ -60,6 +63,7 @@ void Cell::setImageCell(TypeCell type, int locked)
         }
     }
 
+    
     for(int i=0; i<3; i++)
     {
         for(int y=0; y<3; y++)
@@ -81,7 +85,18 @@ bool Cell::setLocked(int locked)
     return true;
 }
 
-TypeCell Cell::getType()
+int Cell::getType()
 {
     return this->type;
+}
+
+std::string Cell::printCell(int line)
+{
+    std::string cell_line = imageCell[line][0];;
+    for(int i=1; i<3; i++)
+    {
+        cell_line += imageCell[line][i];
+    }
+
+    return cell_line;
 }

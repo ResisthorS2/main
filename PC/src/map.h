@@ -37,7 +37,11 @@ public:
 	void removeCle(int index);		//Permet d'enlever l'acces à une piece
 	bool verifCle(int index);		//Permet de vérifier si la pièce est accessible
 	void enterPiece();				//Sert à mes fonction de mouvement et exitPiece
-	void exitPiece();				//Sert à sortir à la position précedente avant de rentrer dans une pièce. Met aussi la bonne orientation
+	void exitPiece();			//Sert à sortir à la position précedente avant de rentrer dans une pièce. Met aussi la bonne orientation
+	Cell **cell;
+	//Cell* operator[](int index);
+
+
 private:
 	int coXPiece;
 	int coYPiece;
@@ -46,8 +50,6 @@ private:
 	int largeur;
 	int hauteur;
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
-	Cell **cell;
-	//Cell* operator[](int index);
 	int coX;
 	int coY;
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
