@@ -1,10 +1,9 @@
 #include <iostream>
 
-#ifndef CELL_H
+
 #define CELL_H
 
 
-#include "map.h"
 
 #define LOCKED 1
 #define UNLOCKED 0
@@ -46,4 +45,3 @@ class Cell
         //Piece piece;
         //Minigame minigame[];
 };
-#endif

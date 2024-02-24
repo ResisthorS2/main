@@ -2,10 +2,12 @@
 	ATTENTIONS SI + DE 20 ROOM NE PAS OUBLIER D'AUGMENTER MAXROOM
 */
 
-#ifndef MAP_H
+
 #define MAP_H
 
+#ifndef CELL_H
 #include "cell.h"
+#endif
 
 
 
@@ -56,4 +58,4 @@ private:
 	int coY;
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
 };
-#endif
+

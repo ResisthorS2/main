@@ -8,7 +8,9 @@
 #include <iostream>
 #include <string>
 
+
 /*-------------------------- Librairies externes ----------------------------*/
+
 #include "include/serial/SerialPort.hpp"
 #include "include/json.hpp"
 using json = nlohmann::json;
@@ -29,8 +31,11 @@ SerialPort * arduino; //doit etre un objet global!
 /*----------------------------- Fonction "Main" -----------------------------*/
 
 
-#include "./src/map.h"
 
+
+#ifndef MAP_H
+#include "C:\Users\arthu\OneDrive\Universite\Udes\S2\Projet\Code_Arduino_PC\main\PC\src\map.h"
+#endif
 
 Map map;
 

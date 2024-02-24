@@ -2,7 +2,9 @@
 	S'ASSURER QUE LA HAUTEUR ET LA LARGEUR SOIT BIEN DÉFINIS DANS MAP.TXT
 */
 
+#ifndef MAP_H
 #include "map.h"
+#endif
 
 
 
@@ -57,7 +59,8 @@ Map::Map()
 				{ 
 					std::getline(carte, lecture, '\t');
 				}
-				cell[x][y] = Cell(std::stoi(lecture), UNLOCKED, x, y);
+				int type = std::stoi(lecture);
+				cell[x][y] = Cell(type, UNLOCKED, x, y);
 				
 				//std::cout<<coordonne[i][j]<<" "<<std::endl;
 			}
