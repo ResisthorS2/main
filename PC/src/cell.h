@@ -18,8 +18,11 @@ enum class TypeCell
     
 };
 
-
-
+class Coordinate
+{
+    int x;
+    int y;
+};
 
 class Cell
 {
@@ -40,6 +43,7 @@ class Cell
         TypeCell type;
         int locked;
         std::string imageCell[3][3];
+        Coordinate coordonne;
         //Piece piece;
         //Minigame minigame[];
 };

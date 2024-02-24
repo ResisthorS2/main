@@ -29,6 +29,14 @@ Map::Map()
 	
 	std::cout<< "Largeur : " <<largeur<<std::endl;
 
+	// Créer un tableau de pointeurs
+	Cell** cell = new Cell*[largeur];
+
+	// Pour chaque pointeur, créer un tableau
+	for(int i = 0; i < largeur; i++) 
+	{
+		cell[i] = new Cell[hauteur];
+	}			//Cree le tableau de cellule de la map
 
 	coordonne = new int*[hauteur];					//Cree le tableau des coordonne de cases de la map
 	for (int i = 0; i < hauteur; ++i) 
@@ -48,19 +56,14 @@ Map::Map()
 					std::getline(carte, lecture, '\t');
 				}
 				coordonne[i][j] = std::stoi(lecture);
+				cell[i][j] = Cell(TypeCell::couloir, 0);	//Assigne le type de cellule à chaque case de la map (couloir, vide, piece, intersection, etc.
 				
 				//std::cout<<coordonne[i][j]<<" "<<std::endl;
 			}
 	}
 
-	// Créer un tableau de pointeurs
-	Cell** cell = new Cell*[largeur];
+	
 
-	// Pour chaque pointeur, créer un tableau
-	for(int i = 0; i < largeur; i++) 
-	{
-		cell[i] = new Cell[hauteur];
-	}			//Cree le tableau de cellule de la map
 
 for(int i=0;i<maxRoom;i++)
 {	
@@ -754,10 +757,10 @@ void Map::setOrientation(int SETorientation)
 	orientation=SETorientation;
 }
 
-Cell* Map::operator[](int index)
+/*Cell* Map::operator[](int index)
 {
 	return cell[index];
-}
+}*/
 
 /*
 int main()

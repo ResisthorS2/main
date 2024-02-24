@@ -47,7 +47,7 @@ private:
 	int hauteur;
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
 	Cell **cell;
-	Cell* operator[](int index);
+	//Cell* operator[](int index);
 	int coX;
 	int coY;
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
