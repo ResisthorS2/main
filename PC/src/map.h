@@ -11,16 +11,8 @@
 
 
 
-
-
-
 //#include <vector>
 
-const int nord=0;
-const int sud=1;
-const int est=2;
-const int ouest=3;
-const int maxRoom=20;
 
 class Map
 {
@@ -29,8 +21,8 @@ public:
 	~Map();
 	void setCoordonne(int x, int y);
 	void setOrientation(int orientation);
-	int getCoordonneX();			//Donne la coordonne X
-	int getCoordonneY();			//Donne la coordonne Y
+	int getCo_X();			//Donne la coordonne X
+	int getCo_Y();			//Donne la coordonne Y
 	int getOrientation();			//Donne l'orientation
 	bool moveUp();
 	bool move180();
@@ -54,7 +46,6 @@ private:
 	int coYPiece;
 	int orientationPiece;
 	int orientation; 
-
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
 	int coX;
 	int coY;

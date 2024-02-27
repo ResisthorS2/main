@@ -16,10 +16,7 @@ std::string MAGENTA = "\x1b[35m";      /* Magenta */
 std::string CYAN   = "\x1b[36m";      /* Cyan */
 std::string WHITE  = "\x1b[37m";      /* White */
 
-const int nord=0;
-const int sud=1;
-const int est=2;
-const int ouest=3;
+
 
 using namespace std;
 
@@ -28,11 +25,10 @@ Cell::Cell()
 {
 
     this->type = VIDE;
-    this->locked = UNLOCKED;
-    this->setImageCell(type, locked, NULL);
+    this->setImageCell(type, NONE);
 }
 
-Cell::Cell(int type, int locked, int c_x, int c_y)
+Cell::Cell(int type)
 {
     /*std::cout << "initialisation d'une cellule" << std::endl;
     std::cout << "type : " << type << std::endl;
@@ -40,20 +36,17 @@ Cell::Cell(int type, int locked, int c_x, int c_y)
     std::cout << "c_x : " << c_x << std::endl;
     std::cout << "c_y : " << c_y << std::endl;*/
     this->type = type;
-    this->locked = locked;
-    this->coordonne.x = c_x;
-    this->coordonne.y = c_y;
-    this->setImageCell(type, locked, NULL);
+    this->setImageCell(type, NONE);
 }
 
 Cell::~Cell()
 {
-    std::cout << "destruction d'une cellule" << std::endl;
+    //std::cout << "destruction d'une cellule" << std::endl;
 }
 
 
 
-void Cell::setImageCell(int type, int locked, int orientation)
+void Cell::setImageCell(int type, int orientation)
 {
     
     if(type == VIDE)
@@ -95,7 +88,7 @@ void Cell::setImageCell(int type, int locked, int orientation)
             }
     }
 
-    if(orientation != NULL)
+    if(orientation != NONE)
     {
         switch (orientation)
         {
@@ -115,18 +108,6 @@ void Cell::setImageCell(int type, int locked, int orientation)
     }
 
     //printCell();
-}
-
-int Cell::isLocked()
-{
-    return this->locked;
-}
-
-bool Cell::setLocked(int locked)
-{
-    this->locked = locked;
-    this->setImageCell(this->type, this->locked);
-    return true;
 }
 
 int Cell::getType()
@@ -167,5 +148,11 @@ void Cell::printCell()
 std::string Cell::getColor()
 {
     return this->typeColor;
+}
+
+void Cell::setType(int type)
+{
+    this->type = type;
+    this->setImageCell(type, NONE);
 }
 

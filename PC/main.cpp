@@ -109,7 +109,38 @@ int main(){
     {
         Map map;
         std::cout << "Test de la classe Map" << std::endl;;
-        map.printMap();
+        
+
+        while(true)
+        {
+            map.printMap();
+            char input;
+            
+            std::cin>>input;
+            std::cout<< "input "<<input<<std::endl;
+            
+            switch (input)
+            {
+            case 'p':
+                std::cout<<"Coordonne X : "<<map.getCo_X()<<"\t Coordonne Y : "<<map.getCo_Y()<<"\t Orientation"<<map.getOrientation()<<std::endl;
+                break;
+            case 'w':
+                map.moveUp();
+                break;
+            
+            case 'a':
+                map.moveLeft();
+                break;
+            
+            case 's':
+                map.move180();
+                break;
+            case 'd':
+                map.moveRight();	
+                break;
+            }
+            map.updateMap();
+        }
         
         /*
         for(int y=0; y<map.hauteur; y++)

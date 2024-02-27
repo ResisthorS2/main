@@ -14,6 +14,14 @@
 #define CLASSE_LOCKED 2
 #define CLASSE_UNLOCKED 3
 
+const int NONE=-1;
+const int nord=0;
+const int sud=1;
+const int est=2;
+const int ouest=3;
+const int maxRoom=20;
+
+
 
 
 struct Coordinate
@@ -27,15 +35,13 @@ class Cell
 {
     public:
         Cell();
-        Cell(int type, int locked, int c_x, int c_y);
+        Cell(int type);
         ~Cell();
         /** @brief retourne le type de la Cell @return int{vide = 0, couloir = 1, classe = 2,}*/
         int getType();
         /** @brief retourne un int selon si la Cell est vérouillée @return 0 = UNLOCKED, 1 = LOCKED */
-        int isLocked();
-        /** @brief change l'image ASCII de la case @param type type de la Cell en int @param locked int 0 = UNLOCKED, 1 = LOCKED*/
-        void setImageCell(int type, int locked, int orientation = NULL);
-        bool setLocked(int locked);
+        void setType(int type);
+        void setImageCell(int type, int orientation = NONE);
         std::string printCellTerminal(int line);
         void printCell();
         
@@ -45,7 +51,6 @@ class Cell
 
     private:
         int type;
-        int locked;
         Coordinate coordonne;
         std::string typeColor;
         //Piece piece;

@@ -17,6 +17,8 @@
 
 
 
+
+
 Map::Map()
 {
 	std::ifstream carte("C:/Users/arthu/OneDrive/Universite/Udes/S2/Projet/Code_Arduino_PC/main/PC/map.txt");
@@ -68,8 +70,9 @@ Map::Map()
 				{ 
 					std::getline(carte, lecture, '\t');
 				}
+				coordonne[x][y] = std::stoi(lecture);
 				int type = std::stoi(lecture);
-				cell[x][y] = Cell(type, UNLOCKED, x, y);
+				cell[x][y] = Cell(type);
 				//cell[x][y].printCell();
 				
 				//std::cout<<coordonne[i][j]<<" "<<std::endl;
@@ -77,7 +80,8 @@ Map::Map()
 	}
 
 	
-
+	coX=1;
+	coY=0;
 
 	for(int i=0;i<maxRoom;i++)
 	{	
@@ -88,6 +92,7 @@ Map::Map()
 
 Map::~Map()
 {
+	std::cout<<"Destruction de la map"<<std::endl;
 	for (int i = 0; i < hauteur; ++i) 
 	{
     	delete[] cell[i];
@@ -129,28 +134,30 @@ void Map::printMap()
 {
 	//system("cls");
 	
-	std::ostringstream os;
 
 	
-	for(int x=0;x<hauteur;x++)
+	for(int y=0;y<hauteur;y++)
 	{
 		for(int i=0;i<3;i++)
 		{
-			for(int y=0;y<largeur;y++)
+			for(int x=0;x<largeur;x++)
 			{
-				os << cell[x][y].getColor() << cell[x][y].printCellTerminal(i) << cell[x][y].getColor();
+				std::cout << cell[x][y].getColor() << cell[x][y].printCellTerminal(i) << cell[x][y].getColor();
+				
 			}
-			os << std::endl;
+			std::cout << std::endl;
 		}
+		
 	}
+	std::cout << "\x1b[0m" <<std::endl;
 }
 
-int Map::getCoordonneX()
+int Map::getCo_X()
 {
 	return coX;
 }
 
-int Map::getCoordonneY()
+int Map::getCo_Y()
 {
 	return coY;
 }
@@ -783,6 +790,23 @@ bool Map::moveLeft()
 void Map::setOrientation(int SETorientation)
 {
 	orientation=SETorientation;
+}
+
+void Map::updateMap()
+{
+	
+	for(int y=0;y<this->hauteur;y++)
+	{
+		for(int x=0;x<this->largeur;x++)
+		{
+			//std::cout<<"coordonne["<< x << "]["<<y<<"]"<<coordonne[x][y]<<std::endl;
+			cell[x][y].setImageCell(coordonne[x][y], NONE);
+		}
+	}
+	
+	std::cout<<"coordonne[coX][coY]"<<getCo_X()<<getCo_Y()<<std::endl;
+	cell[getCo_X()][getCo_Y()].setImageCell(cell[getCo_X()][getCo_Y()].getType(), orientation); //mettre l'orientation dans le bonhomme
+	
 }
 
 /*Cell* Map::operator[](int index)
