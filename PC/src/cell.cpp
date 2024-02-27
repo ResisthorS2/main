@@ -16,6 +16,11 @@ std::string MAGENTA = "\x1b[35m";      /* Magenta */
 std::string CYAN   = "\x1b[36m";      /* Cyan */
 std::string WHITE  = "\x1b[37m";      /* White */
 
+const int nord=0;
+const int sud=1;
+const int est=2;
+const int ouest=3;
+
 using namespace std;
 
 
@@ -24,7 +29,7 @@ Cell::Cell()
 
     this->type = VIDE;
     this->locked = UNLOCKED;
-    this->setImageCell(type, locked);
+    this->setImageCell(type, locked, NULL);
 }
 
 Cell::Cell(int type, int locked, int c_x, int c_y)
@@ -38,12 +43,17 @@ Cell::Cell(int type, int locked, int c_x, int c_y)
     this->locked = locked;
     this->coordonne.x = c_x;
     this->coordonne.y = c_y;
-    this->setImageCell(type, locked);
+    this->setImageCell(type, locked, NULL);
+}
+
+Cell::~Cell()
+{
+    std::cout << "destruction d'une cellule" << std::endl;
 }
 
 
 
-void Cell::setImageCell(int type, int locked)
+void Cell::setImageCell(int type, int locked, int orientation)
 {
     
     if(type == VIDE)
@@ -56,17 +66,16 @@ void Cell::setImageCell(int type, int locked)
         this->typeColor = WHITE;
     }
 
-    if(type == CLASSE)
+    if(type == CLASSE_LOCKED)
     {
-        if(locked == LOCKED)
-        {
-            this->typeColor = RED;
-        }
 
-        if(locked == UNLOCKED)
-        {
-            this->typeColor = GREEN;
-        }
+        this->typeColor = RED;
+    }
+
+    if(type == CLASSE_UNLOCKED)
+    {
+
+        this->typeColor = GREEN;
     }
 
     
@@ -78,10 +87,34 @@ void Cell::setImageCell(int type, int locked)
                 {
                     imageCell[i][y] = " ";
                 }
-                imageCell[i][y] = "X";
-                //std::cout << "imageCell[i][y] : " << *imageCell[i][y] << RESET << std::endl;
+                else
+                {
+                    imageCell[i][y] = "X";
+                    //std::cout << "imageCell[i][y] : " << imageCell[i][y] << RESET << std::endl;
+                }
             }
     }
+
+    if(orientation != NULL)
+    {
+        switch (orientation)
+        {
+            case nord:
+                imageCell[0][1] = "^";
+                break;
+            case sud:
+                imageCell[2][1] = "v";
+                break;
+            case est:
+                imageCell[1][2] = ">";
+                break;
+            case ouest:
+                imageCell[1][0] = "<";
+                break;
+        }
+    }
+
+    //printCell();
 }
 
 int Cell::isLocked()
@@ -98,8 +131,8 @@ bool Cell::setLocked(int locked)
 
 int Cell::getType()
 {
-
-    std::cout << "type" << type << std::endl;std::cout << "ici"<< std::endl;
+    
+    std::cout << "type" << type << std::endl;
     return this->type;
 }
 
@@ -108,7 +141,6 @@ std::string Cell::printCellTerminal(int line)
     std::ostringstream os;
     
     os << imageCell[line][0];
-    std::cout << "printCellTerminal" << std::endl;
     for(int i=1; i<3; i++)
     {
         os << imageCell[line][i];
@@ -131,4 +163,9 @@ void Cell::printCell()
         std::cout << std::endl;
     }
 }
-    
+
+std::string Cell::getColor()
+{
+    return this->typeColor;
+}
+

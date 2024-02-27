@@ -8,6 +8,8 @@
 
 
 
+
+
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -18,6 +20,10 @@
 Map::Map()
 {
 	std::ifstream carte("C:/Users/arthu/OneDrive/Universite/Udes/S2/Projet/Code_Arduino_PC/main/PC/map.txt");
+	if (carte.fail()) {
+    std::cerr << "Erreur d'ouverture du fichier" << std::endl;
+    // Gérer l'erreur ici, peut-être en quittant la fonction ou en lançant une exception
+}
 	std::string lecture;
 
 
@@ -35,7 +41,7 @@ Map::Map()
 	std::cout<< "Largeur : " <<largeur<<std::endl;
 
 	// Créer un tableau de pointeurs
-	Cell **cell = new Cell*[largeur];
+	this->cell = new Cell*[largeur];
 
 	// Pour chaque pointeur, créer un tableau
 	for(int i = 0; i < largeur; i++) 
@@ -73,10 +79,10 @@ Map::Map()
 	
 
 
-for(int i=0;i<maxRoom;i++)
-{	
-	cle[i]=0;
-}
+	for(int i=0;i<maxRoom;i++)
+	{	
+		cle[i]=0;
+	}
 
 }
 
@@ -84,10 +90,17 @@ Map::~Map()
 {
 	for (int i = 0; i < hauteur; ++i) 
 	{
+    	delete[] cell[i];
+	}
+
+	delete[] cell;
+	
+	for (int i = 0; i < hauteur; ++i) 
+	{
     	delete[] coordonne[i];
 	}
 
-delete[] coordonne;
+	delete[] coordonne;
 
 }
 
@@ -117,6 +130,7 @@ void Map::printMap()
 	//system("cls");
 	
 	std::ostringstream os;
+
 	
 	for(int x=0;x<hauteur;x++)
 	{
@@ -124,12 +138,9 @@ void Map::printMap()
 		{
 			for(int y=0;y<largeur;y++)
 			{
-				std::cout << "cell[" << i << "][" << y << "] :"<< cell[x][y].getType() << std::endl;
-				os << cell[x][y].printCellTerminal(i);
-				std::cout << "ici" << std::endl;
-				std::cout << os.str();
-				std::cout<<std::endl;
+				os << cell[x][y].getColor() << cell[x][y].printCellTerminal(i) << cell[x][y].getColor();
 			}
+			os << std::endl;
 		}
 	}
 }
