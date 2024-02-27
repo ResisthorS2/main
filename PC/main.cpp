@@ -37,14 +37,15 @@ SerialPort * arduino; //doit etre un objet global!
 #include "C:\Users\arthu\OneDrive\Universite\Udes\S2\Projet\Code_Arduino_PC\main\PC\src\map.h"
 #endif
 
-Map map;
+
 
 int main(){
     
     #define TEST 1
 
-    if(!TEST)
+    if(TEST != 1)
     {
+        Map map;
         std::string raw_msg;
 
         // Initialisation du port de communication
@@ -104,9 +105,22 @@ int main(){
         }
     }
 
-    if(TEST)
+    if(TEST == 1)
     {
+        Map map;
+        std::cout << "Test de la classe Map" << std::endl;;
         map.printMap();
+        
+        /*
+        for(int y=0; y<map.hauteur; y++)
+        {
+            for(int i=0; i<map.largeur; i++)
+            {
+                std::cout << "Cellule [" << i << "][" << y << "] : " << std::endl;
+                
+                std::cout << "XXX" <<std::endl;
+            }
+        }*/
     }
 
     return 0;
@@ -115,7 +129,8 @@ int main(){
 
 
 /*---------------------------Definition de fonctions ------------------------*/
-bool SendToSerial(SerialPort *arduino, json j_msg){
+bool SendToSerial(SerialPort *arduino, json j_msg)
+{
     // Return 0 if error
     std::string msg = j_msg.dump();
     bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());

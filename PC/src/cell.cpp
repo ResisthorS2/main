@@ -4,22 +4,24 @@
 
 
 #include <iostream>
+#include <sstream>
 
-#define RESET   "\x1b[0m"
-#define BLACK   "\x1b[30m"      /* Black */
-#define RED     "\x1b[31m"      /* Red */
-#define GREEN   "\x1b[32m"      /* Green */
-#define YELLOW  "\x1b[33m"      /* Yellow */
-#define BLUE    "\x1b[34m"      /* Blue */
-#define MAGENTA "\x1b[35m"      /* Magenta */
-#define CYAN    "\x1b[36m"      /* Cyan */
-#define WHITE   "\x1b[37m"      /* White */
+std::string RESET  = "\x1b[0m";
+std::string BLACK  = "\x1b[30m";      /* Black */
+std::string RED    = "\x1b[31m";      /* Red */
+std::string GREEN  = "\x1b[32m";      /* Green */
+std::string YELLOW = "\x1b[33m";      /* Yellow */
+std::string BLUE   = "\x1b[34m";      /* Blue */
+std::string MAGENTA = "\x1b[35m";      /* Magenta */
+std::string CYAN   = "\x1b[36m";      /* Cyan */
+std::string WHITE  = "\x1b[37m";      /* White */
 
 using namespace std;
 
 
 Cell::Cell()
 {
+
     this->type = VIDE;
     this->locked = UNLOCKED;
     this->setImageCell(type, locked);
@@ -27,7 +29,12 @@ Cell::Cell()
 
 Cell::Cell(int type, int locked, int c_x, int c_y)
 {
-    this->type = COULOIR;
+    /*std::cout << "initialisation d'une cellule" << std::endl;
+    std::cout << "type : " << type << std::endl;
+    std::cout << "locked : " << locked << std::endl;
+    std::cout << "c_x : " << c_x << std::endl;
+    std::cout << "c_y : " << c_y << std::endl;*/
+    this->type = type;
     this->locked = locked;
     this->coordonne.x = c_x;
     this->coordonne.y = c_y;
@@ -38,28 +45,27 @@ Cell::Cell(int type, int locked, int c_x, int c_y)
 
 void Cell::setImageCell(int type, int locked)
 {
-    string color;
     
     if(type == VIDE)
     {
-        color = BLACK;
+        this->typeColor = BLACK;
     }
 
     if(type == COULOIR)
     {
-        color == WHITE;
+        this->typeColor = WHITE;
     }
 
     if(type == CLASSE)
     {
         if(locked == LOCKED)
         {
-            color == RED;
+            this->typeColor = RED;
         }
 
         if(locked == UNLOCKED)
         {
-            color == GREEN;
+            this->typeColor = GREEN;
         }
     }
 
@@ -68,7 +74,12 @@ void Cell::setImageCell(int type, int locked)
     {
         for(int y=0; y<3; y++)
             {
-                imageCell[i][y] = color+"X";
+                if(this->type == VIDE)
+                {
+                    imageCell[i][y] = " ";
+                }
+                imageCell[i][y] = "X";
+                //std::cout << "imageCell[i][y] : " << *imageCell[i][y] << RESET << std::endl;
             }
     }
 }
@@ -87,16 +98,37 @@ bool Cell::setLocked(int locked)
 
 int Cell::getType()
 {
+
+    std::cout << "type" << type << std::endl;std::cout << "ici"<< std::endl;
     return this->type;
 }
 
-std::string Cell::printCell(int line)
+std::string Cell::printCellTerminal(int line)
 {
-    std::string cell_line = imageCell[line][0];;
+    std::ostringstream os;
+    
+    os << imageCell[line][0];
+    std::cout << "printCellTerminal" << std::endl;
     for(int i=1; i<3; i++)
     {
-        cell_line += imageCell[line][i];
+        os << imageCell[line][i];
     }
+    
+    return os.str();
 
-    return cell_line;
 }
+
+
+void Cell::printCell()
+{
+    //std::cout << "printCell" << std::endl;
+    for(int i=0; i<3; i++)
+    {
+        for(int y=0; y<3; y++)
+        {
+            std::cout << imageCell[i][y];
+        }
+        std::cout << std::endl;
+    }
+}
+    

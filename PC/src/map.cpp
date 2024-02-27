@@ -11,17 +11,20 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 
 
 Map::Map()
 {
-	std::ifstream carte("map.txt");
+	std::ifstream carte("C:/Users/arthu/OneDrive/Universite/Udes/S2/Projet/Code_Arduino_PC/main/PC/map.txt");
 	std::string lecture;
 
-	std::getline(carte, lecture);
 
-		hauteur = std::stoi(lecture);				//Ramasse la hauteur de la map dans le fichier map
+
+	std::getline(carte, lecture);
+	//Ramasse la hauteur de la map dans le fichier map
+		hauteur = std::stoi(lecture);	
 
 	std::cout<< "Hauteur : " <<hauteur<<std::endl;
 
@@ -32,7 +35,7 @@ Map::Map()
 	std::cout<< "Largeur : " <<largeur<<std::endl;
 
 	// Créer un tableau de pointeurs
-	Cell** cell = new Cell*[largeur];
+	Cell **cell = new Cell*[largeur];
 
 	// Pour chaque pointeur, créer un tableau
 	for(int i = 0; i < largeur; i++) 
@@ -61,6 +64,7 @@ Map::Map()
 				}
 				int type = std::stoi(lecture);
 				cell[x][y] = Cell(type, UNLOCKED, x, y);
+				//cell[x][y].printCell();
 				
 				//std::cout<<coordonne[i][j]<<" "<<std::endl;
 			}
@@ -110,16 +114,20 @@ void Map::exitPiece()
 
 void Map::printMap()
 {
-	system("clear");
-	std::string mapImage;
+	//system("cls");
+	
+	std::ostringstream os;
+	
 	for(int x=0;x<hauteur;x++)
 	{
 		for(int i=0;i<3;i++)
 		{
 			for(int y=0;y<largeur;y++)
 			{
-				mapImage=cell[y][x].printCell(i);
-				std::cout<<mapImage;
+				std::cout << "cell[" << i << "][" << y << "] :"<< cell[x][y].getType() << std::endl;
+				os << cell[x][y].printCellTerminal(i);
+				std::cout << "ici" << std::endl;
+				std::cout << os.str();
 				std::cout<<std::endl;
 			}
 		}

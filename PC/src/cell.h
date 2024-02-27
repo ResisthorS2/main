@@ -34,7 +34,8 @@ class Cell
         /** @brief change l'image ASCII de la case @param type type de la Cell en int @param locked int 0 = UNLOCKED, 1 = LOCKED*/
         void setImageCell(int type, int locked);
         bool setLocked(int locked);
-        std::string printCell(int line);
+        std::string printCellTerminal(int line);
+        void printCell();
         
 
     private:
@@ -42,6 +43,7 @@ class Cell
         int locked;
         std::string imageCell[3][3];
         Coordinate coordonne;
+        std::string typeColor;
         //Piece piece;
         //Minigame minigame[];
 };

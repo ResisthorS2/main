@@ -43,6 +43,8 @@ public:
 	void enterPiece();				//Sert à mes fonction de mouvement et exitPiece
 	void exitPiece();			//Sert à sortir à la position précedente avant de rentrer dans une pièce. Met aussi la bonne orientation
 	Cell **cell;
+	int largeur; //faire une fonction pour les gets
+	int hauteur; //faire une fonction pour le gets
 	//Cell* operator[](int index);
 
 
@@ -51,8 +53,7 @@ private:
 	int coYPiece;
 	int orientationPiece;
 	int orientation; 
-	int largeur;
-	int hauteur;
+
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
 	int coX;
 	int coY;
