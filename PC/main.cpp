@@ -33,9 +33,11 @@ SerialPort * arduino; //doit etre un objet global!
 
 
 
-#ifndef MAP_H
+
 #include "src\map.h"
-#endif
+
+
+
 
 
 
@@ -82,22 +84,22 @@ int main(){
 
             if(j_msg_rcv["btn_180"] == "HIGH")
             {
-                map.move180();
+                map.playerInCell->move(DOWN);
             }
 
             if(j_msg_rcv["btn_up"] == "HIGH")
             {
-                map.moveUp();
+                map.playerInCell->move(UP);
             }
 
             if(j_msg_rcv["btn_left"] == "HIGH")
             {
-                map.moveLeft();
+                map.playerInCell->move(LEFT);
             }
 
             if(j_msg_rcv["btn_right"] == "HIGH")
             {
-                map.moveRight();
+                map.playerInCell->move(RIGHT);
             }
             
             map.printMap();
@@ -121,22 +123,20 @@ int main(){
             
             switch (input)
             {
-            case 'p':
-                std::cout<<"Coordonne X : "<<map.getCo_X()<<"\t Coordonne Y : "<<map.getCo_Y()<<"\t Orientation"<<map.getOrientation()<<std::endl;
-                break;
+
             case 'w':
-                map.moveUp();
+                map.playerInCell->move(UP);
                 break;
             
             case 'a':
-                map.moveLeft();
+                map.playerInCell->move(LEFT);
                 break;
             
             case 's':
-                map.move180();
+                map.playerInCell->move(DOWN);
                 break;
             case 'd':
-                map.moveRight();	
+                map.playerInCell->move(RIGHT);
                 break;
             }
             map.updateMap();

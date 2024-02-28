@@ -2,9 +2,9 @@
 	S'ASSURER QUE LA HAUTEUR ET LA LARGEUR SOIT BIEN DÉFINIS DANS MAP.TXT
 */
 
-#ifndef MAP_H
+
 #include "map.h"
-#endif
+
 
 
 

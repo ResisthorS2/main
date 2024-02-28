@@ -2,16 +2,16 @@
 	ATTENTIONS SI + DE 20 ROOM NE PAS OUBLIER D'AUGMENTER MAXROOM
 */
 
-
+#ifndef MAP_H
 #define MAP_H
 
-#ifndef CELL_H
-#include "cell.h"
-#endif
 
-#ifndef PLAYER_H
+#include "cell.h"
+
+
+
 #include "player.h"
-#endif
+
 
 
 
@@ -22,13 +22,7 @@ class Map
 {
 public:
 	Map();
-	~Map();
-	void setCoordonne(int x, int y);
-	void setOrientation(int orientation);
-	int getCo_X();			//Donne la coordonne X
-	int getCo_Y();			//Donne la coordonne Y
-	int getOrientation();			//Donne l'orientation
-	bool turn180();				
+	~Map();			
 	void printMap();				//Affiche la map
 	void addCle(int index);			//Permet d'ajouter l'acces à une piece
 	void removeCle(int index);		//Permet d'enlever l'acces à une piece
@@ -46,4 +40,5 @@ private:
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
 };
+#endif
 

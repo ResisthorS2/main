@@ -1,9 +1,19 @@
 
-#ifndef CELL_H
-#include "cell.h"
-#endif
-
+#ifndef PLAYER_H
 #define PLAYER_H
+
+
+#include "cell.h"
+
+
+
+
+//direction
+#define LEFT 0
+#define RIGHT 1
+#define UP 2
+#define DOWN 3
+
 class Player : public Cell
 {
     public:
@@ -26,3 +36,4 @@ class Player : public Cell
         //int keyToUnlock;
         //Minigame minigame[];
 };
+#endif

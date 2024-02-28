@@ -1,18 +1,14 @@
-#ifndef CELL_H
-#include "cell.h"
-#endif
 
-#ifndef PLAYER_H
+#include "cell.h"
+
+
+
 #include "player.h"
-#endif
+
 
 #define move180
 
-//direction
-#define LEFT 0
-#define RIGHT 1
-#define UP 2
-#define DOWN 3
+
 
 Player::Player()
 {
@@ -35,9 +31,26 @@ int Player::getOrientation()
 
 void Player::setImageCell(Cell *cell)
 {
+    std::string RESET  = "\x1b[0m";
+    std::string BLACK  = "\x1b[30m";      /* Black */
+    std::string RED    = "\x1b[31m";      /* Red */
+    std::string GREEN  = "\x1b[32m";      /* Green */
+    std::string YELLOW = "\x1b[33m";      /* Yellow */
+    std::string BLUE   = "\x1b[34m";      /* Blue */
+    std::string MAGENTA = "\x1b[35m";      /* Magenta */
+    std::string CYAN   = "\x1b[36m";      /* Cyan */
+    std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
 
+    if(cell->getLocked() == LOCKED)
+    {
+        typeColor = RED;
+    }
+    else
+    {
+        typeColor = GREEN;
+    }
     
     for(int i=0; i<3; i++)
     {
