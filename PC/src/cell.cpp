@@ -6,15 +6,7 @@
 #include <iostream>
 #include <sstream>
 
-std::string RESET  = "\x1b[0m";
-std::string BLACK  = "\x1b[30m";      /* Black */
-std::string RED    = "\x1b[31m";      /* Red */
-std::string GREEN  = "\x1b[32m";      /* Green */
-std::string YELLOW = "\x1b[33m";      /* Yellow */
-std::string BLUE   = "\x1b[34m";      /* Blue */
-std::string MAGENTA = "\x1b[35m";      /* Magenta */
-std::string CYAN   = "\x1b[36m";      /* Cyan */
-std::string WHITE  = "\x1b[37m";      /* White */
+
 
 
 
@@ -110,25 +102,6 @@ void Cell::setImageCell(Cell *cell)
             }
     }
 
-    if(orientation != NONE)
-    {
-        switch (orientation)
-        {
-            case north:
-                imageCell[0][1] = YELLOW+"^";
-                break;
-            case south:
-                imageCell[2][1] = YELLOW+"v";
-                break;
-            case east:
-                imageCell[1][2] = YELLOW+">";
-                break;
-            case west:
-                imageCell[1][0] = YELLOW+"<";
-                break;
-        }
-    }
-
     //printCell();
 }
 
@@ -172,7 +145,7 @@ void Cell::printCell()
 void Cell::setType(int type)
 {
     this->type = type;
-    this->setImageCell(type, NONE);
+    this->setImageCell(this);
 }
 
 void Cell::setLocked(int locked)
@@ -225,7 +198,7 @@ Cell* Cell::getCellAround(int orientation)
 
 void Cell::cpyEnterFrom(int *enterFrom)
 {
-    this->enterFrom[0] = enterFrom[0];
-    this->enterFrom[1] = enterFrom[1];
+    enterFrom[0] = this->enterFrom[0];
+    enterFrom[1] = this->enterFrom[1];
 }
 

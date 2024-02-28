@@ -28,8 +28,6 @@ Map::Map()
 	}
 	std::string lecture;
 
-	orientation = east;
-
 
 	std::getline(carte, lecture);
 	//Ramasse la hauteur de la map dans le fichier map
@@ -81,7 +79,33 @@ Map::Map()
 	{
 		for(int x=0; x<largeur;x++)
 			{
-				if
+				if(cell[x][y].getType()!=0)
+				{
+					if(cell[x][y+1].getType()!=0)
+					{cell[x][y].setCellAround(south, &cell[x][y+1]);}
+
+					else if(cell[x][y+1].getType()==0)
+					{cell[x][y].setCellAround(south, NULL);}
+
+					if(cell[x][y-1].getType()!=0)
+					{cell[x][y].setCellAround(north, &cell[x][y-1]);}
+
+					else if(cell[x][y-1].getType()==0)
+					{cell[x][y].setCellAround(north, NULL);}
+
+					if(cell[x+1][y].getType()!=0)
+					{cell[x][y].setCellAround(east, &cell[x+1][y]);}
+
+					else
+					{cell[x][y].setCellAround(east, NULL);}
+
+					if(cell[x-1][y].getType()!=0)
+					{cell[x][y].setCellAround(west, &cell[x-1][y]);}
+
+					else
+					{cell[x][y].setCellAround(west, NULL);}
+
+				}
 			}
 	}
 
@@ -145,12 +169,6 @@ void Map::printMap()
 
 }
 
-
-int Map::getOrientation()
-{
-	return orientation;
-}
-
 void Map::addCle(int index)
 {
 	cle[index]=index;
@@ -170,40 +188,6 @@ bool Map::verifCle(int index)
 }
 
 
-bool Map::turn180()
-{
-	switch (orientation)
-	{
-	case north:
-		orientation=south;
-		return true;
-		break;
-
-	case east:
-		orientation=west;
-		return true;
-		break;
-
-	case south:
-		orientation=north;
-		return true;
-	case west:
-		orientation=east;
-		return true;
-
-	default:
-		return false;
-		break;
-	}
-	return false;
-}
-
-
-void Map::setOrientation(int SETorientation)
-{
-	orientation=SETorientation;
-}
-
 void Map::updateMap()
 {
 	
@@ -212,11 +196,9 @@ void Map::updateMap()
 		for(int x=0;x<this->largeur;x++)
 		{
 			//std::cout<<"coordonne["<< x << "]["<<y<<"]"<<coordonne[x][y]<<std::endl;
-			cell[x][y].setImageCell(coordonne[x][y], NONE);
+			cell[x][y].setImageCell(&cell[x][y]);
 		}
 	}
-	std::cout << "orientation = " <<getOrientation() << std::endl;
-	cell[getCo_X()][getCo_Y()].setImageCell(cell[getCo_X()][getCo_Y()].getType(), getOrientation()); //mettre l'orientation dans le bonhomme
-	
+	playerInCell->setImageCell(playerInCell);
 }
 

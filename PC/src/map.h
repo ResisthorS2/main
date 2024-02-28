@@ -43,7 +43,6 @@ public:
 
 
 private:
-	int orientation; 
 	int **coordonne;			//Tableau de coordonne coordonne[Y][X]
 	int cle[maxRoom];				//La cste maxROOM doit être changer si on fait plus de room que celle-si
 };
