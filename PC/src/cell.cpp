@@ -25,18 +25,60 @@ Cell::Cell()
 {
 
     this->type = VIDE;
-    this->setImageCell(type, NONE);
+    this->setImageCell(this);
+    cell_north = new Cell;
+    cell_south = new Cell;
+    cell_east = new Cell;
+    cell_west = new Cell;
+    cell_north = NULL;
+    cell_south = NULL;
+    cell_east = NULL;
+    cell_west = NULL;
+    locked = UNLOCKED;
 }
 
 Cell::Cell(int type)
 {
-    /*std::cout << "initialisation d'une cellule" << std::endl;
-    std::cout << "type : " << type << std::endl;
-    std::cout << "locked : " << locked << std::endl;
-    std::cout << "c_x : " << c_x << std::endl;
-    std::cout << "c_y : " << c_y << std::endl;*/
-    this->type = type;
-    this->setImageCell(type, NONE);
+    
+    cell_north = new Cell;
+    cell_south = new Cell;
+    cell_east = new Cell;
+    cell_west = new Cell;
+    cell_north = NULL;
+    cell_south = NULL;
+    cell_east = NULL;
+    cell_west = NULL;
+    this->type = (type%10)*10;
+    if(type > 10)
+    {
+        this->locked = LOCKED;
+    }
+    else
+    {
+        this->locked = UNLOCKED;
+    }
+
+    if(this->type > 1)
+    {
+        enterFrom = new int[2];
+        switch(this->type)
+        {
+            case DOORNORTH:
+                enterFrom[0] = 0; enterFrom[1] = 1;
+                break;
+            case DOORSOUTH:
+                enterFrom[0] = 2; enterFrom[1] = 1;
+                break;
+            case DOOREAST:
+                enterFrom[0] = 1; enterFrom[1] = 2;
+                break;
+            case DOORWEST:
+                enterFrom[0] = 1; enterFrom[1] = 0;
+                break;
+        }
+        this->setImageCell(this);
+    }
+    
 }
 
 Cell::~Cell()
@@ -46,30 +88,10 @@ Cell::~Cell()
 
 
 
-void Cell::setImageCell(int type, int orientation)
+void Cell::setImageCell(Cell *cell)
 {
-    
-    if(type == VIDE)
-    {
-        this->typeColor = BLACK;
-    }
+    std::string typeColor;
 
-    if(type == COULOIR)
-    {
-        this->typeColor = WHITE;
-    }
-
-    if(type == CLASSE_LOCKED)
-    {
-
-        this->typeColor = RED;
-    }
-
-    if(type == CLASSE_UNLOCKED)
-    {
-
-        this->typeColor = GREEN;
-    }
 
     
     for(int i=0; i<3; i++)
@@ -82,7 +104,7 @@ void Cell::setImageCell(int type, int orientation)
                 }
                 else
                 {
-                    imageCell[i][y] = "X";
+                    imageCell[i][y] = typeColor+"X";
                     //std::cout << "imageCell[i][y] : " << imageCell[i][y] << RESET << std::endl;
                 }
             }
@@ -92,23 +114,24 @@ void Cell::setImageCell(int type, int orientation)
     {
         switch (orientation)
         {
-            case nord:
-                imageCell[0][1] = "^";
+            case north:
+                imageCell[0][1] = YELLOW+"^";
                 break;
-            case sud:
-                imageCell[2][1] = "v";
+            case south:
+                imageCell[2][1] = YELLOW+"v";
                 break;
-            case est:
-                imageCell[1][2] = ">";
+            case east:
+                imageCell[1][2] = YELLOW+">";
                 break;
-            case ouest:
-                imageCell[1][0] = "<";
+            case west:
+                imageCell[1][0] = YELLOW+"<";
                 break;
         }
     }
 
     //printCell();
 }
+
 
 int Cell::getType()
 {
@@ -145,14 +168,64 @@ void Cell::printCell()
     }
 }
 
-std::string Cell::getColor()
-{
-    return this->typeColor;
-}
 
 void Cell::setType(int type)
 {
     this->type = type;
     this->setImageCell(type, NONE);
+}
+
+void Cell::setLocked(int locked)
+{
+    this->locked = locked;
+}
+
+void Cell::setCellAround(int orientation, Cell* cell)
+{
+    switch (orientation)
+    {
+        case north:
+            this->cell_north = cell;
+            break;
+        case south:
+            this->cell_south = cell;
+            break;
+        case east:
+            this->cell_east = cell;
+            break;
+        case west:
+            this->cell_west = cell;
+            break;
+    }
+}
+
+int Cell::getLocked()
+{
+    return this->locked;
+}
+
+Cell* Cell::getCellAround(int orientation)
+{
+    switch (orientation)
+    {
+        case north:
+            return this->cell_north;
+            break;
+        case south:
+            return this->cell_south;
+            break;
+        case east:
+            return this->cell_east;
+            break;
+        case west:
+            return this->cell_west;
+            break;
+    }
+}
+
+void Cell::cpyEnterFrom(int *enterFrom)
+{
+    this->enterFrom[0] = enterFrom[0];
+    this->enterFrom[1] = enterFrom[1];
 }
 

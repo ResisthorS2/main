@@ -9,16 +9,19 @@
 #define UNLOCKED 0
 
 
-#define VIDE 0
-#define COULOIR 1
-#define CLASSE_LOCKED 2
-#define CLASSE_UNLOCKED 3
+#define VIDE 0  
+#define COULOIR 1  
+#define DOORNORTH 2  
+#define DOORSOUTH 3  
+#define DOOREAST 4  
+#define DOORWEST 5  
+
 
 const int NONE=-1;
-const int nord=0;
-const int sud=1;
-const int est=2;
-const int ouest=3;
+const int north=0;
+const int south=1;
+const int east=2;
+const int west=3;
 const int maxRoom=20;
 
 
@@ -36,23 +39,31 @@ class Cell
     public:
         Cell();
         Cell(int type);
-        ~Cell();
+        virtual ~Cell();
         /** @brief retourne le type de la Cell @return int{vide = 0, couloir = 1, classe = 2,}*/
         int getType();
         /** @brief retourne un int selon si la Cell est vérouillée @return 0 = UNLOCKED, 1 = LOCKED */
         void setType(int type);
-        void setImageCell(int type, int orientation = NONE);
+        virtual void setImageCell(Cell *cell);
         std::string printCellTerminal(int line);
         void printCell();
-        
+        Cell* enterCell();
         std::string imageCell[3][3];
-        std::string getColor();
+        void setLocked(int locked);
+        int getLocked();
+        void setCellAround(int orientation, Cell* cell);
+        Cell *getCellAround(int orientation);
+        void cpyEnterFrom(int *enterFrom);
         
 
     private:
         int type;
-        Coordinate coordonne;
-        std::string typeColor;
-        //Piece piece;
+        Cell* cell_north;
+        Cell* cell_south;
+        Cell* cell_east;
+        Cell* cell_west;
+        int *enterFrom; /** @brief Tu peux entrer quand tu proviens de ____ NONE=-1, north=0, south=1, east=2, west=3 */
+        int locked; /** @brief 0 = UNLOCKED, 1 = LOCKED */
+        int keyToUnlock;
         //Minigame minigame[];
 };

@@ -34,7 +34,7 @@ SerialPort * arduino; //doit etre un objet global!
 
 
 #ifndef MAP_H
-#include "C:\Users\arthu\OneDrive\Universite\Udes\S2\Projet\Code_Arduino_PC\main\PC\src\map.h"
+#include "src\map.h"
 #endif
 
 

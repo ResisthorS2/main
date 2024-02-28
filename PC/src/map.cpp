@@ -21,13 +21,14 @@
 
 Map::Map()
 {
-	std::ifstream carte("C:/Users/arthu/OneDrive/Universite/Udes/S2/Projet/Code_Arduino_PC/main/PC/map.txt");
+	std::ifstream carte("map.txt");
 	if (carte.fail()) {
-    std::cerr << "Erreur d'ouverture du fichier" << std::endl;
-    // Gérer l'erreur ici, peut-être en quittant la fonction ou en lançant une exception
-}
+		std::cerr << "Erreur d'ouverture du fichier" << std::endl;
+		// Gérer l'erreur ici, peut-être en quittant la fonction ou en lançant une exception
+	}
 	std::string lecture;
 
+	orientation = east;
 
 
 	std::getline(carte, lecture);
@@ -73,20 +74,23 @@ Map::Map()
 				coordonne[x][y] = std::stoi(lecture);
 				int type = std::stoi(lecture);
 				cell[x][y] = Cell(type);
-				//cell[x][y].printCell();
-				
-				//std::cout<<coordonne[i][j]<<" "<<std::endl;
 			}
 	}
 
-	
-	coX=1;
-	coY=0;
+	for(int y=0; y<hauteur; y++)					//Assigne le fichier de map au tableau coordonne
+	{
+		for(int x=0; x<largeur;x++)
+			{
+				if
+			}
+	}
+
 
 	for(int i=0;i<maxRoom;i++)
 	{	
 		cle[i]=0;
 	}
+
 
 }
 
@@ -109,26 +113,13 @@ Map::~Map()
 
 }
 
-void Map::setCoordonne(int x, int y)
-{
-	coX=x;
 
-	coY=y;
+void Map::enterCell()
+{
+	
 }
 
-void Map::enterPiece()
-{
-	coXPiece=coX;
-	coYPiece=coY;
-	orientationPiece=orientation;
-}
 
-void Map::exitPiece()
-{
-	coX = coXPiece;
-	coY = coYPiece;
-	orientation = orientationPiece;
-}
 
 void Map::printMap()
 {
@@ -142,7 +133,7 @@ void Map::printMap()
 		{
 			for(int x=0;x<largeur;x++)
 			{
-				std::cout << cell[x][y].getColor() << cell[x][y].printCellTerminal(i) << cell[x][y].getColor();
+				std::cout << cell[x][y].printCellTerminal(i);
 				
 			}
 			std::cout << std::endl;
@@ -150,17 +141,10 @@ void Map::printMap()
 		
 	}
 	std::cout << "\x1b[0m" <<std::endl;
+
+
 }
 
-int Map::getCo_X()
-{
-	return coX;
-}
-
-int Map::getCo_Y()
-{
-	return coY;
-}
 
 int Map::getOrientation()
 {
@@ -185,215 +169,26 @@ bool Map::verifCle(int index)
 	} else return false;
 }
 
-bool Map::moveUp()
+
+bool Map::turn180()
 {
 	switch (orientation)
 	{
-	case nord:
-		if(coY==0)		//Il est dans le top de la map et ne peux pas monter
-		{
-			return false;
-		}
-
-		if(coordonne[coY-1][coX]==1)	//Il a une case couloir devant lui
-		{
-			coY--;
-			return true;
-		}
-
-		if(coordonne[coY-1][coX]==3)	//Il a une case intersection devant lui
-		{
-			if(coY==1)					//Il n'y a pas de case devant la case intersection
-			{
-				return false;
-			}
-			if(coordonne[coY-2][coX]==1||coordonne[coY-2][coX]==2)	//Il y a une case couloir devant la case interception
-			{
-				coY--;
-				coY--;
-				return true;
-			}
-
-			if(coordonne[coY-2][coX]>3)	//Il y a une case couloir devant la case interception
-			{
-				if(verifCle(coordonne[coY-2][coX])==true)
-				{
-				enterPiece();
-				coY--;
-				coY--;
-				return true;
-				}
-			}
-
-
-			if(coordonne[coY-2][coX]==0)	//Il n'y a pas de case marchable devant la case intersection
-			{
-				return false;
-			}			
-			return true;
-		}
-		return false;
-		break;
-
-
-	case sud:
-		if(coY==(hauteur-1))		//Il est dans le bas de la map et ne peux pas descendre
-		{
-			return false;
-		}
-
-		if(coordonne[coY+1][coX]==1||coordonne[coY+1][coX]==2)	//Il a une case couloir devant lui
-		{
-			coY++;
-			return true;
-		}
-
-		if(coordonne[coY+1][coX]==3)	//Il a une case intersection devant lui
-		{
-			if(coY==hauteur-2)					//Il n'y a pas de case devant la case intersection
-			{
-				return false;
-			}
-			if(coordonne[coY+2][coX]==1||coordonne[coY+2][coX]==2)	//Il y a une case couloir devant la case interception
-			{
-				coY++;
-				coY++;
-				return true;
-			}
-			if(coordonne[coY+2][coX]>3)	//Il y a une case couloir devant la case interception
-			{
-				if(verifCle(coordonne[coY+2][coX])==true)
-				{
-				enterPiece();
-				coY++;
-				coY++;
-				return true;
-				}
-			}
-			if(coordonne[coY+2][coX]==0)	//Il n'y a pas de case marchable devant la case intersection
-			{
-				return false;
-			}
-		}		
-		return false;
-		break;
-
-	case est:
-		if(coX==(largeur-1))		//Il est tout à droite de la map de la map et ne peux pas monter
-		{
-			return false;
-		}
-		
-		if(coordonne[coY][coX+1]==1||coordonne[coY][coX+1]==2)	//Il a une case couloir devant lui
-		{
-			std::cout<<"pre"<<coX;
-			coX++;
-			std::cout<<"post"<<coX<<std::endl;
-			return true;
-		}
-
-		if(coordonne[coY][coX+1]==3)	//Il a une case intersection devant lui
-		{
-			if(coX==largeur-2)					//Il n'y a pas de case devant la case intersection
-			{
-				return false;
-			}
-			if(coordonne[coY][coX+2]==1||coordonne[coY][coX+2]==2)	//Il y a une case couloir devant la case interception
-			{
-				coX++;
-				coX++;
-				return true;
-			}
-
-			if(coordonne[coY][coX+2]==0)	//Il n'y a pas de case marchable devant la case intersection
-			{
-				return false;
-			}			
-
-			if(coordonne[coY][coX+2]>3)
-			{
-				if(verifCle(coordonne[coY][coX+2])==true)
-				{
-					enterPiece();
-					coX++;
-					coX++;
-					return true;
-				}	else return false;
-			}
-		}
-		return false;
-		break;
-		
-	case ouest:
-
-		if(coX==0)		//Il est tout à gauche de la map de la map et ne peux pas monter
-		{
-			return false;
-		}
-
-		if(coordonne[coY][coX-1]==1||coordonne[coY][coX-1]==2)	//Il a une case couloir devant lui
-		{
-			coX--;
-			return true;
-		}
-
-		if(coordonne[coY][coX-1]==3)	//Il a une case intersection devant lui
-		{
-			if(coX==1)					//Il n'y a pas de case devant la case intersection
-			{
-				return false;
-			}
-			if(coordonne[coY][coX-2]==1||coordonne[coY][coX-2]==2)	//Il y a une case couloir devant la case interception
-			{
-				coX--;
-				coX--;
-				return true;
-			}
-			if(coordonne[coY][coX-2]>2)
-			{
-				if(verifCle(coordonne[coY][coX-2])==true)
-				{
-					enterPiece();
-					coX--;
-					coX--;
-					return true;
-				} else return false;
-			}
-			if(coordonne[coY][coX-2]==0)	//Il n'y a pas de case marchable devant la case intersection
-			{
-				return false;
-			}			
-		}
-		return true;
-		break;				
-
-	default:
-		return false;
-		break;
-	}
-	return false;
-
-}
-
-bool Map::move180()
-{
-	switch (orientation)
-	{
-	case nord:
-		orientation=sud;
+	case north:
+		orientation=south;
 		return true;
 		break;
 
-	case est:
-		orientation=ouest;
+	case east:
+		orientation=west;
 		return true;
 		break;
 
-	case sud:
-		orientation=nord;
+	case south:
+		orientation=north;
 		return true;
-	case ouest:
-		orientation=est;
+	case west:
+		orientation=east;
 		return true;
 
 	default:
@@ -403,389 +198,6 @@ bool Map::move180()
 	return false;
 }
 
-bool Map::moveRight()
-{
-
-		switch (orientation)
-		{
-		case nord:
-
-			if(coordonne[coY-1][coX]==2)				//si il y a une piece
-			{
-				if(coX==(largeur-1))					//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}
-				if(verifCle(coordonne[coY-1][coX+1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY--;
-					coX++;
-					orientation = est;
-					return true;
-				} else return false;
-			} else if(coordonne[coY-1][coX]==3) 		//Arrive à une intersection
-				{
-					if(coX == largeur-1)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY-1][coX+1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY-1][coX+1]))	
-						{
-							enterPiece();
-							coY--;
-							coX++;
-							orientation = est;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY-1][coX+1]==1||coordonne[coY-1][coX+1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY--;
-						coX++;
-						orientation = est;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-
-		case sud:
-
-			if(coordonne[coY+1][coX]==2)				//si il y a une piece
-			{
-				if((coX)==0)							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY+1][coX-1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY++;
-					coX--;
-					orientation = ouest;
-					return true;
-				} else return false;
-			} else if(coordonne[coY+1][coX]==3) 		//Arrive à une intersection
-				{
-					if(coX == 0)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY+1][coX-1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY+1][coX-1]))	
-						{
-							enterPiece();
-							coY++;
-							coX--;
-							orientation = ouest;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY+1][coX-1]==1||coordonne[coY+1][coX-1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY++;
-						coX--;
-						orientation = ouest;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-
-		case est:
-
-			if(coordonne[coY][coX+1]==2)				//si il y a une piece
-			{
-				if(coY== (hauteur -1))							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY+1][coX+1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY++;
-					coX++;
-					orientation = sud;
-					return true;
-				} else return false;
-			} else if(coordonne[coY][coX+1]==3) 		//Arrive à une intersection
-				{
-					if(coY == hauteur-1)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY+1][coX+1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY+1][coX+1]))	
-						{
-							enterPiece();
-							coY++;
-							coX++;
-							orientation = sud;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY+1][coX+1]==1||coordonne[coY+1][coX+1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY++;
-						coX++;
-						orientation = sud;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-		
-		case ouest:
-
-			if(coordonne[coY][coX-1]==2)				//si il y a une piece
-			{
-				if(coY== 0)							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY-1][coX-1]))	//Verifie s'il peut rentrer
-				{
-					coY--;
-					coX--;
-					orientation = nord;
-					return true;
-				} else return false;
-			} else if(coordonne[coY][coX-1]==3) 		//Arrive à une intersection
-				{
-					if(coY == 0)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY-1][coX-1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si il peut rentrer
-					{
-						if(verifCle(coordonne[coY-1][coX-1]))	
-						{
-							coY--;
-							coX--;
-							orientation = nord;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY-1][coX-1]==1||coordonne[coY-1][coX-1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY--;
-						coX--;
-						orientation = nord;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-
-		default:
-		return false;
-			break;
-		}	
-
-	return false;
-}
-
-bool Map::moveLeft()
-{
-		switch (orientation)
-		{
-		case nord:
-
-			if(coordonne[coY-1][coX]==2)				//si il y a une piece
-			{
-				if(coX==0)					//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}
-				if(verifCle(coordonne[coY-1][coX-1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY--;
-					coX--;
-					orientation = ouest;
-					return true;
-				} else return false;
-			} else if(coordonne[coY-1][coX]==3) 		//Arrive à une intersection
-				{
-					if(coX == 0)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY-1][coX-1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY-1][coX-1]))	
-						{
-							enterPiece();
-							coY--;
-							coX--;
-							orientation = ouest;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY-1][coX-1]==1||coordonne[coY-1][coX-1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY--;
-						coX--;
-						orientation = ouest;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-
-		case sud:
-
-			if(coordonne[coY+1][coX]==2)				//si il y a une piece
-			{
-				if((coX)== largeur - 1)							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY+1][coX+1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY++;
-					coX++;
-					orientation = est;
-					return true;
-				} else return false;
-			} else if(coordonne[coY+1][coX]==3) 		//Arrive à une intersection
-				{
-					if(coX == largeur - 1)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY+1][coX+1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY+1][coX+1]))	
-						{
-							enterPiece();
-							coY++;
-							coX++;
-							orientation = est;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY+1][coX+1]==1||coordonne[coY+1][coX+1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY++;
-						coX++;
-						orientation = est;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-
-		case est:
-
-			if(coordonne[coY][coX+1]==2)				//si il y a une piece
-			{
-				if(coY== 0)							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY-1][coX+1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY--;
-					coX++;
-					orientation = nord;
-					return true;
-				} else return false;
-			} else if(coordonne[coY][coX+1]==3) 		//Arrive à une intersection
-				{
-					if(coY == 0)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY-1][coX+1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si iil peut rentrer
-					{
-						if(verifCle(coordonne[coY-1][coX+1]))	
-						{
-							enterPiece();
-							coY--;
-							coX++;
-							orientation = nord;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY-1][coX+1]==1||coordonne[coY-1][coX+1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY--;
-						coX++;
-						orientation = nord;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-		
-		case ouest:
-
-			if(coordonne[coY][coX-1]==2)				//si il y a une piece
-			{
-				if(coY== hauteur - 1)							//Verifie si l'intersection est sur le bord de la map
-				{
-					return false;
-				}				
-				if(verifCle(coordonne[coY+1][coX-1]))	//Verifie s'il peut rentrer
-				{
-					enterPiece();
-					coY++;
-					coX--;
-					orientation = sud;
-					return true;
-				} else return false;
-			} else if(coordonne[coY][coX-1]==3) 		//Arrive à une intersection
-				{
-					if(coY == hauteur - 1)				//Verifie si l'intersection est sur le bord de la map
-					{
-						return false;
-					}
-					if(coordonne[coY+1][coX-1]>3)		//Verifie si c'est une pièce à cote de l'intersection et verifie si il peut rentrer
-					{
-						if(verifCle(coordonne[coY+1][coX-1]))	
-						{
-							enterPiece();
-							coY++;
-							coX--;
-							orientation = sud;
-							return true;
-						} else return false;	
-					}
-					if(coordonne[coY+1][coX-1]==1||coordonne[coY+1][coX-1]==2)		//Verifie si c'est une case couloir à l'intersection
-					{
-						coY++;
-						coX--;
-						orientation = sud;
-						return true;
-					}
-
-				} else return false;
-
-			break;
-			
-
-		default:
-		return false;
-			break;
-		}	
-	
-	return false;
-}
 
 void Map::setOrientation(int SETorientation)
 {
@@ -803,24 +215,8 @@ void Map::updateMap()
 			cell[x][y].setImageCell(coordonne[x][y], NONE);
 		}
 	}
-	
-	std::cout<<"coordonne[coX][coY]"<<getCo_X()<<getCo_Y()<<std::endl;
-	cell[getCo_X()][getCo_Y()].setImageCell(cell[getCo_X()][getCo_Y()].getType(), orientation); //mettre l'orientation dans le bonhomme
+	std::cout << "orientation = " <<getOrientation() << std::endl;
+	cell[getCo_X()][getCo_Y()].setImageCell(cell[getCo_X()][getCo_Y()].getType(), getOrientation()); //mettre l'orientation dans le bonhomme
 	
 }
 
-/*Cell* Map::operator[](int index)
-{
-	return cell[index];
-}*/
-
-/*
-int main()
-{
-	Map map;
-	map.printMap();
-	map.setCoordonne(1,0);
-	map.setOrientation(est);
-	map.addCle(4);
-}
-*/
