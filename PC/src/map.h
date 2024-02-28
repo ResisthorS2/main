@@ -27,9 +27,8 @@ public:
 	void addCle(int index);			//Permet d'ajouter l'acces à une piece
 	void removeCle(int index);		//Permet d'enlever l'acces à une piece
 	bool verifCle(int index);		//Permet de vérifier si la pièce est accessible
-	void enterCell();				//Sert à mes fonction de mouvement et exitPiece
 	void updateMap();
-	Cell **cell;
+	Cell ***cell;
 	Player *playerInCell;
 	int largeur; //faire une fonction pour les gets
 	int hauteur; //faire une fonction pour le gets

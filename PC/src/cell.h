@@ -40,19 +40,21 @@ class Cell
         Cell(int type);
         virtual ~Cell();
         /** @brief retourne le type de la Cell @return int{vide = 0, couloir = 1, classe = 2,}*/
-        int getType();
+        int *getType();
         /** @brief retourne un int selon si la Cell est vérouillée @return 0 = UNLOCKED, 1 = LOCKED */
         void setType(int type);
         virtual void setImageCell(Cell *cell);
         std::string printCellTerminal(int line);
         void printCell();
-        Cell* enterCell();
         std::string imageCell[3][3];
         void setLocked(int locked);
-        int getLocked();
+        int *getLocked();
         void setCellAround(int orientation, Cell* cell);
         Cell *getCellAround(int orientation);
         void cpyEnterFrom(int *enterFrom);
+        Cell *enterCell();
+        int *getEnterFrom();
+
         
 
     private:

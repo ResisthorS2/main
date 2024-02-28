@@ -14,18 +14,15 @@ using namespace std;
 
 Cell::Cell()
 {
-
+    enterFrom = new int[2];
     this->type = VIDE;
+    locked = UNLOCKED;
     this->setImageCell(this);
-    cell_north = new Cell;
-    cell_south = new Cell;
-    cell_east = new Cell;
-    cell_west = new Cell;
     cell_north = NULL;
     cell_south = NULL;
     cell_east = NULL;
     cell_west = NULL;
-    locked = UNLOCKED;
+    enterFrom = NULL;
 }
 
 Cell::Cell(int type)
@@ -35,19 +32,17 @@ Cell::Cell(int type)
     cell_south = new Cell;
     cell_east = new Cell;
     cell_west = new Cell;
-    cell_north = NULL;
-    cell_south = NULL;
-    cell_east = NULL;
-    cell_west = NULL;
-    this->type = (type%10)*10;
     if(type > 10)
     {
+        this->type = (type-10);
         this->locked = LOCKED;
     }
     else
     {
+        this->type = type;
         this->locked = UNLOCKED;
     }
+
 
     if(this->type > 1)
     {
@@ -67,14 +62,20 @@ Cell::Cell(int type)
                 enterFrom[0] = 1; enterFrom[1] = 0;
                 break;
         }
-        this->setImageCell(this);
     }
+
+    this->setImageCell(this);
     
 }
 
 Cell::~Cell()
 {
-    //std::cout << "destruction d'une cellule" << std::endl;
+    std::cout << "destruction d'une cellule" << std::endl;
+    delete cell_north;
+    delete cell_south;
+    delete cell_east;
+    delete cell_west;
+    delete enterFrom;
 }
 
 
@@ -91,10 +92,9 @@ void Cell::setImageCell(Cell *cell)
     std::string CYAN   = "\x1b[36m";      /* Cyan */
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
-    std::string typeColor;
 
 
-    if(cell->getLocked() == LOCKED)
+    if(*cell->getLocked() == LOCKED)
     {
         typeColor = RED;
     }
@@ -123,11 +123,11 @@ void Cell::setImageCell(Cell *cell)
 }
 
 
-int Cell::getType()
+int *Cell::getType()
 {
     
-    std::cout << "type" << type << std::endl;
-    return this->type;
+    //std::cout << "type :" << this->type << std::endl;
+    return &this->type;
 }
 
 std::string Cell::printCellTerminal(int line)
@@ -141,7 +141,6 @@ std::string Cell::printCellTerminal(int line)
     }
     
     return os.str();
-
 }
 
 
@@ -175,23 +174,27 @@ void Cell::setCellAround(int orientation, Cell* cell)
     switch (orientation)
     {
         case north:
+            printf("North\n");
             this->cell_north = cell;
             break;
         case south:
+            printf("South\n");
             this->cell_south = cell;
             break;
         case east:
+            printf("East\n");
             this->cell_east = cell;
             break;
         case west:
+            printf("West\n");
             this->cell_west = cell;
             break;
     }
 }
 
-int Cell::getLocked()
+int *Cell::getLocked()
 {
-    return this->locked;
+    return &this->locked;
 }
 
 Cell* Cell::getCellAround(int orientation)
@@ -205,6 +208,7 @@ Cell* Cell::getCellAround(int orientation)
             return this->cell_south;
             break;
         case east:
+        printf("East\n");
             return this->cell_east;
             break;
         case west:
@@ -215,7 +219,33 @@ Cell* Cell::getCellAround(int orientation)
 
 void Cell::cpyEnterFrom(int *enterFrom)
 {
-    enterFrom[0] = this->enterFrom[0];
-    enterFrom[1] = this->enterFrom[1];
+    if(this->enterFrom != NULL)
+    {
+        enterFrom[0] = this->enterFrom[0];
+        enterFrom[1] = this->enterFrom[1];
+    }
+    
+    
 }
+
+Cell *Cell::enterCell()
+{
+    if(this->locked == UNLOCKED)
+    {   
+        printf("Unlocked\n");
+        return this;
+    }
+    else
+    {
+        printf("Locked\n");
+        return NULL;
+    }
+}
+
+int *Cell::getEnterFrom()
+{
+    return this->enterFrom;
+}
+
+
 
