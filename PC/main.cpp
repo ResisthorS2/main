@@ -84,22 +84,22 @@ int main(){
 
             if(j_msg_rcv["btn_180"] == "HIGH")
             {
-                map.playerInCell->move(DOWN);
+                map.activeCell->move(DOWN);
             }
 
             if(j_msg_rcv["btn_up"] == "HIGH")
             {
-                map.playerInCell->move(UP);
+                map.activeCell->move(UP);
             }
 
             if(j_msg_rcv["btn_left"] == "HIGH")
             {
-                map.playerInCell->move(LEFT);
+                map.activeCell->move(LEFT);
             }
 
             if(j_msg_rcv["btn_right"] == "HIGH")
             {
-                map.playerInCell->move(RIGHT);
+                map.activeCell->move(RIGHT);
             }
             
             map.printMap();
@@ -125,18 +125,18 @@ int main(){
             {
 
             case 'w':
-                map.playerInCell->move(UP);
+                map.activeCell->move(UP);
                 break;
             
             case 'a':
-                map.playerInCell->move(LEFT);
+                map.activeCell->move(LEFT);
                 break;
             
             case 's':
-                map.playerInCell->move(DOWN);
+                map.activeCell->move(DOWN);
                 break;
             case 'd':
-                map.playerInCell->move(RIGHT);
+                map.activeCell->move(RIGHT);
                 break;
             }
             map.updateMap();

@@ -3,19 +3,19 @@
 
 
 
-#include "player.h"
+#include "activeCell.h"
 
 
 #define move180
 
 
 
-Player::Player()
+ActiveCell::ActiveCell()
 {
     orientation = east;
 }
 
-Player::~Player()
+ActiveCell::~ActiveCell()
 {
     delete cell_north;
     delete cell_south;
@@ -24,12 +24,12 @@ Player::~Player()
     delete enterFrom;
 }
 
-int Player::getOrientation()
+int ActiveCell::getOrientation()
 {
     return orientation;
 }
 
-void Player::setImageCell(Player *cell)
+void ActiveCell::setImageCell(ActiveCell *cell)
 {
     std::string RESET  = "\x1b[0m";
     std::string BLACK  = "\x1b[30m";      /* Black */
@@ -95,7 +95,7 @@ void Player::setImageCell(Player *cell)
     }
 }
 
-void Player::cpyCell(Cell* cell)
+void ActiveCell::cpyCell(Cell* cell)
 {
     if (cell != nullptr) {
         this->type = cell->getType();
@@ -104,6 +104,23 @@ void Player::cpyCell(Cell* cell)
         this->cell_south = cell->getCellAround(south);
         this->cell_east = cell->getCellAround(east);
         this->cell_west = cell->getCellAround(west);
+        if(cell_north == NULL)
+        {
+            printf("cell_north = NULL\n");
+        }
+        if(cell_south == NULL)
+        {
+            printf("cell_south = NULL\n");
+        }
+        if(cell_east == NULL)
+        {
+            printf("cell_east = NULL\n");
+        }
+        if(cell_west == NULL)
+        {
+            printf("cell_west = NULL\n");
+        }
+
         this->enterFrom = cell->getEnterFrom();
         this->imageCell = new std::string**[3];
         for(int i = 0; i < 3; i++) {
@@ -117,7 +134,7 @@ void Player::cpyCell(Cell* cell)
 }
 
 
-void Player::move(int direction)
+void ActiveCell::move(int direction)
 {
     int directionPossible[] = {north, east, south, west};
     int index;
@@ -150,14 +167,21 @@ void Player::move(int direction)
         
         case UP:
         {
-            std::cout << "Action UP orientation : "<< this->getOrientation() << std::endl;
-            if(this->getCellAround(this->orientation) != NULL)  //s'il a une case à côté
+            /*std::cout << "Action UP orientation : "<< this->getOrientation() << std::endl;
+            if((this->getCellAround(east)) == NULL)
             {
-                std::cout << "cell around n'est pas null" << std::endl;
-                if(this->getCellAround(this->getOrientation())->enterCell() != NULL) //si nous n'avons pas la clé
+                printf("cell around est null\n");
+            }*/
+
+
+            if((this->getCellAround(this->orientation)) != NULL)  //s'il a une case à côté
+            {
+                //std::cout << "cell around n'est pas null" << std::endl;
+                if(((this->getCellAround((this->orientation)))->enterCell()) != NULL) //si nous n'avons pas la clé
                 {
-                    this->cpyCell(this->getCellAround(this->getOrientation())->enterCell());
-                    std::cout << "cell orientation = " << this->getCellAround(this->getOrientation()) << std::endl;
+                    Cell *cell = (this->getCellAround(this->orientation))->enterCell();
+                    this->cpyCell(cell);
+                    //std::cout << "cell orientation = " << this->getCellAround(this->getOrientation()) << std::endl;
                 }
             }
             break;;
@@ -185,9 +209,29 @@ void Player::move(int direction)
     this->setImageCell(this);
 }
 
-void Player::setOrientation(int orientation)
+void ActiveCell::setOrientation(int orientation)
 {
     this->orientation = orientation;
+}
+
+Cell *ActiveCell::getCellAround(int orientation)
+{
+    switch (orientation)
+    {
+        case north:
+            return cell_north;
+            break;
+        case south:
+            return cell_south;
+            break;
+        case east:
+            return cell_east;
+            break;
+        case west:
+            return cell_west;
+            break;
+    }
+    return NULL;
 }
 
 

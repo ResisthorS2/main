@@ -174,19 +174,31 @@ void Cell::setCellAround(int orientation, Cell* cell)
     switch (orientation)
     {
         case north:
-            printf("North\n");
+            if(cell != NULL)
+            {
+                printf("North\n");
+            }
             this->cell_north = cell;
             break;
         case south:
-            printf("South\n");
+            if(cell != NULL)
+            {
+                printf("South\n");
+            }
             this->cell_south = cell;
             break;
         case east:
-            printf("East\n");
+            if(cell != NULL)
+            {
+                printf("East\n");
+            }
             this->cell_east = cell;
             break;
         case west:
-            printf("West\n");
+            if(cell != NULL)
+            {
+                printf("West\n");
+            }
             this->cell_west = cell;
             break;
     }
@@ -208,7 +220,6 @@ Cell* Cell::getCellAround(int orientation)
             return this->cell_south;
             break;
         case east:
-        printf("East\n");
             return this->cell_east;
             break;
         case west:
@@ -232,12 +243,12 @@ Cell *Cell::enterCell()
 {
     if(this->locked == UNLOCKED)
     {   
-        printf("Unlocked\n");
+        //printf("Unlocked\n");
         return this;
     }
     else
     {
-        printf("Locked\n");
+        //printf("Locked\n");
         return NULL;
     }
 }

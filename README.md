@@ -18,5 +18,5 @@ Les cases:
 
 
 COMPILATION:
-g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\player.cpp   
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp   
 ./a.exe

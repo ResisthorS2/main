@@ -1,6 +1,6 @@
 
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef ACTIVECELL_H
+#define ACTIVECELL_H
 
 
 #include "cell.h"
@@ -14,16 +14,17 @@
 #define UP 2
 #define DOWN 3
 
-class Player : public Cell
+class ActiveCell : public Cell
 {
     public:
-        Player();
-        ~Player();
+        ActiveCell();
+        ~ActiveCell();
         int getOrientation();
         void setOrientation(int orientation);
-        void setImageCell(Player *cell);
+        void setImageCell(ActiveCell *cell);
         void move(int direction);
         void cpyCell(Cell* cell);
+        Cell *getCellAround(int orientation);
     private:
         Cell* cell_north;
         Cell* cell_south;

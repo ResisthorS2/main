@@ -10,7 +10,7 @@
 
 
 
-#include "player.h"
+#include "activeCell.h"
 
 
 
@@ -29,7 +29,7 @@ public:
 	bool verifCle(int index);		//Permet de vérifier si la pièce est accessible
 	void updateMap();
 	Cell ***cell;
-	Player *playerInCell;
+	ActiveCell *activeCell;
 	int largeur; //faire une fonction pour les gets
 	int hauteur; //faire une fonction pour le gets
 	//Cell* operator[](int index);

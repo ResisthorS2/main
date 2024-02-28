@@ -33,13 +33,13 @@ Map::Map()
 	//Ramasse la hauteur de la map dans le fichier map
 		hauteur = std::stoi(lecture);	
 
-	std::cout<< "Hauteur : " <<hauteur<<std::endl;
+	//std::cout<< "Hauteur : " <<hauteur<<std::endl;
 
 	std::getline(carte, lecture);
 
 		largeur = std::stoi(lecture);				//Ramasse la largeur de la map dans les fichiers
 	
-	std::cout<< "Largeur : " <<largeur<<std::endl;
+	//std::cout<< "Largeur : " <<largeur<<std::endl;
 
 	// Créer un tableau de pointeurs
 
@@ -83,26 +83,26 @@ Map::Map()
 				if(*cell[x][y]->getType()!=0)
 				{
 					if(*cell[x][y+1]->getType()>0)
-					{cell[x][y]->setCellAround(south, cell[x][y+1]);printf("MovePossible South\n");}
+					{cell[x][y]->setCellAround(south, cell[x][y+1]);/*printf("MovePossible South\n");*/}
 
 					else if(*cell[x][y+1]->getType()==0)
 					{cell[x][y]->setCellAround(south, NULL);}
 
 					if(*cell[x][y-1]->getType()>0)
-					{cell[x][y]->setCellAround(north, cell[x][y-1]);printf("MovePossible North\n");}
+					{cell[x][y]->setCellAround(north, cell[x][y-1]);/*printf("MovePossible North\n");*/}
 
 					else if(*cell[x][y-1]->getType()==0)
 					{cell[x][y]->setCellAround(north, NULL);}
 
 					if(*cell[x+1][y]->getType()>0)
-					{cell[x][y]->setCellAround(east, cell[x+1][y]);printf("MovePossible East\n");}
+					{cell[x][y]->setCellAround(east, cell[x+1][y]);/*printf("MovePossible East\n");*/}
 
 
 					else if(*cell[x+1][y]->getType()==0)
 					{cell[x][y]->setCellAround(east, NULL);}
 
 					if(*cell[x-1][y]->getType()>0)
-					{cell[x][y]->setCellAround(west, cell[x-1][y]);printf("MovePossible West\n");}
+					{cell[x][y]->setCellAround(west, cell[x-1][y]);/*printf("MovePossible West\n");*/}
 
 					else if(*cell[x-1][y]->getType()==0)
 					{cell[x][y]->setCellAround(west, NULL);}
@@ -118,14 +118,9 @@ Map::Map()
 		cle[i]=0;
 	}
 	
-	if(cell[1][1] == nullptr)
-	{
-		printf("cell[1][1] == NULL\n");
-	}
-	
-	
-	playerInCell = new Player();
-	playerInCell->cpyCell(cell[1][1]);
+		
+	activeCell = new ActiveCell();
+	activeCell->cpyCell(cell[1][1]);
 
 }
 
@@ -157,7 +152,7 @@ Map::~Map()
 
 void Map::printMap()
 {
-	//system("cls");
+	system("cls");
 	
 
 	
@@ -208,6 +203,6 @@ void Map::updateMap()
 			cell[x][y]->setImageCell(cell[x][y]);
 		}
 	}
-	playerInCell->setImageCell(playerInCell);
+	activeCell->setImageCell(activeCell);
 }
 
