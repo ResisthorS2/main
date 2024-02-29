@@ -66,23 +66,16 @@ Map::Map()
 		}
 	}
 
-	for(int y=0; y<hauteur; y++)					//Assigne le fichier de map au tableau coordonne
-	{
-		for(int x=0; x<largeur;x++)
-			{
-				std::cout<<coordonne[x][y];
-			}
-		std::cout<<std::endl;
-	}
+
 	
-	for(int x=0; x<largeur; x++)					//Assigne le fichier de map au tableau coordonne
+	for(int x=0; x<largeur; x++)	//Assigne les pointeurs des cases autour de chaque case
 	{
 		for(int y=0; y<hauteur;y++)
-			{	printf("type : %d\n", *cell[x][y]->getType());
+			{	printf("type : %d\n", *cell[x][y]->getType()); //Les print ici c'est pour le debug
 				if(*cell[x][y]->getType()!=0)
 				{	
 					
-					if(*cell[x][y+1]->getType()>0)
+					if(*cell[x][y+1]->getType()>0) //getType(0) == Case vide
 					{printf("1\n");cell[x][y]->setCellAround(south, cell[x][y+1]);printf("MovePossible South\n");}
 
 					else// if(*cell[x][y+1]->getType()==0)
@@ -121,10 +114,10 @@ Map::Map()
 	
 		
 	activeCell = new ActiveCell();
-	activeCell->cpyCell(cell[1][1]);
+	activeCell->cpyCell(cell[1][1]); //Ici je place le joueur dans la case 1,1
 
-	cell[2][1]->setKeyToUnlock(1);
-	cell[3][5]->setKeyToUnlock(2);
+	cell[2][1]->setKeyToUnlock(1); //Ici je dis que la case 2,1 a besoin de la cle 1 pour etre debloquee
+	cell[3][5]->setKeyToUnlock(2); //Ici je dis que la case 3,5 a besoin de la cle 2 pour etre debloquee
 }
 
 Map::~Map()
@@ -165,7 +158,7 @@ void Map::printMap()
 		{
 			for(int x=0;x<largeur;x++)
 			{
-				std::cout << cell[x][y]->printCellTerminal(i);
+				std::cout << cell[x][y]->printCellTerminal(i); //print de la première ligne des trois premières cases du haut et refait le processus 3 fois pour chaucune des 3 lignes
 			}
 			std::cout << std::endl;
 		}

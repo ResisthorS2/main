@@ -29,7 +29,7 @@ int ActiveCell::getOrientation()
     return orientation;
 }
 
-void ActiveCell::setImageCell(ActiveCell *cell)
+void ActiveCell::setImageCell(ActiveCell *cell) //Ici c'est un fonction surloadé. Elle est utilisé pour mettre à jour l'image de la cellule active
 {
     std::string RESET  = "\x1b[0m";
     std::string BLACK  = "\x1b[30m";      /* Black */
@@ -50,11 +50,11 @@ void ActiveCell::setImageCell(ActiveCell *cell)
         {
             
             case north:
-                *imageCell[0][1] = YELLOW+"^";
-                *imageCell[1][1] = YELLOW+"|";
+                *imageCell[0][1] = YELLOW+"^"; //Ici la fonction vient remplacer dans les case de l'image active le joueur pour qu'on puisse le voir
+                *imageCell[1][1] = YELLOW+"|";  //À chaque print de la map chaque case est reregardé pour les remettre normal si le joueur n'y est pas mais ça se fait dans printMap()
                 break;
             case south:
-                *imageCell[2][1] = YELLOW+"v";
+                *imageCell[2][1] = YELLOW+"v";  //Fait pas le saut, les x et y sont pas dans le sens normal
                 *imageCell[1][1] = YELLOW+"|";
                 break;
             case east:
@@ -69,7 +69,7 @@ void ActiveCell::setImageCell(ActiveCell *cell)
     }
 }
 
-void ActiveCell::cpyCell(Cell* cell)
+void ActiveCell::cpyCell(Cell* cell) //Ça vient pointer la cellule active sur la cellule de la map du joueur et pointer chaque argument
 {
     if (cell != nullptr) {
         this->type = cell->getType();
@@ -80,7 +80,7 @@ void ActiveCell::cpyCell(Cell* cell)
         this->cell_west = cell->getCellAround(west);
         if(cell_north == NULL)
         {
-            //printf("cell_north = NULL\n");
+            //printf("cell_north = NULL\n"); //Debug
         }
         if(cell_south == NULL)
         {
@@ -102,14 +102,14 @@ void ActiveCell::cpyCell(Cell* cell)
                 this->imageCell[i][j] = &cell->imageCell[i][j];
             }
         }
-        this->setImageCell(this);
+        this->setImageCell(this); // remet l'image de la cellule active à jour
     }
 }
 
 
 void ActiveCell::move(int direction)
 {
-    int directionPossible[] = {north, east, south, west};
+    int directionPossible[] = {north, east, south, west}; // ici c'est pour pas faire des switchs cases pour tourner à droite ou à gauche J'ai mis un XXX ou que c'est utilisé
     int index;
 
 
@@ -127,7 +127,7 @@ void ActiveCell::move(int direction)
             index--;
             if(index < 0)
                 index = 3;
-            this->orientation = directionPossible[index];
+            this->orientation = directionPossible[index]; //XXX
             break;
         
         
@@ -135,13 +135,12 @@ void ActiveCell::move(int direction)
             this->orientation = index++;
             if(index > 3)
                 index = 0;
-            this->orientation = directionPossible[index];
+            this->orientation = directionPossible[index]; //XXX
             break;
         
         
         case UP:
         {
-            //std::cout << "type: " << *type << std::endl;
             if(*this->type > 1)
             {
                 
@@ -150,14 +149,13 @@ void ActiveCell::move(int direction)
                     return;
                 }
             }
-            if((this->getCellAround(this->orientation)) != NULL)  //s'il a une case à côté
+            if((this->getCellAround(this->orientation)) != NULL)  //s'il existe une case à côté
             {
-                //std::cout << "cell around n'est pas null" << std::endl;
-                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation, this->keys)) != NULL) //si nous n'avons pas la clé
+                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
                 {
                     Cell *cell = (this->getCellAround(this->orientation))->enterCell(this->orientation, this->keys);
-                    this->cpyCell(cell);
-                    //std::cout << "cell orientation = " << this->getCellAround(this->getOrientation()) << std::endl;
+                    this->cpyCell(cell); // vient changer la case de la cellule active
+;
                 }
             }
             break;;
@@ -165,7 +163,12 @@ void ActiveCell::move(int direction)
 
 
         case DOWN:
-            switch (this->getOrientation())
+            
+            int inverseOrientation[] = {south, north, west, east};
+            this->setOrientation(inverseOrientation[this->getOrientation()]);
+
+            //Au lieu de 
+            /*switch (this->getOrientation())
             {
                 case north:
                     this->setOrientation(south);
@@ -180,7 +183,7 @@ void ActiveCell::move(int direction)
                     this->setOrientation(east);
                     break;
             }
-            break;
+            break;*/
     }
     this->setImageCell(this);
 }
@@ -192,6 +195,7 @@ void ActiveCell::setOrientation(int orientation)
 
 Cell *ActiveCell::getCellAround(int orientation)
 {
+    
     switch (orientation)
     {
         case north:
