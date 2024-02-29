@@ -42,40 +42,13 @@ void ActiveCell::setImageCell(ActiveCell *cell)
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
-    typeColor = WHITE;
-    if(*locked == LOCKED)
-    {
-        typeColor = RED;
-    }
-    else if(*type != COULOIR)
-    {
-        typeColor = GREEN;
-    }
-    
-    for(int i=0; i<3; i++)
-    {
-        for(int y=0; y<3; y++)
-            {
-                if(this->type == VIDE)
-                {
-                    *imageCell[i][y] = " ";
-                }
-                else
-                {
-                    *imageCell[i][y] = typeColor+"X";
-                    //std::cout << "imageCell[i][y] : " << imageCell[i][y] << RESET << std::endl;
-                }
-            }
-    }
-
     if(orientation != NONE)
     {   
-        printf("orientation : %d\n", orientation);
+        //printf("orientation : %d\n", orientation);
         switch (orientation)
         {
             
             case north:
-                printf("north\n");
                 *imageCell[0][1] = YELLOW+"^";
                 *imageCell[1][1] = YELLOW+"|";
                 break;
@@ -106,19 +79,19 @@ void ActiveCell::cpyCell(Cell* cell)
         this->cell_west = cell->getCellAround(west);
         if(cell_north == NULL)
         {
-            printf("cell_north = NULL\n");
+            //printf("cell_north = NULL\n");
         }
         if(cell_south == NULL)
         {
-            printf("cell_south = NULL\n");
+            //printf("cell_south = NULL\n");
         }
         if(cell_east == NULL)
         {
-            printf("cell_east = NULL\n");
+            //printf("cell_east = NULL\n");
         }
         if(cell_west == NULL)
         {
-            printf("cell_west = NULL\n");
+            //printf("cell_west = NULL\n");
         }
 
         this->imageCell = new std::string**[3];
@@ -167,7 +140,7 @@ void ActiveCell::move(int direction)
         
         case UP:
         {
-            std::cout << "type: " << *type << std::endl;
+            //std::cout << "type: " << *type << std::endl;
             if(*this->type > 1)
             {
                 

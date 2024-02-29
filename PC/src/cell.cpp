@@ -50,7 +50,7 @@ Cell::Cell(int type)
 
 Cell::~Cell()
 {
-    std::cout << "destruction d'une cellule" << std::endl;
+    //std::cout << "destruction d'une cellule" << std::endl;
     delete cell_north;
     delete cell_south;
     delete cell_east;
@@ -101,7 +101,7 @@ void Cell::setImageCell(Cell *cell)
     {
         int x_door[] = {0, 2, 1, 1};
         int y_door[] = {1, 1, 2, 0};
-        // n
+
 
         imageCell[x_door[type-2]][y_door[type-2]] = BLUE+"X";
     }
@@ -155,34 +155,34 @@ void Cell::setLocked(int locked)
 
 void Cell::setCellAround(int orientation, Cell* cell)
 {
-    printf("orientation : %d\n", orientation);
+    //printf("orientation : %d\n", orientation);
     switch (orientation)
     {   
         case north:
             if(cell != NULL)
             {
-                printf("North\n");
+                //printf("North\n");
             }
             this->cell_north = cell;
             break;
         case south:
             if(cell != NULL)
             {
-                printf("South\n");
+                //printf("South\n");
             }
             this->cell_south = cell;
             break;
         case east:
             if(cell != NULL)
             {
-                printf("East\n");
+                //printf("East\n");
             }
             this->cell_east = cell;
             break;
         case west:
             if(cell != NULL)
             {
-                printf("West\n");
+                //printf("West\n");
             }
             this->cell_west = cell;
             break;
@@ -230,7 +230,7 @@ Cell *Cell::enterCell(int orientation, int key[1])
     
     if(this->locked == UNLOCKED)
     {   
-        printf("Unlocked\n");
+        //printf("Unlocked\n");
         std::cout << "type : " << orientation << std::endl;
         if(inverseOrientation[orientation] == (this->type-2))
         {
@@ -241,10 +241,10 @@ Cell *Cell::enterCell(int orientation, int key[1])
     }
     else
     {
-        std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
+        //std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
         if(key[0] == keyToUnlock)
         {
-            std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
+            //std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
             if(inverseOrientation[orientation] == (this->type-2))
             {
                 this->locked = UNLOCKED;

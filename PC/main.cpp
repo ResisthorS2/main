@@ -115,11 +115,13 @@ int main(){
 
         while(true)
         {
+            
             map.printMap();
+            
             char input;
             
-            std::cin>>input;
-            std::cout<< "input "<<input<<std::endl;
+            scanf("%c", &input);
+            //std::cout<< "input "<<input<<std::endl;
             
             switch (input)
             {
@@ -138,20 +140,11 @@ int main(){
             case 'd':
                 map.activeCell->move(RIGHT);
                 break;
-            }
-            map.updateMap();
-        }
-        
-        /*
-        for(int y=0; y<map.hauteur; y++)
-        {
-            for(int i=0; i<map.largeur; i++)
-            {
-                std::cout << "Cellule [" << i << "][" << y << "] : " << std::endl;
                 
-                std::cout << "XXX" <<std::endl;
+                
+            map.updateMap();
             }
-        }*/
+        }
     }
 
     return 0;
