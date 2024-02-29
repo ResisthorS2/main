@@ -31,6 +31,7 @@ Cell::Cell(int type)
     cell_south = new Cell;
     cell_east = new Cell;
     cell_west = new Cell;
+
     if(type > 10)
     {
         this->type = (type-10);
@@ -213,7 +214,7 @@ Cell* Cell::getCellAround(int orientation)
 }
 
 
-Cell *Cell::enterCell(int orientation)
+Cell *Cell::enterCell(int orientation, int key[1])
 {
     int inverseOrientation[] = {south, north, west, east};
 
@@ -221,6 +222,11 @@ Cell *Cell::enterCell(int orientation)
     south;
     east;
     west;
+    
+    if(type == COULOIR)
+    {
+        return this;
+    }
     
     if(this->locked == UNLOCKED)
     {   
@@ -230,18 +236,36 @@ Cell *Cell::enterCell(int orientation)
         {
             return this;
         }
-        else if(type == COULOIR)
-        {
-            return this;
-        }
         return NULL;
         
     }
     else
     {
-        //printf("Locked\n");
-        return NULL;
+        std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
+        if(key[0] == keyToUnlock)
+        {
+            std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
+            if(inverseOrientation[orientation] == (this->type-2))
+            {
+                this->locked = UNLOCKED;
+                return this;
+            }
+            else{return NULL;}
+
+        }
+
     }
+    return NULL;
+}
+
+void Cell::setKeyToUnlock(int keyToUnlock)
+{
+    this->keyToUnlock = keyToUnlock;
+}
+
+int Cell::getKeyToUnlock()
+{
+    return this->keyToUnlock;
 }
 
 

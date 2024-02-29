@@ -13,6 +13,7 @@
 ActiveCell::ActiveCell()
 {
     orientation = east;
+
 }
 
 ActiveCell::~ActiveCell()
@@ -178,9 +179,9 @@ void ActiveCell::move(int direction)
             if((this->getCellAround(this->orientation)) != NULL)  //s'il a une case à côté
             {
                 //std::cout << "cell around n'est pas null" << std::endl;
-                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation)) != NULL) //si nous n'avons pas la clé
+                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation, this->keys)) != NULL) //si nous n'avons pas la clé
                 {
-                    Cell *cell = (this->getCellAround(this->orientation))->enterCell(this->orientation);
+                    Cell *cell = (this->getCellAround(this->orientation))->enterCell(this->orientation, this->keys);
                     this->cpyCell(cell);
                     //std::cout << "cell orientation = " << this->getCellAround(this->getOrientation()) << std::endl;
                 }
@@ -233,6 +234,11 @@ Cell *ActiveCell::getCellAround(int orientation)
             break;
     }
     return NULL;
+}
+
+int ActiveCell::getKey()
+{
+    return keys[0];
 }
 
 

@@ -25,6 +25,7 @@ class ActiveCell : public Cell
         void move(int direction);
         void cpyCell(Cell* cell);
         Cell *getCellAround(int orientation);
+        int getKey();
     private:
         Cell* cell_north;
         Cell* cell_south;
@@ -34,6 +35,9 @@ class ActiveCell : public Cell
         int *type;
         int *locked;
         std::string ***imageCell;
+        int keys[1] = {1};
+        
+        
         
 };
 #endif

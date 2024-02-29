@@ -123,6 +123,8 @@ Map::Map()
 	activeCell = new ActiveCell();
 	activeCell->cpyCell(cell[1][1]);
 
+	cell[2][1]->setKeyToUnlock(1);
+	cell[3][5]->setKeyToUnlock(2);
 }
 
 Map::~Map()

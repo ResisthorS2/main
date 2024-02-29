@@ -52,8 +52,10 @@ class Cell
         void setCellAround(int orientation, Cell* cell);
         Cell *getCellAround(int orientation);
         void cpyEnterFrom(int *enterFrom);
-        Cell *enterCell(int orientation);
+        Cell *enterCell(int orientation, int key[maxRoom]);
         int *getEnterFrom();
+        void setKeyToUnlock(int keyToUnlock);
+        int getKeyToUnlock();
 
         
 
