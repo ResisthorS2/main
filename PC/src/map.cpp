@@ -57,55 +57,56 @@ Map::Map()
 		coordonne[i] = new int[largeur];
 	}
 	
+	for(int y=0; y<hauteur; y++) {
+		for(int x=0; x<largeur; x++) {
+			std::getline(carte, lecture, x == largeur - 1 ? '\n' : ' ');
+			coordonne[x][y] = std::stoi(lecture);
+			int type = std::stoi(lecture);
+			cell[x][y] = new Cell(type);
+		}
+	}
+
 	for(int y=0; y<hauteur; y++)					//Assigne le fichier de map au tableau coordonne
 	{
 		for(int x=0; x<largeur;x++)
 			{
-				if(x==largeur-1)
-				{
-					std::getline(carte, lecture);
-				}
-				
-				else if(x<largeur-1)
-				{ 
-					std::getline(carte, lecture, '\t');
-				}
-				coordonne[x][y] = std::stoi(lecture);
-				int type = std::stoi(lecture);
-				cell[x][y] = new Cell(type);
+				std::cout<<coordonne[x][y];
 			}
+		std::cout<<std::endl;
 	}
 	
 	for(int x=0; x<largeur; x++)					//Assigne le fichier de map au tableau coordonne
 	{
 		for(int y=0; y<hauteur;y++)
-			{
+			{	printf("type : %d\n", *cell[x][y]->getType());
 				if(*cell[x][y]->getType()!=0)
-				{
+				{	
+					
 					if(*cell[x][y+1]->getType()>0)
-					{cell[x][y]->setCellAround(south, cell[x][y+1]);/*printf("MovePossible South\n");*/}
+					{printf("1\n");cell[x][y]->setCellAround(south, cell[x][y+1]);printf("MovePossible South\n");}
 
-					else if(*cell[x][y+1]->getType()==0)
-					{cell[x][y]->setCellAround(south, NULL);}
+					else// if(*cell[x][y+1]->getType()==0)
+					{printf("2\n");cell[x][y]->setCellAround(south, NULL);}
+					
 
 					if(*cell[x][y-1]->getType()>0)
-					{cell[x][y]->setCellAround(north, cell[x][y-1]);/*printf("MovePossible North\n");*/}
+					{printf("3\n");cell[x][y]->setCellAround(north, cell[x][y-1]);printf("MovePossible North\n");}
 
-					else if(*cell[x][y-1]->getType()==0)
-					{cell[x][y]->setCellAround(north, NULL);}
+					else// if(*cell[x][y-1]->getType()==0)
+					{printf("4\n");cell[x][y]->setCellAround(north, NULL);}
 
 					if(*cell[x+1][y]->getType()>0)
-					{cell[x][y]->setCellAround(east, cell[x+1][y]);/*printf("MovePossible East\n");*/}
+					{printf("5\n");cell[x][y]->setCellAround(east, cell[x+1][y]);printf("MovePossible East\n");}
 
 
-					else if(*cell[x+1][y]->getType()==0)
-					{cell[x][y]->setCellAround(east, NULL);}
+					else// if(*cell[x+1][y]->getType()==0)
+					{printf("6\n");cell[x][y]->setCellAround(east, NULL);}
 
 					if(*cell[x-1][y]->getType()>0)
-					{cell[x][y]->setCellAround(west, cell[x-1][y]);/*printf("MovePossible West\n");*/}
+					{printf("7\n");cell[x][y]->setCellAround(west, cell[x-1][y]);printf("MovePossible West\n");}
 
-					else if(*cell[x-1][y]->getType()==0)
-					{cell[x][y]->setCellAround(west, NULL);}
+					else// if(*cell[x-1][y]->getType()==0)
+					{printf("8\n");cell[x][y]->setCellAround(west, NULL);}
 
 				}
 			}

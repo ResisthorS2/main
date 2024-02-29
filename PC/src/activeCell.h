@@ -33,7 +33,6 @@ class ActiveCell : public Cell
         int orientation; /** @brief  north=0, south=1, east=2, west=3 */
         int *type;
         int *locked;
-        int *enterFrom;
         std::string ***imageCell;
         
 };

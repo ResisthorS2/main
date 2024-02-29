@@ -14,7 +14,7 @@ using namespace std;
 
 Cell::Cell()
 {
-    enterFrom = new int[2];
+
     this->type = VIDE;
     locked = UNLOCKED;
     this->setImageCell(this);
@@ -22,7 +22,6 @@ Cell::Cell()
     cell_south = NULL;
     cell_east = NULL;
     cell_west = NULL;
-    enterFrom = NULL;
 }
 
 Cell::Cell(int type)
@@ -44,26 +43,6 @@ Cell::Cell(int type)
     }
 
 
-    if(this->type > 1)
-    {
-        enterFrom = new int[2];
-        switch(this->type)
-        {
-            case DOORNORTH:
-                enterFrom[0] = 0; enterFrom[1] = 1;
-                break;
-            case DOORSOUTH:
-                enterFrom[0] = 2; enterFrom[1] = 1;
-                break;
-            case DOOREAST:
-                enterFrom[0] = 1; enterFrom[1] = 2;
-                break;
-            case DOORWEST:
-                enterFrom[0] = 1; enterFrom[1] = 0;
-                break;
-        }
-    }
-
     this->setImageCell(this);
     
 }
@@ -75,7 +54,6 @@ Cell::~Cell()
     delete cell_south;
     delete cell_east;
     delete cell_west;
-    delete enterFrom;
 }
 
 
@@ -93,12 +71,12 @@ void Cell::setImageCell(Cell *cell)
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
-
+    typeColor = WHITE;
     if(*cell->getLocked() == LOCKED)
     {
         typeColor = RED;
     }
-    else
+    else if(type != COULOIR)
     {
         typeColor = GREEN;
     }
@@ -113,19 +91,24 @@ void Cell::setImageCell(Cell *cell)
                 }
                 else
                 {
-                    imageCell[i][y] = typeColor+"X";
-                    //std::cout << "imageCell[i][y] : " << imageCell[i][y] << RESET << std::endl;
+                    imageCell[i][y] = typeColor+"0";
                 }
             }
     }
 
-    //printCell();
+    if(type > 1)
+    {
+        int x_door[] = {0, 2, 1, 1};
+        int y_door[] = {1, 1, 2, 0};
+        // n
+
+        imageCell[x_door[type-2]][y_door[type-2]] = BLUE+"X";
+    }
 }
 
 
 int *Cell::getType()
-{
-    
+{   
     //std::cout << "type :" << this->type << std::endl;
     return &this->type;
 }
@@ -171,8 +154,9 @@ void Cell::setLocked(int locked)
 
 void Cell::setCellAround(int orientation, Cell* cell)
 {
+    printf("orientation : %d\n", orientation);
     switch (orientation)
-    {
+    {   
         case north:
             if(cell != NULL)
             {
@@ -228,23 +212,30 @@ Cell* Cell::getCellAround(int orientation)
     }
 }
 
-void Cell::cpyEnterFrom(int *enterFrom)
-{
-    if(this->enterFrom != NULL)
-    {
-        enterFrom[0] = this->enterFrom[0];
-        enterFrom[1] = this->enterFrom[1];
-    }
-    
-    
-}
 
-Cell *Cell::enterCell()
+Cell *Cell::enterCell(int orientation)
 {
+    int inverseOrientation[] = {south, north, west, east};
+
+    north;
+    south;
+    east;
+    west;
+    
     if(this->locked == UNLOCKED)
     {   
-        //printf("Unlocked\n");
-        return this;
+        printf("Unlocked\n");
+        std::cout << "type : " << orientation << std::endl;
+        if(inverseOrientation[orientation] == (this->type-2))
+        {
+            return this;
+        }
+        else if(type == COULOIR)
+        {
+            return this;
+        }
+        return NULL;
+        
     }
     else
     {
@@ -253,10 +244,6 @@ Cell *Cell::enterCell()
     }
 }
 
-int *Cell::getEnterFrom()
-{
-    return this->enterFrom;
-}
 
 
 

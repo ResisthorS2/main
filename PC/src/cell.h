@@ -26,7 +26,7 @@ const int north=0;
 const int south=1;
 const int east=2;
 const int west=3;
-const int maxRoom=20;
+const int maxRoom=50;
 
 
 
@@ -52,7 +52,7 @@ class Cell
         void setCellAround(int orientation, Cell* cell);
         Cell *getCellAround(int orientation);
         void cpyEnterFrom(int *enterFrom);
-        Cell *enterCell();
+        Cell *enterCell(int orientation);
         int *getEnterFrom();
 
         
@@ -63,7 +63,6 @@ class Cell
         Cell* cell_south;
         Cell* cell_east;
         Cell* cell_west;
-        int *enterFrom; /** @brief Tu peux entrer quand tu proviens de ____ NONE=-1, north=0, south=1, east=2, west=3 */
         int locked; /** @brief 0 = UNLOCKED, 1 = LOCKED */
         int keyToUnlock;
         //Minigame minigame[];

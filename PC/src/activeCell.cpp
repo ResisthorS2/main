@@ -21,7 +21,6 @@ ActiveCell::~ActiveCell()
     delete cell_south;
     delete cell_east;
     delete cell_west;
-    delete enterFrom;
 }
 
 int ActiveCell::getOrientation()
@@ -42,12 +41,12 @@ void ActiveCell::setImageCell(ActiveCell *cell)
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
-
-    if(*cell->getLocked() == LOCKED)
+    typeColor = WHITE;
+    if(*locked == LOCKED)
     {
         typeColor = RED;
     }
-    else
+    else if(*type != COULOIR)
     {
         typeColor = GREEN;
     }
@@ -121,7 +120,6 @@ void ActiveCell::cpyCell(Cell* cell)
             printf("cell_west = NULL\n");
         }
 
-        this->enterFrom = cell->getEnterFrom();
         this->imageCell = new std::string**[3];
         for(int i = 0; i < 3; i++) {
             this->imageCell[i] = new std::string*[3];
@@ -138,6 +136,7 @@ void ActiveCell::move(int direction)
 {
     int directionPossible[] = {north, east, south, west};
     int index;
+
 
     for(int i=0; i<4; i++)
     {
@@ -167,19 +166,21 @@ void ActiveCell::move(int direction)
         
         case UP:
         {
-            /*std::cout << "Action UP orientation : "<< this->getOrientation() << std::endl;
-            if((this->getCellAround(east)) == NULL)
+            std::cout << "type: " << *type << std::endl;
+            if(*this->type > 1)
             {
-                printf("cell around est null\n");
-            }*/
-
-
+                
+                if(orientation != (*this->type-2))
+                {
+                    return;
+                }
+            }
             if((this->getCellAround(this->orientation)) != NULL)  //s'il a une case à côté
             {
                 //std::cout << "cell around n'est pas null" << std::endl;
-                if(((this->getCellAround((this->orientation)))->enterCell()) != NULL) //si nous n'avons pas la clé
+                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation)) != NULL) //si nous n'avons pas la clé
                 {
-                    Cell *cell = (this->getCellAround(this->orientation))->enterCell();
+                    Cell *cell = (this->getCellAround(this->orientation))->enterCell(this->orientation);
                     this->cpyCell(cell);
                     //std::cout << "cell orientation = " << this->getCellAround(this->getOrientation()) << std::endl;
                 }
