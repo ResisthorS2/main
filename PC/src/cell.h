@@ -130,8 +130,10 @@ class Cell
          * @return La clé pour déverrouiller la cellule
          */
         int getKeyToUnlock();
+        std::string imageCell[3][3]; ///< Image de la cellule active : std::string*[3][3]
 
     private:
+        
         int type; // Type de la cellule : int{VIDE=0, COULOIR=1, DOORNORTH=2, DOORSOUTH=3, DOOREAST=4, DOORWEST=5}
         Cell* cell_north; // Cellule voisine au nord
         Cell* cell_south; // Cellule voisine au sud
