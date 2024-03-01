@@ -50,7 +50,7 @@ Cell::Cell(int type)
 
 Cell::~Cell()
 {
-    std::cout << "destruction d'une cellule" << std::endl;
+    //std::cout << "destruction d'une cellule" << std::endl;
     delete cell_north;
     delete cell_south;
     delete cell_east;
