@@ -13,6 +13,13 @@
 ActiveCell::ActiveCell()
 {
     orientation = east;
+    this->imageCell = new std::string**[3];
+    for(int i = 0; i < 3; i++) {
+        this->imageCell[i] = new std::string*[3];
+        for(int j = 0; j < 3; j++) {
+            this->imageCell[i][j] = NULL;
+        }
+    }
 
 }
 
@@ -22,6 +29,18 @@ ActiveCell::~ActiveCell()
     delete cell_south;
     delete cell_east;
     delete cell_west;
+
+    // Libération de la mémoire allouée pour imageCell
+    for (int i = 0; i < 3; ++i) {
+        // Libération de la mémoire allouée pour chaque tableau de pointeurs
+        for (int j = 0; j < 3; ++j) {
+            delete[] imageCell[i][j];
+        }
+        // Libération de la mémoire allouée pour chaque tableau principal de pointeurs
+        delete[] imageCell[i];
+    }
+    // Libération de la mémoire allouée pour le tableau principal de pointeurs
+    delete[] imageCell;
 }
 
 int ActiveCell::getOrientation()
@@ -95,9 +114,7 @@ void ActiveCell::cpyCell(Cell* cell) //Ça vient pointer la cellule active sur l
             //printf("cell_west = NULL\n");
         }
 
-        this->imageCell = new std::string**[3];
         for(int i = 0; i < 3; i++) {
-            this->imageCell[i] = new std::string*[3];
             for(int j = 0; j < 3; j++) {
                 this->imageCell[i][j] = &cell->imageCell[i][j];
             }
