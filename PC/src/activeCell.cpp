@@ -25,6 +25,7 @@ ActiveCell::ActiveCell()
 
 ActiveCell::~ActiveCell()
 {
+    printf("delete activeCell\n");
     delete cell_north;
     delete cell_south;
     delete cell_east;

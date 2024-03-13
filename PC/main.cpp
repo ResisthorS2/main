@@ -115,12 +115,11 @@ int main(){
 
         while(true)
         {
-            
+            map.updateMap();
             map.printMap();
-            
             char input;
-            
-            scanf("%c", &input);
+
+            std::cin >> input;
             //std::cout<< "input "<<input<<std::endl;
             
             switch (input)
@@ -142,7 +141,7 @@ int main(){
                 break;
                 
                 
-            map.updateMap();
+
             }
         }
     }

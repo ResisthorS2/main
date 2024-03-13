@@ -77,6 +77,7 @@ Map::Map()
 					
 					if(*cell[x][y+1]->getType()>0) //getType(0) == Case vide
 					{printf("1\n");cell[x][y]->setCellAround(south, cell[x][y+1]);printf("MovePossible South\n");}
+					
 
 					else// if(*cell[x][y+1]->getType()==0)
 					{cell[x][y]->setCellAround(south, NULL);}
@@ -105,7 +106,7 @@ Map::Map()
 			}
 	}
 
-
+	
 
 	for(int i=0;i<maxRoom;i++)
 	{	
@@ -115,9 +116,10 @@ Map::Map()
 		
 	activeCell = new ActiveCell();
 	activeCell->cpyCell(cell[1][1]); //Ici je place le joueur dans la case 1,1
-
+	
 	cell[2][1]->setKeyToUnlock(1); //Ici je dis que la case 2,1 a besoin de la cle 1 pour etre debloquee
 	cell[3][5]->setKeyToUnlock(2); //Ici je dis que la case 3,5 a besoin de la cle 2 pour etre debloquee
+
 }
 
 Map::~Map()
