@@ -14,15 +14,6 @@ ActiveCell::ActiveCell()
 {
     orientation = west;
 
-    // Initialize imageCell as a 3x3 array of null pointers
-    /*this->imageCell = new std::string**[3];
-    for(int i = 0; i < 3; i++) {
-        this->imageCell[i] = new std::string*[3];
-        for(int j = 0; j < 3; j++) {
-            this->imageCell[i][j] = NULL;
-        }
-    }*/
-
     cell_north = nullptr;
     cell_south = nullptr;
     cell_east = nullptr;
@@ -38,13 +29,6 @@ ActiveCell::~ActiveCell()
     if(cell_west != nullptr){delete cell_west;}
     printf("delete activeCell\n");
 
-    /*for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-            delete this->imageCell[i][j];
-        }
-        delete this->imageCell[i];
-    }
-    delete this->imageCell;*/
 }
 
 int ActiveCell::getOrientation()
@@ -145,52 +129,45 @@ void ActiveCell::move(int direction)
             break;
         
         
-        case UP:
-        {
-            if(*this->type > 1)
-            {
-                
-                if(orientation != (*this->type-2))
-                {
-                    return;
-                }
-            }
-            if((this->getCellAround(this->orientation)) != NULL)  //s'il existe une case à côté
-            {
-                if(((this->getCellAround((this->orientation)))->enterCell(this->orientation, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
-                {
-                    Cell *cell = (this->getCellAround(this->orientation))->enterCell(this->orientation, this->keys);
-                    this->cpyCell(cell); // vient changer la case de la cellule active
-;
-                }
-            }
-            break;;
-        }
-
 
         case DOWN:
             
             int inverseOrientation[] = {south, north, west, east};
             this->setOrientation(inverseOrientation[this->getOrientation()]);
-
-            //Au lieu de 
-            /*switch (this->getOrientation())
-            {
-                case north:
-                    this->setOrientation(south);
-                    break;
-                case south:
-                    this->setOrientation(north);
-                    break;
-                case east:
-                    this->setOrientation(west);
-                    break;
-                case west:
-                    this->setOrientation(east);
-                    break;
-            }
-            break;*/
+            return;
     }
+
+
+    if(*this->type > 1 && *this->type != 6)
+    {
+        
+        if(orientation != (*this->type-2)) //TODO
+        {
+            return;
+        }
+    }
+
+    if((this->getCellAround(this->orientation)) != NULL)  //s'il existe une case à côté
+    {
+        if(*(this->getCellAround((this->orientation))->getType()) != 6)
+        {
+            if(((this->getCellAround((this->orientation)))->enterCell(&this->orientation, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
+                    {
+                        Cell *cell = (this->getCellAround(this->orientation))->enterCell(&this->orientation, this->keys);
+                        this->cpyCell(cell); // vient changer la case de la cellule active
+                    }
+        }
+        else
+        {
+            printf("ici\n");
+            Cell *cell = (this->getCellAround(this->orientation))->enterCell(&this->orientation, this->keys);
+            
+            
+            this->cpyCell(cell); // vient changer la case de la cellule active
+        }
+        
+    }
+
     this->setImageCell(this);
 }
 

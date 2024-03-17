@@ -82,9 +82,14 @@ void Cell::setImageCell(Cell *cell)
     {
         typeColor = RED;
     }
-    else if(type != COULOIR)
+    else if(type != COULOIR && type != INTERSECTION)
     {
         typeColor = GREEN;
+    }
+
+    if(type == INTERSECTION)
+    {
+        typeColor = MAGENTA;
     }
 
     for(int i=0; i<3; i++)
@@ -102,7 +107,7 @@ void Cell::setImageCell(Cell *cell)
             }
     }
 
-    if(type > 1)
+    if(type > 1 && type != 6)
     {
         int x_door[] = {0, 2, 1, 1}; //ici c'est pour les portes c'est les coordonnées pour la lignes 107. l'ordre des listes est [Porte Nord, Porte Sud, Porte Est, Porte Ouest]
         int y_door[] = {1, 1, 2, 0}; // même chose ici mais pour la coordonnée de la pour en y
@@ -190,7 +195,7 @@ Cell* Cell::getCellAround(int orientation)
 }
 
 
-Cell *Cell::enterCell(int orientation, int key[1]) //Fonction super importante.
+Cell *Cell::enterCell(int *orientation, int key[1], int direction) //Fonction super importante.
 {
     int inverseOrientation[] = {south, north, west, east}; //tableau pour regarder l'orientation inverse du joueur. Exemple: si le joueur est orienté vers le nord, inverseOrientation[north] = south
     
@@ -201,7 +206,7 @@ Cell *Cell::enterCell(int orientation, int key[1]) //Fonction super importante.
     
     if(this->locked == UNLOCKED)
     {   
-        if(inverseOrientation[orientation] == (this->type-2)) //Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
+        if(inverseOrientation[*orientation] == (this->type-2)) //Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
         {
             return this;
         }
@@ -212,7 +217,7 @@ Cell *Cell::enterCell(int orientation, int key[1]) //Fonction super importante.
     {
         if(key[0] == keyToUnlock) //Vérification si le joueur a la clé pour dévérouiller la porte
         {
-            if(inverseOrientation[orientation] == (this->type-2))//Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
+            if(inverseOrientation[*orientation] == (this->type-2))//Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
             {
                 this->locked = UNLOCKED;
                 return this;

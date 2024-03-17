@@ -7,7 +7,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "cell.h"
+#include "intersection.h"
 #include "activeCell.h"
 
 /**

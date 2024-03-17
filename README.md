@@ -14,9 +14,10 @@ Les cases:
 13 case avec porte Sud barré
 14 case avec porte Est barré
 15 case avec porte Ouest barré
+6 case intersections 
 
 
 
 COMPILATION:
-g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp   
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp .\src\intersection.cpp
 ./a.exe

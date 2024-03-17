@@ -144,7 +144,7 @@ int main(){
 
             }
             map.updateMap();
-            system("cls");
+            //system("cls");
         }
     }
 

@@ -62,7 +62,15 @@ Map::Map()
 			std::getline(carte, lecture, x == largeur - 1 ? '\n' : ' ');
 			coordonne[x][y] = std::stoi(lecture);
 			int type = std::stoi(lecture);
-			cell[x][y] = new Cell(type);
+			if(type != 6)
+			{
+				cell[x][y] = new Cell(type);
+			}
+			else
+			{
+				cell[x][y] = new Intersection(type);
+			}
+			
 			//cell[x][y]->printCell();
 		}
 	}
@@ -78,9 +86,7 @@ Map::Map()
 					
 					if(y+1 < hauteur && *cell[x][y+1]->getType()>0) 
 					{
-						//printf("1\n");
 						cell[x][y]->setCellAround(south, cell[x][y+1]);
-						//printf("MovePossible South\n");
 					}
 					else
 					{
@@ -164,7 +170,7 @@ Map::~Map()
 void Map::printMap()
 {
 	
-	system("cls");
+	//system("cls");
 	for(int y=0;y<hauteur;y++)
 	{
 		for(int i=0;i<3;i++)

@@ -1,6 +1,8 @@
 #ifndef CELL_H
 #define CELL_H
 
+
+
 #include <iostream>
 
 #define LOCKED 1
@@ -12,11 +14,18 @@
 #define DOORSOUTH 3  
 #define DOOREAST 4  
 #define DOORWEST 5  
+#define INTERSECTION 6
+
+#define LEFT 0
+#define RIGHT 1
+#define UP 2
+#define DOWN 3
+
 
 const int NONE=-1;
 const int north=0;
-const int south=1;
-const int east=2;
+const int east=1;
+const int south=2;
 const int west=3;
 const int maxRoom=50;
 
@@ -104,7 +113,7 @@ class Cell
          * @param key La clé pour entrer dans la cellule : int[maxRoom]
          * @return Pointeur vers la cellule entrée
          */
-        Cell *enterCell(int orientation, int key[maxRoom]);
+        virtual Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT);
 
         /**
          * @brief Méthode pour obtenir la cellule d'entrée
@@ -125,7 +134,7 @@ class Cell
         int getKeyToUnlock();
         std::string imageCell[3][3]; ///< Image de la cellule active : std::string*[3][3]
 
-    private:
+    protected:
         
         int type; // Type de la cellule : int{VIDE=0, COULOIR=1, DOORNORTH=2, DOORSOUTH=3, DOOREAST=4, DOORWEST=5}
         Cell* cell_north; // Cellule voisine au nord
