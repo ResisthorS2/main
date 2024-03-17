@@ -12,7 +12,7 @@
 
 ActiveCell::ActiveCell()
 {
-    orientation = east;
+    orientation = west;
 
     // Initialize imageCell as a 3x3 array of null pointers
     /*this->imageCell = new std::string**[3];
