@@ -13,35 +13,38 @@
 ActiveCell::ActiveCell()
 {
     orientation = east;
-    this->imageCell = new std::string**[3];
+
+    // Initialize imageCell as a 3x3 array of null pointers
+    /*this->imageCell = new std::string**[3];
     for(int i = 0; i < 3; i++) {
         this->imageCell[i] = new std::string*[3];
         for(int j = 0; j < 3; j++) {
             this->imageCell[i][j] = NULL;
         }
-    }
+    }*/
 
+    cell_north = nullptr;
+    cell_south = nullptr;
+    cell_east = nullptr;
+    cell_west = nullptr;
 }
 
 ActiveCell::~ActiveCell()
 {
-    printf("delete activeCell\n");
-    delete cell_north;
-    delete cell_south;
-    delete cell_east;
-    delete cell_west;
 
-    // Libération de la mémoire allouée pour imageCell
-    for (int i = 0; i < 3; ++i) {
-        // Libération de la mémoire allouée pour chaque tableau de pointeurs
-        for (int j = 0; j < 3; ++j) {
-            delete[] imageCell[i][j];
+    if(cell_north != nullptr){delete cell_north;}
+    if(cell_south != nullptr){delete cell_south;}
+    if(cell_east != nullptr){delete cell_east;}
+    if(cell_west != nullptr){delete cell_west;}
+    printf("delete activeCell\n");
+
+    /*for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            delete this->imageCell[i][j];
         }
-        // Libération de la mémoire allouée pour chaque tableau principal de pointeurs
-        delete[] imageCell[i];
+        delete this->imageCell[i];
     }
-    // Libération de la mémoire allouée pour le tableau principal de pointeurs
-    delete[] imageCell;
+    delete this->imageCell;*/
 }
 
 int ActiveCell::getOrientation()
@@ -70,58 +73,43 @@ void ActiveCell::setImageCell(ActiveCell *cell) //Ici c'est un fonction surload�
         {
             
             case north:
-                *imageCell[0][1] = YELLOW+"^"; //Ici la fonction vient remplacer dans les case de l'image active le joueur pour qu'on puisse le voir
-                *imageCell[1][1] = YELLOW+"|";  //À chaque print de la map chaque case est reregardé pour les remettre normal si le joueur n'y est pas mais ça se fait dans printMap()
+                *(imageCell[0][1]) = YELLOW+"^"; //Ici la fonction vient remplacer dans les case de l'image active le joueur pour qu'on puisse le voir
+                *(imageCell[1][1]) = YELLOW+"|";  //À chaque print de la map chaque case est reregardé pour les remettre normal si le joueur n'y est pas mais ça se fait dans printMap()
                 break;
             case south:
-                *imageCell[2][1] = YELLOW+"v";  //Fait pas le saut, les x et y sont pas dans le sens normal
-                *imageCell[1][1] = YELLOW+"|";
+                *(imageCell[2][1]) = YELLOW+"v";  //Fait pas le saut, les x et y sont pas dans le sens normal
+                *(imageCell[1][1]) = YELLOW+"|";
                 break;
             case east:
-                *imageCell[1][2] = YELLOW+">";
-                *imageCell[1][1] = YELLOW+"-";
+                *(imageCell[1][2]) = YELLOW+">";
+                *(imageCell[1][1]) = YELLOW+"-";
                 break;
             case west:
-                *imageCell[1][0] = YELLOW+"<";
-                *imageCell[1][1] = YELLOW+"-";
+                *(imageCell[1][0]) = YELLOW+"<";
+                *(imageCell[1][1]) = YELLOW+"-";
                 break;
         }
     }
 }
 
-void ActiveCell::cpyCell(Cell* cell) //Ça vient pointer la cellule active sur la cellule de la map du joueur et pointer chaque argument
+void ActiveCell::cpyCell(Cell* cell)
 {
     if (cell != nullptr) {
+        //printf("cell is not null\n");
         this->type = cell->getType();
         this->locked = cell->getLocked();
         this->cell_north = cell->getCellAround(north);
         this->cell_south = cell->getCellAround(south);
         this->cell_east = cell->getCellAround(east);
         this->cell_west = cell->getCellAround(west);
-        if(cell_north == NULL)
-        {
-            //printf("cell_north = NULL\n"); //Debug
-        }
-        if(cell_south == NULL)
-        {
-            //printf("cell_south = NULL\n");
-        }
-        if(cell_east == NULL)
-        {
-            //printf("cell_east = NULL\n");
-        }
-        if(cell_west == NULL)
-        {
-            //printf("cell_west = NULL\n");
-        }
 
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 this->imageCell[i][j] = &cell->imageCell[i][j];
             }
         }
-        this->setImageCell(this); // remet l'image de la cellule active à jour
     }
+    this->setImageCell(this);
 }
 
 

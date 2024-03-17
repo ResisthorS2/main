@@ -115,7 +115,7 @@ int main(){
 
         while(true)
         {
-            map.updateMap();
+            
             map.printMap();
             char input;
 
@@ -143,6 +143,8 @@ int main(){
                 
 
             }
+            map.updateMap();
+            system("cls");
         }
     }
 

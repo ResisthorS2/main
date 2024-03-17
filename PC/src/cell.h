@@ -62,13 +62,6 @@ class Cell
         virtual void setImageCell(Cell *cell);
 
         /**
-         * @brief Méthode pour imprimer la cellule dans le terminal
-         * @param line La ligne à imprimer : int{0 à 2}
-         * @return La ligne imprimée
-         */
-        std::string printCellTerminal(int line);
-
-        /**
          * @brief Méthode pour imprimer la cellule
          */
         void printCell();

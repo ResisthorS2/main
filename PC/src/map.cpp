@@ -31,13 +31,13 @@ Map::Map()
 
 	std::getline(carte, lecture);
 	//Ramasse la hauteur de la map dans le fichier map
-		//hauteur = std::stoi(lecture);	
+	hauteur = std::stoi(lecture);	
 
 	//std::cout<< "Hauteur : " <<hauteur<<std::endl;
 
 	std::getline(carte, lecture);
 
-		//largeur = std::stoi(lecture);				//Ramasse la largeur de la map dans les fichiers
+	largeur = std::stoi(lecture);				//Ramasse la largeur de la map dans les fichiers
 	
 	//std::cout<< "Largeur : " <<largeur<<std::endl;
 
@@ -63,6 +63,7 @@ Map::Map()
 			coordonne[x][y] = std::stoi(lecture);
 			int type = std::stoi(lecture);
 			cell[x][y] = new Cell(type);
+			//cell[x][y]->printCell();
 		}
 	}
 
@@ -71,36 +72,47 @@ Map::Map()
 	for(int x=0; x<largeur; x++)	//Assigne les pointeurs des cases autour de chaque case
 	{
 		for(int y=0; y<hauteur;y++)
-			{	printf("type : %d\n", *cell[x][y]->getType()); //Les print ici c'est pour le debug
+			{	//printf("type : %d\n", *cell[x][y]->getType()); //Les print ici c'est pour le debug
 				if(*cell[x][y]->getType()!=0)
 				{	
 					
-					if(*cell[x][y+1]->getType()>0) //getType(0) == Case vide
-					{printf("1\n");cell[x][y]->setCellAround(south, cell[x][y+1]);printf("MovePossible South\n");}
-					
+					if(y+1 < hauteur && *cell[x][y+1]->getType()>0) 
+					{
+						//printf("1\n");
+						cell[x][y]->setCellAround(south, cell[x][y+1]);
+						//printf("MovePossible South\n");
+					}
+					else
+					{
+						cell[x][y]->setCellAround(south, NULL);
+					}
 
-					else// if(*cell[x][y+1]->getType()==0)
-					{cell[x][y]->setCellAround(south, NULL);}
-					
+					if(y-1 >= 0 && *cell[x][y-1]->getType()>0)
+					{
+						cell[x][y]->setCellAround(north, cell[x][y-1]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(north, NULL);
+					}
 
-					if(*cell[x][y-1]->getType()>0)
-					{cell[x][y]->setCellAround(north, cell[x][y-1]);}
+					if(x+1 < largeur && *cell[x+1][y]->getType()>0)
+					{
+						cell[x][y]->setCellAround(east, cell[x+1][y]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(east, NULL);
+					}
 
-					else// if(*cell[x][y-1]->getType()==0)
-					{cell[x][y]->setCellAround(north, NULL);}
-
-					if(*cell[x+1][y]->getType()>0)
-					{cell[x][y]->setCellAround(east, cell[x+1][y]);}
-
-
-					else// if(*cell[x+1][y]->getType()==0)
-					{cell[x][y]->setCellAround(east, NULL);}
-
-					if(*cell[x-1][y]->getType()>0)
-					{cell[x][y]->setCellAround(west, cell[x-1][y]);}
-
-					else// if(*cell[x-1][y]->getType()==0)
-					{cell[x][y]->setCellAround(west, NULL);}
+					if(x-1 >= 0 && *cell[x-1][y]->getType()>0)
+					{
+						cell[x][y]->setCellAround(west, cell[x-1][y]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(west, NULL);
+					}
 
 				}
 			}
@@ -142,6 +154,7 @@ Map::~Map()
 	}
 
 	delete[] coordonne;
+	delete activeCell;
 
 }
 
@@ -158,7 +171,10 @@ void Map::printMap()
 		{
 			for(int x=0;x<largeur;x++)
 			{
-				std::cout << cell[x][y]->printCellTerminal(i); //print de la première ligne des trois premières cases du haut et refait le processus 3 fois pour chaucune des 3 lignes
+				for(int k=0; k<3; k++)
+				{
+					std::cout << cell[x][y]->imageCell[i][k];
+				}
 			}
 			std::cout << std::endl;
 		}

@@ -26,7 +26,7 @@ Cell::Cell()
 
 Cell::Cell(int type)
 {
-    
+
     cell_north = new Cell;
     cell_south = new Cell;
     cell_east = new Cell;
@@ -51,10 +51,14 @@ Cell::Cell(int type)
 Cell::~Cell()
 {
     std::cout << "destruction d'une cellule" << std::endl;
-    delete cell_north;
-    delete cell_south;
-    delete cell_east;
-    delete cell_west;
+    if(cell_north != NULL)
+    {delete cell_north;}
+    if(cell_south != NULL)
+    {delete cell_south;}
+    if(cell_east != NULL)
+    {delete cell_east;}
+    if(cell_west != NULL)
+    {delete cell_west;}
 }
 
 
@@ -114,20 +118,6 @@ int *Cell::getType()
     return &this->type;
 }
 
-std::string Cell::printCellTerminal(int line)
-{
-    
-    // pour l'impression des cellules je fais une ligne à la fois puisque chaque case a 3 lignes
-    std::ostringstream os;
-    
-    os << imageCell[line][0];
-    for(int i=1; i<3; i++)
-    {
-        os << imageCell[line][i];
-    }
-    
-    return os.str();
-}
 
 
 void Cell::printCell()
@@ -158,7 +148,6 @@ void Cell::setLocked(int locked)
 
 void Cell::setCellAround(int orientation, Cell* cell)
 {
-    // la fonction est pour set une case autour de la case actuelle
     switch (orientation)
     {   
         case north:
