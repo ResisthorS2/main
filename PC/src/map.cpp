@@ -62,13 +62,19 @@ Map::Map()
 			std::getline(carte, lecture, x == largeur - 1 ? '\n' : ' ');
 			coordonne[x][y] = std::stoi(lecture);
 			int type = std::stoi(lecture);
-			if(type != 6)
+			if(type != 6 && type < 3000)
 			{
 				cell[x][y] = new Cell(type);
 			}
-			else
+			else if(type < 3000)
 			{
 				cell[x][y] = new Intersection(type);
+			}
+
+			else
+			{
+				printf("type : GameCell%d\n", type);
+				cell[x][y] = new GameCell(type);
 			}
 			
 			//cell[x][y]->printCell();
@@ -133,7 +139,7 @@ Map::Map()
 	
 		
 	activeCell = new ActiveCell();
-	activeCell->cpyCell(cell[7][3]); //Ici je place le joueur dans la case 1,1
+	activeCell->cpyCell(cell[6][3]); //Ici je place le joueur dans la case 1,1
 	
 	cell[2][1]->setKeyToUnlock(1); //Ici je dis que la case 2,1 a besoin de la cle 1 pour etre debloquee
 	cell[3][5]->setKeyToUnlock(2); //Ici je dis que la case 3,5 a besoin de la cle 2 pour etre debloquee
@@ -170,7 +176,7 @@ Map::~Map()
 void Map::printMap()
 {
 	
-	//system("cls");
+	system("cls");
 	for(int y=0;y<hauteur;y++)
 	{
 		for(int i=0;i<3;i++)
@@ -217,10 +223,10 @@ void Map::updateMap()
 	{
 		for(int x=0;x<this->largeur;x++)
 		{
-			//std::cout<<"coordonne["<< x << "]["<<y<<"]"<<coordonne[x][y]<<std::endl;
 			cell[x][y]->setImageCell(cell[x][y]);
 		}
 	}
+	
 	activeCell->setImageCell(activeCell);
 }
 

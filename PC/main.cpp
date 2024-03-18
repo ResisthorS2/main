@@ -143,6 +143,7 @@ int main(){
                 
 
             }
+            
             map.updateMap();
             //system("cls");
         }

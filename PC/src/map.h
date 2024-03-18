@@ -9,6 +9,7 @@
 
 #include "intersection.h"
 #include "activeCell.h"
+#include "gameCell.h"
 
 /**
  * @class Map

@@ -12,7 +12,7 @@
 
 ActiveCell::ActiveCell()
 {
-    orientation = west;
+    orientation = north;
 
     cell_north = nullptr;
     cell_south = nullptr;
@@ -81,6 +81,7 @@ void ActiveCell::cpyCell(Cell* cell)
     if (cell != nullptr) {
         //printf("cell is not null\n");
         this->type = cell->getType();
+        
         this->locked = cell->getLocked();
         this->cell_north = cell->getCellAround(north);
         this->cell_south = cell->getCellAround(south);
@@ -117,28 +118,26 @@ void ActiveCell::move(int direction)
             index--;
             if(index < 0)
                 index = 3;
-            this->orientation = directionPossible[index]; //XXX
             break;
         
         
         case RIGHT:
-            this->orientation = index++;
+            index++;
             if(index > 3)
                 index = 0;
-            this->orientation = directionPossible[index]; //XXX
             break;
         
         
 
         case DOWN:
             
-            int inverseOrientation[] = {south, north, west, east};
+            int inverseOrientation[] = {south, west, north, east};
             this->setOrientation(inverseOrientation[this->getOrientation()]);
             return;
     }
 
 
-    if(*this->type > 1 && *this->type != 6)
+    if(*this->type > 1 && *this->type != 6 && *this->type < 3000)
     {
         
         if(orientation != (*this->type-2)) //TODO
@@ -147,28 +146,53 @@ void ActiveCell::move(int direction)
         }
     }
 
-    if((this->getCellAround(this->orientation)) != NULL)  //s'il existe une case à côté
+    /*if((this->getCellAround(index)) != NULL)  //s'il existe une case à côté
     {
-        if(*(this->getCellAround((this->orientation))->getType()) != 6)
+        if(*(this->getCellAround((index))->getType()) != 6 && (this->getCellAround(index)) != NULL && *(this->getCellAround((index))->getType()) < 3000)
         {
-            if(((this->getCellAround((this->orientation)))->enterCell(&this->orientation, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
+            if(((this->getCellAround((index)))->enterCell(&index, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
                     {
-                        Cell *cell = (this->getCellAround(this->orientation))->enterCell(&this->orientation, this->keys);
+                        Cell *cell = (this->getCellAround(index))->enterCell(&index, this->keys);
                         this->cpyCell(cell); // vient changer la case de la cellule active
                     }
         }
-        else
+        else if((this->getCellAround(index)) != NULL)
         {
-            printf("ici\n");
             Cell *cell = (this->getCellAround(this->orientation))->enterCell(&this->orientation, this->keys);
-            
-            
             this->cpyCell(cell); // vient changer la case de la cellule active
         }
         
+    }*/
+
+    
+    if(this->getCellAround(index) != NULL)
+    {
+        if(*(this->getCellAround(index))->getType() != 6)
+        {
+            Cell *cell = (this->getCellAround(index))->enterCell(&index, this->keys, direction);
+            if(cell != NULL)
+            {
+                this->cpyCell(cell);
+                
+            }
+        }
+
+        else
+        {
+            Cell *cell = (this->getCellAround(orientation))->enterCell(&orientation, this->keys, direction);
+            if(cell != NULL)
+            {
+                this->cpyCell(cell);
+                
+            }
+        }
+        
+    }
+    else
+    {
+        return;
     }
 
-    this->setImageCell(this);
 }
 
 void ActiveCell::setOrientation(int orientation)

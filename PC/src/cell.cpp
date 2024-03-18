@@ -78,18 +78,19 @@ void Cell::setImageCell(Cell *cell)
     std::string typeColor;
 
     typeColor = WHITE;
-    if(*cell->getLocked() == LOCKED)
-    {
-        typeColor = RED;
-    }
-    else if(type != COULOIR && type != INTERSECTION)
+    if(cell->type > 3000)
     {
         typeColor = GREEN;
     }
 
-    if(type == INTERSECTION)
+    else if(type == INTERSECTION)
     {
         typeColor = MAGENTA;
+    }
+
+    else if(type != COULOIR)
+    {
+        typeColor = RED;
     }
 
     for(int i=0; i<3; i++)
