@@ -1,5 +1,5 @@
-#include "intersection.h"
-#include "cell.h"
+#include "../libs/intersection.h"
+#include "../libs/cell.h"
 #include <iostream>
 
 

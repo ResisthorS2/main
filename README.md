@@ -20,5 +20,5 @@ Les cases:
 
 COMPILATION:
 ***Il faut que vous soyer dans le directory PC. Donc faites cd PC si ça ne marche pas
-g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp .\src\intersection.cpp .\src\gameCell.cpp
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cells_code\cell.cpp .\src\cells_code\activeCell.cpp .\src\cells_code\intersection.cpp .\src\cells_code\gameCell.cpp
 ./a.exe

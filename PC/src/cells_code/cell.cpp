@@ -1,5 +1,5 @@
 
-#include "cell.h"
+#include "../libs/cell.h"
 
 
 #include <iostream>

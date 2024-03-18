@@ -1,9 +1,10 @@
 
-#include "cell.h"
+#include "../libs/cell.h"
 
 
 
-#include "activeCell.h"
+#include "../libs/activeCell.h"
+
 
 
 #define move180
@@ -145,24 +146,6 @@ void ActiveCell::move(int direction)
             return;
         }
     }
-
-    /*if((this->getCellAround(index)) != NULL)  //s'il existe une case à côté
-    {
-        if(*(this->getCellAround((index))->getType()) != 6 && (this->getCellAround(index)) != NULL && *(this->getCellAround((index))->getType()) < 3000)
-        {
-            if(((this->getCellAround((index)))->enterCell(&index, this->keys)) != NULL) // regarde s'il peut se déplacer dans la case
-                    {
-                        Cell *cell = (this->getCellAround(index))->enterCell(&index, this->keys);
-                        this->cpyCell(cell); // vient changer la case de la cellule active
-                    }
-        }
-        else if((this->getCellAround(index)) != NULL)
-        {
-            Cell *cell = (this->getCellAround(this->orientation))->enterCell(&this->orientation, this->keys);
-            this->cpyCell(cell); // vient changer la case de la cellule active
-        }
-        
-    }*/
 
     
     if(this->getCellAround(index) != NULL)

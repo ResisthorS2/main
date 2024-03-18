@@ -1,4 +1,4 @@
-#include "gameCell.h"
+#include "../libs/gameCell.h"
 
 GameCell::GameCell(int type)
 {
