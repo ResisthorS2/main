@@ -19,5 +19,6 @@ Les cases:
 
 
 COMPILATION:
-g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp .\src\intersection.cpp
+***Il faut que vous soyer dans le directory PC. Donc faites cd PC si ça ne marche pas
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cell.cpp .\src\activeCell.cpp .\src\intersection.cpp .\src\gameCell.cpp
 ./a.exe
