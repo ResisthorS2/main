@@ -61,4 +61,6 @@ DOSSIER LIBS:
 DOSSIER MINIGAMES_CODE:
 -contient les fichier .cpp des mini-jeux
 
+***Il y a un diagramme de classe
 
+Le code pour les composantes sont dans Le fichier Arduino.
