@@ -1,4 +1,8 @@
 #include "../libs/gameCell.h"
+#include "../libs/minigames.h"
+
+
+MiniGame minigame;
 
 GameCell::GameCell(int type)
 {
@@ -106,8 +110,8 @@ void GameCell::l3022()
 {
     system("cls");
     std::cout << "Jeu local 3022" << std::endl;
-    char wait;
-    std::cin >> wait;
+    minigame.play_resistanceGame();
+    
 }
 
 void GameCell::l3019()

@@ -20,5 +20,23 @@ Les cases:
 
 COMPILATION:
 ***Il faut que vous soyer dans le directory PC. Donc faites cd PC si ça ne marche pas
-g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cells_code\cell.cpp .\src\cells_code\activeCell.cpp .\src\cells_code\intersection.cpp .\src\cells_code\gameCell.cpp
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\map.cpp .\src\cells_code\cell.cpp .\src\cells_code\activeCell.cpp .\src\cells_code\intersection.cpp .\src\cells_code\gameCell.cpp .\src\minigames_code\game_resistance.cpp 
 ./a.exe
+
+
+COMMENT AJOUTER UN MINI JEU
+***Dans le fichier .cpp de votre mini jeu
+-mettre le fichier du mini-jeux dans le dossier minigames_code
+-modifier la fonction à appeler pour faire le mini-jeu pour qu'elle fasse partie de la classe MiniGame
+ex pour la fonction play_resistanceGame(), elle devient MiniGame::play_resistanceGame() ***dans le fichier du minijeu
+-include dans le fichier du minijeu; #include "../libs/minigames.h" pour avoir accès au header des minijeux
+***Dans le fichier minigames.h
+-ajouter la fonction de votre minijeu. Nous pourrons donc appeler votre fonction avec la classe MiniGame
+ex pour play_resistanceGame():
+class MiniGame
+{
+    public:
+    ...
+        int play_resistanceGame();
+        //ajouter votre fonction ici
+};
