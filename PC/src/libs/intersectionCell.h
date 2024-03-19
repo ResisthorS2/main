@@ -12,13 +12,13 @@
 
 
 
-class Intersection : public Cell
+class IntersectionCell : public Cell
 {
     public:
         /**
          * @brief Constructeur par défaut de la classe Intersection
          */
-        Intersection(int type);;
+        IntersectionCell(int type);;
 
         Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT) override;
 };

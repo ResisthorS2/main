@@ -68,7 +68,7 @@ Map::Map()
 			}
 			else if(type < 3000)
 			{
-				cell[x][y] = new Intersection(type);
+				cell[x][y] = new IntersectionCell(type);
 			}
 
 			else

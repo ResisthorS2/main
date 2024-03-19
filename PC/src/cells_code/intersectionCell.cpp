@@ -1,16 +1,16 @@
-#include "../libs/intersection.h"
+#include "../libs/intersectionCell.h"
 #include "../libs/cell.h"
 #include <iostream>
 
 
 
 
-Intersection::Intersection(int type) : Cell(type)
+IntersectionCell::IntersectionCell(int type) : Cell(type)
 {
     std::cout << "Constructeur Intersection" << std::endl;
 }
 
-Cell *Intersection::enterCell(int *orientation, int key[maxRoom], int direction)
+Cell *IntersectionCell::enterCell(int *orientation, int key[maxRoom], int direction)
 {
     std::cout << "EnterCell Intersection" << std::endl;
     char dir;
@@ -57,7 +57,7 @@ Cell *Intersection::enterCell(int *orientation, int key[maxRoom], int direction)
     Cell *cell = this->getCellAround(*orientation);
     if (cell != nullptr) {
         cell = cell->enterCell(orientation, key);
-        if (cell != nullptr && !dynamic_cast<Intersection*>(cell)) {
+        if (cell != nullptr && !dynamic_cast<IntersectionCell*>(cell)) {
             return cell;
         }
     }

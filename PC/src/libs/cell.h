@@ -143,6 +143,5 @@ class Cell
         Cell* cell_west; // Cellule voisine à l'ouest
         int locked; // État de verrouillage de la cellule : int{UNLOCKED=0, LOCKED=1}
         int keyToUnlock; // Clé pour déverrouiller la cellule : int
-        //Minigame minigame[];
 };
 #endif
