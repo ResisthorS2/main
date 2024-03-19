@@ -40,3 +40,13 @@ class MiniGame
         int play_resistanceGame();
         //ajouter votre fonction ici
 };
+*** Dans gameCell.cpp
+-ajouter à la fonction l30XX de votre local votre fonction
+ex pour play_resistanceGame():
+void GameCell::l3022()
+{
+    system("cls");
+    std::cout << "Jeu local 3022" << std::endl;
+    minigame.play_resistanceGame();
+    
+}
