@@ -1,39 +1,17 @@
-
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "../engine/entities/CharacterEntity.h"
 
-#include "cell.h"
-
-
-
-
-//direction
-#define LEFT 0
-#define RIGHT 1
-#define UP 2
-#define DOWN 3
-
-class Player : public Cell
-{
-    public:
-        Player();
-        ~Player();
-        int getOrientation();
-        void setOrientation(int orientation);
-        void setImageCell(Cell *cell) override;
-        void operator=(Cell* cell);
-        void move(int direction);
-    private:
-        int orientation; /** @brief  north=0, south=1, east=2, west=3 */
-        int type;
-        Cell* cell_north;
-        Cell* cell_south;
-        Cell* cell_east;
-        Cell* cell_west;
-        int *enterFrom; /** @brief Tu peux entrer quand tu proviens de ____ NONE=-1, north=0, south=1, east=2, west=3 */
-        int locked; /** @brief 0 = UNLOCKED, 1 = LOCKED */
-        //int keyToUnlock;
-        //Minigame minigame[];
+class Player : public CharacterEntity {
+public:
+    Player();
+    ~Player();
+    void update();
+    void addPoints(int points);
+    void removePoints(int points);
+private:
+    int points = 0;
 };
+
 #endif

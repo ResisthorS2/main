@@ -30,24 +30,21 @@ SerialPort * arduino; //doit etre un objet global!
 
 /*----------------------------- Fonction "Main" -----------------------------*/
 
+/*
+g++ .\main.cpp .\include\serial\SerialPort.cpp .\src\AmongUsGame.cpp .\engine\Game.cpp .\engine\RenderingEngine.cpp .\src\Player.cpp
+*/
 
-
-
-
-#include "src\map.h"
-
-
-
-
-
+#include "src/AmongUsGame.h"
 
 int main(){
     
     #define TEST 1
 
+    AmongUsGame game;
+    
+
     if(TEST != 1)
     {
-        Map map;
         std::string raw_msg;
 
         // Initialisation du port de communication
@@ -82,76 +79,8 @@ int main(){
                 std::cout << "Message de l'Arduino: " << j_msg_rcv << std::endl;
             }
 
-            if(j_msg_rcv["btn_180"] == "HIGH")
-            {
-                map.playerInCell->move(DOWN);
-            }
-
-            if(j_msg_rcv["btn_up"] == "HIGH")
-            {
-                map.playerInCell->move(UP);
-            }
-
-            if(j_msg_rcv["btn_left"] == "HIGH")
-            {
-                map.playerInCell->move(LEFT);
-            }
-
-            if(j_msg_rcv["btn_right"] == "HIGH")
-            {
-                map.playerInCell->move(RIGHT);
-            }
-            
-            map.printMap();
             Sleep(1000); // 1000ms
         }
-    }
-
-    if(TEST == 1)
-    {
-        Map map;
-        std::cout << "Test de la classe Map" << std::endl;;
-        
-
-        while(true)
-        {
-            map.printMap();
-            char input;
-            
-            std::cin>>input;
-            std::cout<< "input "<<input<<std::endl;
-            
-            switch (input)
-            {
-
-            case 'w':
-                map.playerInCell->move(UP);
-                break;
-            
-            case 'a':
-                map.playerInCell->move(LEFT);
-                break;
-            
-            case 's':
-                map.playerInCell->move(DOWN);
-                break;
-            case 'd':
-                map.playerInCell->move(RIGHT);
-                break;
-            }
-            map.updateMap();
-        }
-        
-        /*
-        for(int y=0; y<map.hauteur; y++)
-        {
-            for(int i=0; i<map.largeur; i++)
-            {
-                std::cout << "Cellule [" << i << "][" << y << "] : " << std::endl;
-                
-                std::cout << "XXX" <<std::endl;
-            }
-        }*/
     }
 
     return 0;
