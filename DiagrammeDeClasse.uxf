@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>200</x><y>290</y><w>240</w><h>185</h></coordinates><panel_attributes>class Cell
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>266</x><y>119</y><w>336</w><h>259</h></coordinates><panel_attributes>class Cell
 --
 #int type; // Type de la cellule
 #Cell* cell_north; // Cellule voisine au nord
@@ -24,7 +24,7 @@
 +int *getEnterFrom();
 +void setKeyToUnlock(int keyToUnlock);
 +int getKeyToUnlock();
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>535</x><y>290</y><w>240</w><h>155</h></coordinates><panel_attributes>class ActiveCell
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>119</y><w>336</w><h>217</h></coordinates><panel_attributes>class ActiveCell
 --
 -Cell* cell_north; // Cellule voisine au nord
 -Cell* cell_south; // Cellule voisine au sud
@@ -44,12 +44,12 @@
 +void move(int direction);
 +void cpyCell(Cell* cell);
 +Cell *getCellAround(int orientation);
-+int getKey();</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>535</x><y>205</y><w>240</w><h>45</h></coordinates><panel_attributes>class IntersectionCell
++int getKey();</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>0</y><w>336</w><h>63</h></coordinates><panel_attributes>class IntersectionCell
 --
 
 --
 +IntersectionCell(int type);
-+Cell *enterCell(int *orientation, int key[maxRoom], int direction = +RIGHT) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>535</x><y>485</y><w>240</w><h>110</h></coordinates><panel_attributes>class GameCell
++Cell *enterCell(int *orientation, int key[maxRoom], int direction = +RIGHT) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>392</y><w>336</w><h>154</h></coordinates><panel_attributes>class GameCell
 --
 
 --
@@ -63,7 +63,7 @@
 +void l3041();
 +void l3016();
 +void l3024();
-+void setImageCell(Cell *cell) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>435</x><y>375</y><w>110</w><h>15</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;200;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>225</y><w>15</w><h>325</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;630;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>225</y><w>75</w><h>15</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>535</y><w>75</w><h>15</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>345</y><w>105</w><h>95</h></coordinates><panel_attributes>class Map
++void setImageCell(Cell *cell) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>595</x><y>238</y><w>154</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;200;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>28</y><w>21</w><h>455</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;630;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>28</y><w>105</w><h>21</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>462</y><w>105</w><h>21</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>196</y><w>147</w><h>133</h></coordinates><panel_attributes>class Map
 --
 +Cell ***cell; // Tableau 2D de Cell* : cell[largeur][hauteur]
 +ActiveCell *activeCell; // Cellule active
@@ -79,4 +79,4 @@
 +void removeCle(int index);
 +bool verifCle(int index);
 +void updateMap();
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>110</x><y>380</y><w>100</w><h>15</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>245</y><w>140</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element></diagram>
