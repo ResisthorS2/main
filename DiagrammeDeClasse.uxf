@@ -1,0 +1,82 @@
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>266</x><y>119</y><w>336</w><h>259</h></coordinates><panel_attributes>class Cell
+--
+#int type; // Type de la cellule
+#Cell* cell_north; // Cellule voisine au nord
+#Cell* cell_south; // Cellule voisine au sud
+#Cell* cell_east; // Cellule voisine à l'est
+#Cell* cell_west; // Cellule voisine à l'ouest
+#int locked; // État de verrouillage de la cellule
+#int keyToUnlock; // Clé pour déverrouiller la cellule : int
+--
++Cell();
++Cell(int type);
++virtual ~Cell();
++int *getType();
++void setType(int type);
++virtual void setImageCell(Cell *cell);
++void printCell();
++void setLocked(int locked);
++int *getLocked();
++void setCellAround(int orientation, Cell* cell);
++Cell *getCellAround(int orientation);
++void cpyEnterFrom(int *enterFrom);
++virtual Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT);
++int *getEnterFrom();
++void setKeyToUnlock(int keyToUnlock);
++int getKeyToUnlock();
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>119</y><w>336</w><h>217</h></coordinates><panel_attributes>class ActiveCell
+--
+-Cell* cell_north; // Cellule voisine au nord
+-Cell* cell_south; // Cellule voisine au sud
+-Cell* cell_east; // Cellule voisine à l'est
+-Cell* cell_west; // Cellule voisine à l'ouest
+-int orientation; // Orientation de la cellule active 
+-int *type; // Type de la cellule active
+-int *locked; // État de verrouillage de la cellule active
+-std::string *imageCell[3][3]; // Image de la cellule active : int[3][3]
+-int keys[1] = {1}; // Clé de la cellule active
+--
++ActiveCell();
++~ActiveCell();
++int getOrientation();
++void setOrientation(int orientation);
++void setImageCell(ActiveCell *cell);
++void move(int direction);
++void cpyCell(Cell* cell);
++Cell *getCellAround(int orientation);
++int getKey();</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>0</y><w>336</w><h>63</h></coordinates><panel_attributes>class IntersectionCell
+--
+
+--
++IntersectionCell(int type);
++Cell *enterCell(int *orientation, int key[maxRoom], int direction = +RIGHT) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>392</y><w>336</w><h>154</h></coordinates><panel_attributes>class GameCell
+--
+
+--
++GameCell();
++GameCell(int type);
++~GameCell();
++Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT) override;
++void l3022();
++void l3019();
++void l3018();
++void l3041();
++void l3016();
++void l3024();
++void setImageCell(Cell *cell) override;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>595</x><y>238</y><w>154</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;200;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>28</y><w>21</w><h>455</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;630;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>28</y><w>105</w><h>21</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>462</y><w>105</w><h>21</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>196</y><w>147</w><h>133</h></coordinates><panel_attributes>class Map
+--
++Cell ***cell; // Tableau 2D de Cell* : cell[largeur][hauteur]
++ActiveCell *activeCell; // Cellule active
++int largeur; // Largeur de la carte
++int hauteur; // Hauteur de la carte
+-int **coordonne; // Tableau de coordonnées : coordonne[x][y]
+-int cle[maxRoom]; // Tableau des clés pour accéder aux pièces
+--
++Map();
++~Map();
++void printMap();
++void addCle(int index);
++void removeCle(int index);
++bool verifCle(int index);
++void updateMap();
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>245</y><w>140</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element></diagram>

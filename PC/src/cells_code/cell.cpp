@@ -1,5 +1,5 @@
 
-#include "cell.h"
+#include "../libs/cell.h"
 
 
 #include <iostream>
@@ -26,13 +26,13 @@ Cell::Cell()
 
 Cell::Cell(int type)
 {
-    
+
     cell_north = new Cell;
     cell_south = new Cell;
     cell_east = new Cell;
     cell_west = new Cell;
 
-    if(type > 10)
+    if(type > 10) //Si type est supérieur à 10, alors la cellule est vérouillée
     {
         this->type = (type-10);
         this->locked = LOCKED;
@@ -50,17 +50,22 @@ Cell::Cell(int type)
 
 Cell::~Cell()
 {
-    //std::cout << "destruction d'une cellule" << std::endl;
-    delete cell_north;
-    delete cell_south;
-    delete cell_east;
-    delete cell_west;
+    std::cout << "destruction d'une cellule" << std::endl;
+    if(cell_north != NULL)
+    {delete cell_north;}
+    if(cell_south != NULL)
+    {delete cell_south;}
+    if(cell_east != NULL)
+    {delete cell_east;}
+    if(cell_west != NULL)
+    {delete cell_west;}
 }
 
 
 
 void Cell::setImageCell(Cell *cell)
 {
+    //definition des couleurs pour les prints des cellules
     std::string RESET  = "\x1b[0m";
     std::string BLACK  = "\x1b[30m";      /* Black */
     std::string RED    = "\x1b[31m";      /* Red */
@@ -73,13 +78,19 @@ void Cell::setImageCell(Cell *cell)
     std::string typeColor;
 
     typeColor = WHITE;
-    if(*cell->getLocked() == LOCKED)
-    {
-        typeColor = RED;
-    }
-    else if(type != COULOIR)
+    if(cell->type > 3000)
     {
         typeColor = GREEN;
+    }
+
+    else if(type == INTERSECTION)
+    {
+        typeColor = MAGENTA;
+    }
+
+    else if(type != COULOIR)
+    {
+        typeColor = RED;
     }
 
     for(int i=0; i<3; i++)
@@ -97,13 +108,12 @@ void Cell::setImageCell(Cell *cell)
             }
     }
 
-    if(type > 1)
+    if(type > 1 && type != 6)
     {
-        int x_door[] = {0, 2, 1, 1};
-        int y_door[] = {1, 1, 2, 0};
+        int x_door[] = {0, 2, 1, 1}; //ici c'est pour les portes c'est les coordonnées pour la lignes 107. l'ordre des listes est [Porte Nord, Porte Sud, Porte Est, Porte Ouest]
+        int y_door[] = {1, 1, 2, 0}; // même chose ici mais pour la coordonnée de la pour en y
 
-
-        imageCell[x_door[type-2]][y_door[type-2]] = BLUE+"X";
+        imageCell[x_door[type-2]][y_door[type-2]] = BLUE+"X"; //puisque mes x_door et y_door vont de i[0 à 4] et que type va de 2 à 5, je fais type-2 pour que ça corresponde à l'index de mes listes
     }
 }
 
@@ -114,23 +124,12 @@ int *Cell::getType()
     return &this->type;
 }
 
-std::string Cell::printCellTerminal(int line)
-{
-    std::ostringstream os;
-    
-    os << imageCell[line][0];
-    for(int i=1; i<3; i++)
-    {
-        os << imageCell[line][i];
-    }
-    
-    return os.str();
-}
 
 
 void Cell::printCell()
 {
-    //std::cout << "printCell" << std::endl;
+    
+    // ici c'est une fonction qui print une cellule pour du debug
     for(int i=0; i<3; i++)
     {
         for(int y=0; y<3; y++)
@@ -155,35 +154,18 @@ void Cell::setLocked(int locked)
 
 void Cell::setCellAround(int orientation, Cell* cell)
 {
-    //printf("orientation : %d\n", orientation);
     switch (orientation)
     {   
         case north:
-            if(cell != NULL)
-            {
-                //printf("North\n");
-            }
             this->cell_north = cell;
             break;
         case south:
-            if(cell != NULL)
-            {
-                //printf("South\n");
-            }
             this->cell_south = cell;
             break;
         case east:
-            if(cell != NULL)
-            {
-                //printf("East\n");
-            }
             this->cell_east = cell;
             break;
         case west:
-            if(cell != NULL)
-            {
-                //printf("West\n");
-            }
             this->cell_west = cell;
             break;
     }
@@ -214,25 +196,18 @@ Cell* Cell::getCellAround(int orientation)
 }
 
 
-Cell *Cell::enterCell(int orientation, int key[1])
+Cell *Cell::enterCell(int *orientation, int key[1], int direction) //Fonction super importante.
 {
-    int inverseOrientation[] = {south, north, west, east};
-
-    north;
-    south;
-    east;
-    west;
+    int inverseOrientation[] = {south, north, west, east}; //tableau pour regarder l'orientation inverse du joueur. Exemple: si le joueur est orienté vers le nord, inverseOrientation[north] = south
     
-    if(type == COULOIR)
+    if(type == COULOIR) // pas besoin de faire la vérif puisque c'est un couloir
     {
         return this;
     }
     
     if(this->locked == UNLOCKED)
     {   
-        //printf("Unlocked\n");
-        std::cout << "type : " << orientation << std::endl;
-        if(inverseOrientation[orientation] == (this->type-2))
+        if(inverseOrientation[*orientation] == (this->type-2)) //Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
         {
             return this;
         }
@@ -241,11 +216,9 @@ Cell *Cell::enterCell(int orientation, int key[1])
     }
     else
     {
-        //std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
-        if(key[0] == keyToUnlock)
+        if(key[0] == keyToUnlock) //Vérification si le joueur a la clé pour dévérouiller la porte
         {
-            //std::cout << "keyToUnlock : " << this->keyToUnlock << " key[i] = " << key[0]<< std::endl;
-            if(inverseOrientation[orientation] == (this->type-2))
+            if(inverseOrientation[*orientation] == (this->type-2))//Vérification si la porte est dans la direction du joueur pour ne pas qu'il sorte par un mur
             {
                 this->locked = UNLOCKED;
                 return this;
@@ -255,7 +228,7 @@ Cell *Cell::enterCell(int orientation, int key[1])
         }
 
     }
-    return NULL;
+    return NULL; //Si le joueur n'a pas la clé pour dévérouiller la porte ou que la case est vide
 }
 
 void Cell::setKeyToUnlock(int keyToUnlock)

@@ -3,7 +3,7 @@
 */
 
 
-#include "map.h"
+#include "./libs/map.h"
 
 
 
@@ -31,13 +31,13 @@ Map::Map()
 
 	std::getline(carte, lecture);
 	//Ramasse la hauteur de la map dans le fichier map
-		//hauteur = std::stoi(lecture);	
+	hauteur = std::stoi(lecture);	
 
 	//std::cout<< "Hauteur : " <<hauteur<<std::endl;
 
 	std::getline(carte, lecture);
 
-		//largeur = std::stoi(lecture);				//Ramasse la largeur de la map dans les fichiers
+	largeur = std::stoi(lecture);				//Ramasse la largeur de la map dans les fichiers
 	
 	//std::cout<< "Largeur : " <<largeur<<std::endl;
 
@@ -62,48 +62,75 @@ Map::Map()
 			std::getline(carte, lecture, x == largeur - 1 ? '\n' : ' ');
 			coordonne[x][y] = std::stoi(lecture);
 			int type = std::stoi(lecture);
-			cell[x][y] = new Cell(type);
+			if(type != 6 && type < 3000)
+			{
+				cell[x][y] = new Cell(type);
+			}
+			else if(type < 3000)
+			{
+				cell[x][y] = new IntersectionCell(type);
+			}
+
+			else
+			{
+				printf("type : GameCell%d\n", type);
+				cell[x][y] = new GameCell(type);
+			}
+			
+			//cell[x][y]->printCell();
 		}
 	}
+
+
 	
-	for(int x=0; x<largeur; x++)					//Assigne le fichier de map au tableau coordonne
+	for(int x=0; x<largeur; x++)	//Assigne les pointeurs des cases autour de chaque case
 	{
 		for(int y=0; y<hauteur;y++)
-			{	//printf("type : %d\n", *cell[x][y]->getType());
+			{	//printf("type : %d\n", *cell[x][y]->getType()); //Les print ici c'est pour le debug
 				if(*cell[x][y]->getType()!=0)
 				{	
 					
-					if(*cell[x][y+1]->getType()>0)
-					{cell[x][y]->setCellAround(south, cell[x][y+1]);}
+					if(y+1 < hauteur && *cell[x][y+1]->getType()>0) 
+					{
+						cell[x][y]->setCellAround(south, cell[x][y+1]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(south, NULL);
+					}
 
-					else// if(*cell[x][y+1]->getType()==0)
-					{cell[x][y]->setCellAround(south, NULL);}
-					
+					if(y-1 >= 0 && *cell[x][y-1]->getType()>0)
+					{
+						cell[x][y]->setCellAround(north, cell[x][y-1]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(north, NULL);
+					}
 
-					if(*cell[x][y-1]->getType()>0)
-					{cell[x][y]->setCellAround(north, cell[x][y-1]);}
+					if(x+1 < largeur && *cell[x+1][y]->getType()>0)
+					{
+						cell[x][y]->setCellAround(east, cell[x+1][y]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(east, NULL);
+					}
 
-					else// if(*cell[x][y-1]->getType()==0)
-					{cell[x][y]->setCellAround(north, NULL);}
-
-					if(*cell[x+1][y]->getType()>0)
-					{cell[x][y]->setCellAround(east, cell[x+1][y]);}
-
-
-					else// if(*cell[x+1][y]->getType()==0)
-					{cell[x][y]->setCellAround(east, NULL);}
-
-					if(*cell[x-1][y]->getType()>0)
-					{cell[x][y]->setCellAround(west, cell[x-1][y]);}
-
-					else// if(*cell[x-1][y]->getType()==0)
-					{cell[x][y]->setCellAround(west, NULL);}
+					if(x-1 >= 0 && *cell[x-1][y]->getType()>0)
+					{
+						cell[x][y]->setCellAround(west, cell[x-1][y]);
+					}
+					else
+					{
+						cell[x][y]->setCellAround(west, NULL);
+					}
 
 				}
 			}
 	}
 
-
+	
 
 	for(int i=0;i<maxRoom;i++)
 	{	
@@ -112,10 +139,11 @@ Map::Map()
 	
 		
 	activeCell = new ActiveCell();
-	activeCell->cpyCell(cell[1][1]);
+	activeCell->cpyCell(cell[6][3]); //Ici je place le joueur dans la case 1,1
+	
+	cell[2][1]->setKeyToUnlock(1); //Ici je dis que la case 2,1 a besoin de la cle 1 pour etre debloquee
+	cell[3][5]->setKeyToUnlock(2); //Ici je dis que la case 3,5 a besoin de la cle 2 pour etre debloquee
 
-	cell[2][1]->setKeyToUnlock(1);
-	cell[3][5]->setKeyToUnlock(2);
 }
 
 Map::~Map()
@@ -138,6 +166,7 @@ Map::~Map()
 	}
 
 	delete[] coordonne;
+	delete activeCell;
 
 }
 
@@ -154,7 +183,10 @@ void Map::printMap()
 		{
 			for(int x=0;x<largeur;x++)
 			{
-				std::cout << cell[x][y]->printCellTerminal(i);
+				for(int k=0; k<3; k++)
+				{
+					std::cout << cell[x][y]->imageCell[i][k];
+				}
 			}
 			std::cout << std::endl;
 		}
@@ -191,10 +223,10 @@ void Map::updateMap()
 	{
 		for(int x=0;x<this->largeur;x++)
 		{
-			//std::cout<<"coordonne["<< x << "]["<<y<<"]"<<coordonne[x][y]<<std::endl;
 			cell[x][y]->setImageCell(cell[x][y]);
 		}
 	}
+	
 	activeCell->setImageCell(activeCell);
 }
 

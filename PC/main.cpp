@@ -34,7 +34,7 @@ SerialPort * arduino; //doit etre un objet global!
 
 
 
-#include "src\map.h"
+#include "./src/libs/map.h"
 
 
 
@@ -117,10 +117,9 @@ int main(){
         {
             
             map.printMap();
-            
             char input;
-            
-            scanf("%c", &input);
+
+            std::cin >> input;
             //std::cout<< "input "<<input<<std::endl;
             
             switch (input)
@@ -142,8 +141,11 @@ int main(){
                 break;
                 
                 
-            map.updateMap();
+
             }
+            
+            map.updateMap();
+            //system("cls");
         }
     }
 
