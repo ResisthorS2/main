@@ -26,7 +26,7 @@ bool RcvFromSerial(SerialPort *arduino, std::string &msg);
 
 
 /*---------------------------- Variables globales ---------------------------*/
-SerialPort * arduino; //doit etre un objet global!
+
 
 /*----------------------------- Fonction "Main" -----------------------------*/
 
@@ -46,31 +46,20 @@ int main(){
     #define TEST 1
 
     if(TEST != 1)
-    {
-        Map map;
-        std::string raw_msg;
-
-        // Initialisation du port de communication
-        /*std::string com;
-        std::cout << "Entrer le port de communication du Arduino: ";
-        cin >> com;
-        arduino = new SerialPort(com.c_str(), BAUD);*/
-        
-        char com[] = "\\\\.\\COM4"; 
-        arduino = new SerialPort(com, BAUD);
-        if(!arduino->isConnected()){
-            std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
-            exit(1);
-        }
+    {    
         
         // Structure de donnees JSON pour envoie et reception
         int led_state = 1;
-        json j_msg_send, j_msg_rcv;
+        Engine engine;
+        engine.Engine(); //J'ai mis le constructeur dans une fonction pour pouvoir l'appeler quand je veux
+        Map map;
+        std::string raw_msg;
+        
 
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
         while(1)
         {
-            if(!RcvFromSerial(arduino, raw_msg)){
+            if(!engine.RcvFromSerial(arduino, raw_msg)){
                 std::cerr << "Erreur lors de la reception du message. " << std::endl;
             }
             
@@ -78,28 +67,32 @@ int main(){
             if(raw_msg.size()>0){
                 //std::cout << "raw_msg: " << raw_msg << std::endl;  // debug
                 // Transfert du message en json
-                j_msg_rcv = json::parse(raw_msg);
-                std::cout << "Message de l'Arduino: " << j_msg_rcv << std::endl;
+                engine.j_msg_rcv = json::parse(raw_msg);
+                std::cout << "Message de l'Arduino: " << engine.j_msg_rcv << std::endl;
             }
 
-            if(j_msg_rcv["btn_180"] == "HIGH")
+            if(engine.j_msg_rcv["btn_180"] == "HIGH")
             {
                 map.activeCell->move(DOWN);
+                continue;
             }
 
-            if(j_msg_rcv["btn_up"] == "HIGH")
+            if(engine.j_msg_rcv["btn_up"] == "HIGH")
             {
                 map.activeCell->move(UP);
+                continue;
             }
 
-            if(j_msg_rcv["btn_left"] == "HIGH")
+            if(engine.j_msg_rcv["btn_left"] == "HIGH")
             {
                 map.activeCell->move(LEFT);
+                continue;
             }
 
-            if(j_msg_rcv["btn_right"] == "HIGH")
+            if(engine.j_msg_rcv["btn_right"] == "HIGH")
             {
                 map.activeCell->move(RIGHT);
+                continue;
             }
             
             map.printMap();
@@ -111,6 +104,7 @@ int main(){
     {
         Map map;
         std::cout << "Test de la classe Map" << std::endl;;
+        
         
 
         while(true)
@@ -157,12 +151,34 @@ int main(){
 class Engine
 {
     public:
+        SerialPort * arduino; //doit etre un objet global!
+        Engine();
+        ~Engine();	
         bool SendToSerial(SerialPort *arduino, json j_msg);
         bool RcvFromSerial(SerialPort *arduino, std::string &msg);
+        char *com;
+        json j_msg_send, j_msg_rcv;
+        std::string dialogue
 };
 
 
 /*---------------------------Definition de fonctions ------------------------*/
+
+Engine::Engine()
+{
+    com = "\\\\.\\COM4"; 
+    arduino = new SerialPort(com, BAUD);
+    if(!arduino->isConnected()){
+        std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
+        exit(1);
+    }
+}
+
+Engine::~Engine()
+{
+    delete arduino;
+}
+
 bool Engine::SendToSerial(SerialPort *arduino, json j_msg)
 {
     // Return 0 if error
