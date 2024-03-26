@@ -39,39 +39,39 @@ void loop() {
 
   if(shouldRead_ == true)
   {
-    if(digitalRead(/**Pin à mettre*/) == LOW)
+    if(digitalRead(28) == LOW)
     {
-      while(digitalRead() == LOW){delay(10);}
+      while(digitalRead(28) == LOW){delay(10);}
       StaticJsonDocument<500> jsg_msg;
       // Serialisation
-      jsg_msg["btn_180"] = digitalRead(/**Pin à mettre*/);
+      jsg_msg["btn_180"] = digitalRead(28);
       serializeJson(jsg_msg, Serial);
     }
 
-    if(digitalRead(/**Pin à mettre*/) == LOW)
+    if(digitalRead(24) == LOW)
     {
-      while(digitalRead() == LOW){delay(10);}
+      while(digitalRead(24) == LOW){delay(10);}
       StaticJsonDocument<500> jsg_msg;
       // Serialisation
-      jsg_msg["btn_up"] = digitalRead(/**Pin à mettre*/);
+      jsg_msg["btn_up"] = digitalRead(24);
       serializeJson(jsg_msg, Serial);
     }
 
-    if(digitalRead(/**Pin à mettre*/) == LOW)
+    if(digitalRead(/26) == LOW)
     {
-      while(digitalRead() == LOW){delay(10);}
+      while(digitalRead(26) == LOW){delay(10);}
       StaticJsonDocument<500> jsg_msg;
       // Serialisation
-      jsg_msg["btn_left"] = digitalRead(/**Pin à mettre*/);
+      jsg_msg["btn_left"] = digitalRead(26);
       serializeJson(jsg_msg, Serial);
     }
 
-    if(digitalRead(/**Pin à mettre*/) == LOW)
+    if(digitalRead(22) == LOW)
     {
-      while(digitalRead() == LOW){delay(10);}
+      while(digitalRead(22) == LOW) {delay(10);}
       StaticJsonDocument<500> jsg_msg;
       // Serialisation
-      jsg_msg["btn_right"] = digitalRead;
+      jsg_msg["btn_right"] = digitalRead(22);
       serializeJson(jsg_msg, Serial);
     }
 
@@ -84,11 +84,11 @@ void loop() {
       serializeJson(jsg_msg, Serial);
     }
 
-    jsg_msg["accelerometer"] = /**Fonction accelerometer*/
+    jsg_msg["accelerometer"] = ReadAxis();
 
-    jsg_msg["potentiometer"] = /**Fonction potentiometer*/
+    jsg_msg["potentiometer"] = {getX(), getY()};
 
-    jsg_msg["motor"] = /**Fonction moteur*/
+    jsg_msg["motor"] = getMotorState();
 
 
     
