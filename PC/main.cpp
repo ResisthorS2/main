@@ -154,8 +154,16 @@ int main(){
 
 
 
+class Engine
+{
+    public:
+        bool SendToSerial(SerialPort *arduino, json j_msg);
+        bool RcvFromSerial(SerialPort *arduino, std::string &msg);
+};
+
+
 /*---------------------------Definition de fonctions ------------------------*/
-bool SendToSerial(SerialPort *arduino, json j_msg)
+bool Engine::SendToSerial(SerialPort *arduino, json j_msg)
 {
     // Return 0 if error
     std::string msg = j_msg.dump();
@@ -164,7 +172,7 @@ bool SendToSerial(SerialPort *arduino, json j_msg)
 }
 
 
-bool RcvFromSerial(SerialPort *arduino, std::string &msg){
+bool Engine::RcvFromSerial(SerialPort *arduino, std::string &msg){
     // Return 0 if error
     // Message output in msg
     std::string str_buffer;
