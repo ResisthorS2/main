@@ -110,7 +110,7 @@ void GameCell::l3022()
 {
     system("cls");
     std::cout << "Jeu local 3022" << std::endl;
-    minigame.play_resistanceGame();
+    minigame.play_solderGame();
     
 }
 
@@ -126,8 +126,7 @@ void GameCell::l3018()
 {
     system("cls");
     std::cout << "Jeu local 3018" << std::endl;
-    char wait;
-    std::cin >> wait;
+    minigame.play_resistanceGame();
 }
 
 void GameCell::l3041()
@@ -143,8 +142,7 @@ void GameCell::l3016()
 {
     system("cls");
     std::cout << "Jeu local 3016" << std::endl;
-    char wait;
-    std::cin >> wait;
+    minigame.play_oscilloscopeGame();
 }
 
 void GameCell::l3024()
