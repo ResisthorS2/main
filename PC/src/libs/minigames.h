@@ -9,8 +9,8 @@ class MiniGame
 {
     public:
         int play_resistanceGame();
-        int play_oscilloscopeGame();
-        int play_solderGame();
+        int play_oscilloscopeGame(ActiveCell*a_cell);
+        int play_solderGame(ActiveCell*a_cell);
         //ajouter votre fonction ici
 };
 
