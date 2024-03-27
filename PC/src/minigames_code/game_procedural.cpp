@@ -86,19 +86,27 @@ int MiniGame::play_proceduralGame(){
     }
     cout<<endl;
 
-    
+    string CYAN   = "\x1b[36m";      /* Cyan */
+    string YELLOW = "\x1b[33m";      /* Yellow */
+    string RESET =  "\033[0m";
+
+    int pointeur= 1;
     int count=0;
     while(count<5)
     {
         system("cls");
         cout<<" Ordre melanger : "<<endl;
+        cout<< YELLOW;
         for(int y=0 ; y<position_mots.size(); y++)
         {
-            cout << mots[position_mots[y]] << "  :  ";
+            if(y==(pointeur-1)){
+                cout << CYAN << mots[position_mots[y]] << "  :  " << YELLOW ;
+            }else cout << mots[position_mots[y]] << "  :  ";
         }
 
+        cout<< RESET << endl;
         cout<<endl;
-        cout<<endl;
+
 
         cout<<" Ordre organise : "<<endl;
         for(int y=0 ; y<count; y++)
@@ -110,17 +118,29 @@ int MiniGame::play_proceduralGame(){
 
         cout<<"Entrez au clavier l'ordre dans lequel il faut mettre les mots afin de comprendre ce que voulait dire le prof"<<endl;
 
-        int clavier;
+        string clavier;
 
         cin>>clavier;
 
-        clavier--;
-                    
-        if(count != position_mots[clavier]){
-            cout<<"Erreur le cave"<<endl;
+        if(clavier == "a"){
+            if(pointeur>1){
+                pointeur--;
+            }
         }
-        if(count == position_mots[clavier]){
-            count++;
+
+        if(clavier == "d"){
+            if(pointeur<5){
+                pointeur++;
+            }
+        }
+        
+        if(clavier == "w"){
+            if(count != position_mots[pointeur - 1]){
+                cout<<"Erreur le cave"<<endl;
+            }
+            if(count == position_mots[pointeur - 1]){
+                count++;
+            }
         }
         
     }
