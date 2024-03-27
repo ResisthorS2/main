@@ -7,33 +7,24 @@
 /*------------------------------ Librairies ---------------------------------*/
 #include <iostream>
 #include <string>
-
+using namespace std;
 
 /*-------------------------- Librairies externes ----------------------------*/
-
-
-#include "./include/serial/SerialPort.hpp"
-#include "./include/json.hpp"
+#include "include/serial/SerialPort.hpp"
+#include "include/json.hpp"
 using json = nlohmann::json;
-#define BAUD 9600           // Frequence de transmission serielle
-   // Longueur maximale d'un message
-
+json j_msg_send, j_msg_rcv1;
 
 /*------------------------------ Constantes ---------------------------------*/
+#define BAUD 9600           // Frequence de transmission serielle
+#define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
-/*------------------------- Prototypes de fonctions -------------------------*/
+
 
 
 /*---------------------------- Variables globales ---------------------------*/
-
-
-char com[] = "\\\\.\\COM4"; 
-SerialPort *arduino = new SerialPort(com, BAUD);
-#include "./src/libs/engine.h"
-Engine *engine = new Engine(arduino);
-/*----------------------------- Fonction "Main" -----------------------------*/
-
+SerialPort * arduino; //doit etre un objet global!
 
 
 
@@ -49,10 +40,21 @@ Engine *engine = new Engine(arduino);
 
 
 
+
 int main(){
     
     #define TEST 0
     
+    
+    char com[] = "\\\\.\\COM5"; 
+    SerialPort *arduino = new SerialPort(com, BAUD);
+
+    if(!arduino->isConnected()){    
+        std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
+        exit(1);
+    }
+    #include "./src/libs/engine.h"
+    Engine *engine = new Engine();
 
     if(TEST != 1)
     {    
@@ -63,52 +65,86 @@ int main(){
         Map map;
         std::string raw_msg;
 
-        if(!arduino->isConnected()){
-            std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
-            exit(1);
-        }
+        
 
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
+        map.printMap();
         while(1)
         {
-            if(!engine->RcvFromSerial(engine->arduino, raw_msg)){
-                std::cerr << "Erreur lors de la reception du message. " << std::endl;
+
+
+
+            
+            // Reception message Arduino
+
+            j_msg_rcv1.clear();
+            while(raw_msg.back()!='\n')
+            {
+                if(raw_msg.size()>MSG_MAX_SIZE)
+                {
+                    break;
+                }
+                std::string str_buffer;
+                char char_buffer[MSG_MAX_SIZE];
+                int buffer_size;
+                buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
+                str_buffer.assign(char_buffer, buffer_size);
+                raw_msg.append(str_buffer);
             }
+            
             
             // Impression du message de l'Arduino si valide
             if(raw_msg.size()>0){
-                //std::cout << "raw_msg: " << raw_msg << std::endl;  // debug
+                cout << "raw_msg: " << raw_msg  << "----------" << endl;  // debug
                 // Transfert du message en json
-                engine->j_msg_rcv = json::parse(raw_msg);
-                std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
-            }
-
-            if(*engine->input->btn_180 == HIGH)
-            {
-                map.activeCell->move(DOWN, engine);
-                continue;
-            }
-
-            if(*engine->input->btn_up == HIGH)
-            {
-                map.activeCell->move(UP, engine);
-                continue;
-            }
-
-            if(*engine->input->btn_left == HIGH)
-            {
-                map.activeCell->move(LEFT, engine);
-                continue;
-            }
-
-            if(*engine->input->btn_right == HIGH)
-            {
-                map.activeCell->move(RIGHT, engine);
-                continue;
+                try
+                {
+                    j_msg_rcv1 = json::parse(raw_msg);
+                    //engine->updateComponents(j_msg_rcv1, raw_msg);
+                    //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
+                } 
+                catch (json::exception& e) {}
             }
             
-            map.printMap();
-            Sleep(1000); // 1000ms
+            
+
+                
+            //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
+
+            if(j_msg_rcv1["btn_180"] == HIGH)
+            {
+                map.activeCell->move(DOWN, engine);
+                map.updateMap();
+                map.printMap();
+                continue;
+            }
+            //std::cout << "l.117" << std::endl;
+            if(j_msg_rcv1["btn_up"] == HIGH)
+            {
+                map.activeCell->move(UP, engine);
+                map.updateMap();
+                map.printMap();
+                continue;
+            }
+
+            if(j_msg_rcv1["btn_left"] == HIGH)
+            {
+                map.activeCell->move(LEFT, engine);
+                map.updateMap();
+                map.printMap();
+                continue;
+            }
+
+            if(j_msg_rcv1["btn_right"] == HIGH)
+            {
+                map.activeCell->move(RIGHT, engine);
+                map.updateMap();
+                map.printMap();
+                continue;
+            }
+            //std::cout << "l.107" << std::endl;
+            
+            Sleep(100); // 1000ms
         }
     }
 
