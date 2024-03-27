@@ -11,18 +11,13 @@
 
 /*-------------------------- Librairies externes ----------------------------*/
 
-#include "include/serial/SerialPort.hpp"
-#include "include/json.hpp"
-using json = nlohmann::json;
+#include "./src/libs/engine.h"
+
 
 /*------------------------------ Constantes ---------------------------------*/
-#define BAUD 9600           // Frequence de transmission serielle
-#define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
 /*------------------------- Prototypes de fonctions -------------------------*/
-bool SendToSerial(SerialPort *arduino, json j_msg);
-bool RcvFromSerial(SerialPort *arduino, std::string &msg);
 
 
 /*---------------------------- Variables globales ---------------------------*/
@@ -38,92 +33,24 @@ bool RcvFromSerial(SerialPort *arduino, std::string &msg);
 #include "./src/libs/player.h"
 
 
-class Engine
-{
-    public:
-        SerialPort * arduino; //doit etre un objet global!
-        Engine();
-        ~Engine();	
-        bool SendToSerial(SerialPort *arduino, json j_msg);
-        bool RcvFromSerial(SerialPort *arduino, std::string &msg);
-        char *com; 
-        json j_msg_send, j_msg_rcv;
-        std::string dialogue;
-};
 
 
-/*---------------------------Definition de fonctions ------------------------*/
-
-Engine::Engine()
-{
-
-    char com[] = "\\\\.\\COM4"; 
-    arduino = new SerialPort(com, BAUD);
-    if(!arduino->isConnected()){
-        std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
-        exit(1);
-    }
-}
-
-Engine::~Engine()
-{
-    delete arduino;
-}
-
-bool Engine::SendToSerial(SerialPort *arduino, json j_msg)
-{
-    // Return 0 if error
-    std::string msg = j_msg.dump();
-    bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
-    return ret;
-}
 
 
-bool Engine::RcvFromSerial(SerialPort *arduino, std::string &msg){
-    // Return 0 if error
-    // Message output in msg
-    std::string str_buffer;
-    char char_buffer[MSG_MAX_SIZE];
-    int buffer_size;
-
-    msg.clear(); // clear std::string
-    // Read serialport until '\n' character (Blocking)
-
-    // Version fonctionnel dans VScode, mais non fonctionnel avec Visual Studio
-/*  
-    while(msg.back()!='\n'){
-        if(msg.size()>MSG_MAX_SIZE){
-            return false;
-        }
-
-        buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-        str_buffer.assign(char_buffer, buffer_size);
-        msg.append(str_buffer);
-    }
-*/
-
-    // Version fonctionnelle dans VScode et Visual Studio
-    buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-    str_buffer.assign(char_buffer, buffer_size);
-    msg.append(str_buffer);
-
-    //msg.pop_back(); //remove '/n' from std::string
-
-    return true;
-}
 
 
 
 int main(){
     
     #define TEST 1
+    Engine *engine = new Engine();
 
     if(TEST != 1)
     {    
         
         // Structure de donnees JSON pour envoie et reception
         int led_state = 1;
-        Engine engine;
+        
         Map map;
         std::string raw_msg;
 
@@ -132,7 +59,7 @@ int main(){
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
         while(1)
         {
-            if(!engine.RcvFromSerial(engine.arduino, raw_msg)){
+            if(!engine->RcvFromSerial(engine->arduino, raw_msg)){
                 std::cerr << "Erreur lors de la reception du message. " << std::endl;
             }
             
@@ -140,31 +67,31 @@ int main(){
             if(raw_msg.size()>0){
                 //std::cout << "raw_msg: " << raw_msg << std::endl;  // debug
                 // Transfert du message en json
-                engine.j_msg_rcv = json::parse(raw_msg);
-                std::cout << "Message de l'Arduino: " << engine.j_msg_rcv << std::endl;
+                engine->j_msg_rcv = json::parse(raw_msg);
+                std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
             }
 
-            if(engine.j_msg_rcv["btn_180"] == "HIGH")
+            if(engine->j_msg_rcv["btn_180"] == "HIGH")
             {
-                map.activeCell->move(DOWN);
+                map.activeCell->move(DOWN, engine);
                 continue;
             }
 
-            if(engine.j_msg_rcv["btn_up"] == "HIGH")
+            if(engine->j_msg_rcv["btn_up"] == "HIGH")
             {
-                map.activeCell->move(UP);
+                map.activeCell->move(UP, engine);
                 continue;
             }
 
-            if(engine.j_msg_rcv["btn_left"] == "HIGH")
+            if(engine->j_msg_rcv["btn_left"] == "HIGH")
             {
-                map.activeCell->move(LEFT);
+                map.activeCell->move(LEFT, engine);
                 continue;
             }
 
-            if(engine.j_msg_rcv["btn_right"] == "HIGH")
+            if(engine->j_msg_rcv["btn_right"] == "HIGH")
             {
-                map.activeCell->move(RIGHT);
+                map.activeCell->move(RIGHT, engine);
                 continue;
             }
             
@@ -193,18 +120,18 @@ int main(){
             {
 
             case 'w':
-                map.activeCell->move(UP);
+                map.activeCell->move(UP, engine);
                 break;
             
             case 'a':
-                map.activeCell->move(LEFT);
+                map.activeCell->move(LEFT, engine);
                 break;
             
             case 's':
-                map.activeCell->move(DOWN);
+                map.activeCell->move(DOWN, engine);
                 break;
             case 'd':
-                map.activeCell->move(RIGHT);
+                map.activeCell->move(RIGHT, engine);
                 break;
                 
                 

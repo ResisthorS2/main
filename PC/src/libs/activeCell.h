@@ -3,6 +3,7 @@
 
 #include "cell.h"
 #include "player.h"
+#include "engine.h"
 
 //direction
 #define LEFT 0
@@ -39,7 +40,7 @@ class ActiveCell : public Cell
          * @brief Méthode pour déplacer la cellule active
          * @param direction La direction du déplacement : int{LEFT=0, RIGHT=1, UP=2, DOWN=3}
          */
-        void move(int direction);
+        void move(int direction, Engine *engine);
 
         /**
          * @brief Méthode pour copier une cellule dans la cellule active
