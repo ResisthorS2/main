@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "../myLibraries/components.h"
-#include "../myLibraries/param.h"
+
 
 /*------------------------------ Constantes ---------------------------------*/
 
@@ -92,7 +92,10 @@ void loop()
 			serializeJson(jsg_msg, Serial);
 		}
 
-		jsg_msg["accelerometer"] = accelerometer.ReadAxis();
+    Acceleration accel = accelerometer.ReadAxis();
+		jsg_msg["accelerometer_X"] = accel.x;
+    jsg_msg["accelerometer_Y"] = accel.y;
+    jsg_msg["accelerometer_Z"] = accel.z;
 
 		jsg_msg["potentiometer_X"] = joystick.getX();
 		jsg_msg["potentiometer_Y"] = joystick.getY();

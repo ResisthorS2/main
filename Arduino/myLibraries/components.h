@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include "param.h"
 
 
 #define ON true
@@ -15,6 +16,15 @@
 #define DEFAULT_RANGE 100
 
 class JoyStick {
+
+public:
+    JoyStick(int pinX = A0, int pinY = A1, int deadZone = DEFAULT_DEAD_ZONE, int range = DEFAULT_RANGE);
+    int getX();
+    int getY();
+    int getDeadZoneVal();
+    void setDeadZoneVal(int deadZone = DEFAULT_DEAD_ZONE);
+    int getRange();
+    void setRange(int range = DEFAULT_RANGE);
 private:
     int _pinX;
     int _pinY;
@@ -22,16 +32,6 @@ private:
     int _y;
     int _deadZoneVal;
     int _range;
-public:
-    JoyStick(int pinX = A0, int pinY = A1, int deadZone = DEFAULT_DEAD_ZONE, int range = DEFAULT_RANGE);
-    ~JoyStick();
-    int getX();
-    int getY();
-    int getDeadZoneVal();
-    void setDeadZoneVal(int deadZone = DEFAULT_DEAD_ZONE);
-    int getRange();
-    void setRange(int range = DEFAULT_RANGE);
-
 
 };
 
@@ -58,7 +58,6 @@ struct Acceleration {
 class Accelerometer
 {
     public:
-        Accelerometer();
         float x;
         float y;
         float z;

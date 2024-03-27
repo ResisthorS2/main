@@ -1,4 +1,4 @@
-#include "components.h"
+#include "../myLibraries/components.h"
 
 const int xInput = A0;
 const int yInput = A1;

@@ -1,3 +1,5 @@
+#ifndef PARAM_H
+#define PARAM_H
 #include <Arduino.h>
 
 #define PARAM_H
@@ -15,4 +17,6 @@ struct pin
 };
 
 typedef struct pin Pin;
+
+#endif
 

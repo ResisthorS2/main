@@ -1,4 +1,4 @@
-#include "components.h"
+#include "../myLibraries/components.h"
 Motor::Motor(int motorPin, bool motorState)
     : _motorPin(motorPin), _motorState(motorState){
     pinMode(_motorPin,OUTPUT);

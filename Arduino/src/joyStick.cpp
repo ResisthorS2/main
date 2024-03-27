@@ -1,11 +1,16 @@
-#include "components.h"
+#include "../myLibraries/components.h"
 
 JoyStick::JoyStick(int pinX, int pinY, int deadZone, int range)
-    : _pinX(pinX), _pinY(pinY), _deadZoneVal(deadZone), _range(range), _x(0), _y(0) {
+{
+    _pinX = pinX;
+    _pinY = pinY;
+    _x = 0;
+    _y = 0;
+    _deadZoneVal = deadZone;
+    _range = range;
     pinMode(_pinX,INPUT);
     pinMode(_pinY,INPUT);
 }
-JoyStick::~JoyStick(){}
 int JoyStick::getX(){
     int xTmp = analogRead(_pinX);
 
