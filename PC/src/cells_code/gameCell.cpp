@@ -2,8 +2,10 @@
 #include "../libs/minigames.h"
 
 
+
 MiniGame minigame;
 int localASergeCnt = 0;
+
 GameCell::GameCell(int type)
 {
     std::cout << "Constructeur GameCell" << std::endl;
@@ -12,8 +14,19 @@ GameCell::GameCell(int type)
     cell_east = new Cell;
     cell_west = new Cell;
     this->type = type;
+    std::cout << "Type : " << type << std::endl;
+    key_to_unlock = new int;
+    *key_to_unlock = type;
+    locked = new int;
+    *locked = LOCKED;
+    int null[] = {-1,-1,-1,-1,-1,-1};
+    if(type == 3018)
+    {
+        std::cout << "type = " << type << std::endl;
+        *locked = UNLOCKED;
+    }
+    this->setImageCell(this, null);
 
-    this->setImageCell(this);
 }
 
 GameCell::~GameCell()
@@ -22,34 +35,53 @@ GameCell::~GameCell()
     delete cell_south;
     delete cell_east;
     delete cell_west;
+    delete key_to_unlock;
+    delete locked;
 
-    this->setImageCell(this);
+    int null[] = {-1,-1,-1,-1,-1,-1};
+    this->setImageCell(this, null);
 }
 
-Cell *GameCell::enterCell(int *orientation, int key[maxRoom], int direction)
+Cell *GameCell::enterCell(int *orientation, int key[6], int direction)
 {
     int inverseOrientation[] = {south, west, north, east};
-    switch(type)
+    
+    std::cout << "int key[6]->object "<< key << "  " << this->key_to_unlock << std::endl;
+    for(int i=0; i<6; i++)
     {
-        case(3022):
-            l3022();
+        if(key[i] == *key_to_unlock)
+        {
+            *locked = UNLOCKED;
             break;
-        case(3019):
-            l3019();
-            break;
-        case(3018):
-            l3018();
-            break;
-        case(3041):
-            l3041();
-            break;
-        case(3016):
-            l3016();
-            break;
-        case(3024):
-            l3024();
-            break;
+        }
     }
+    std::cout << "La porte est fermée" << std::endl;
+    if(*locked == UNLOCKED)
+    {
+       
+        switch(type)
+        {
+            case(3022):
+                l3022(key, this->type);
+                break;
+            case(3019):
+                l3019(key, this->type);
+                break;
+            case(3018):
+                l3018(key, this->type);
+                break;
+            case(3041):
+                l3041(key, this->type);
+                break;
+            case(3016):
+                l3016(key, this->type);
+                break;
+            case(3024):
+                l3024(key, this->type);
+                break;
+        }
+    }
+
 
     *orientation = inverseOrientation[*orientation];
     return this->getCellAround(*orientation);
@@ -57,7 +89,7 @@ Cell *GameCell::enterCell(int *orientation, int key[maxRoom], int direction)
 
 }
 
-void GameCell::setImageCell(Cell *cell)
+void GameCell::setImageCell(Cell *cell, int key[6])
 {
     std::string RESET  = "\x1b[0m";
     std::string BLACK  = "\x1b[30m";      /* Black */
@@ -70,7 +102,41 @@ void GameCell::setImageCell(Cell *cell)
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
-    typeColor = GREEN;
+    
+    typeColor = RED;
+    std::cout << "locked" <<*locked << std::endl;
+    if(*locked == LOCKED)
+    {
+        for(int i=0; i<6; i++)
+        {
+            std::cout << "key[i]" << key[i] << " *key_to_unlock" << *key_to_unlock << std::endl;
+            if(key[i] == *key_to_unlock)
+            {
+                
+                typeColor = GREEN;
+                *locked = UNLOCKED;
+                break;
+            }
+        }
+    }
+    if(*locked == UNLOCKED)
+    {
+       typeColor = GREEN; 
+    }
+    std::cout << "----------setImageCell----------" << std::endl;
+    std::cout << "Type : " << this->type << std::endl;
+    if(typeColor == RED)
+    {
+        std::cout << "TypeColor : red" << std::endl;
+
+    }
+    else if(typeColor == GREEN)
+    {
+        std::cout << "TypeColor : green" << std::endl;
+    }
+
+
+
 
     for(int i=0; i<3; i++)
     {
@@ -106,15 +172,15 @@ void GameCell::setImageCell(Cell *cell)
     }
 }
 
-void GameCell::l3022()
+void GameCell::l3022(int key[6], int cell_type)
 {
     system("cls");
     std::cout << "Jeu local 3022" << std::endl;
-    minigame.play_solderGame();
+    minigame.play_solderGame(key, this->type);
     
 }
 
-void GameCell::l3019()
+void GameCell::l3019(int key[6], int cell_type)
 {
     system("cls");
     std::cout << "Jeu local 3019" << std::endl;
@@ -122,19 +188,22 @@ void GameCell::l3019()
         minigame.departLocalASerge();
         localASergeCnt++;
     }else{
-        minigame.finLocalASerge();
+        minigame.finLocalASerge(key, this->type);
     }
-
 }
 
-void GameCell::l3018()
+void GameCell::l3018(int key[6], int cell_type)
 {
     system("cls");
     std::cout << "Jeu local 3018" << std::endl;
-    minigame.play_resistanceGame();
+    minigame.play_resistanceGame(key, this->type);
+    for(int i=0; i<6; i++)
+    {
+        std::cout << "key[i] " << key[i] << std::endl; 
+    }
 }
 
-void GameCell::l3041()
+void GameCell::l3041(int key[6], int cell_type)
 {
     
     system("cls");
@@ -143,18 +212,17 @@ void GameCell::l3041()
     std::cin >> wait;
 }
 
-void GameCell::l3016()
+void GameCell::l3016(int key[6], int cell_type)
 {
     system("cls");
     std::cout << "Jeu local 3016" << std::endl;
-    minigame.play_oscilloscopeGame();
+    minigame.play_oscilloscopeGame(key, this->type);
 }
 
-void GameCell::l3024()
+void GameCell::l3024(int key[6], int cell_type)
 {
     system("cls");
     std::cout << "Jeu local 3024" << std::endl;
     char wait;
     std::cin >> wait;
 }
-

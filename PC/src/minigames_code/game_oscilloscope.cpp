@@ -23,7 +23,7 @@ enum fctState{
     clear = 4
 };
 
-int MiniGame::play_oscilloscopeGame() {
+int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
     
     
     fct.sine = "Sine";
@@ -37,6 +37,8 @@ int MiniGame::play_oscilloscopeGame() {
     int gameState = 1;
     while(gameState)
     {
+        engine.updateComponents(j_msg_rcv["potentiometer"]);
+        int potVal = engine->input->potentiometer;
         string fonction;
         switch (random)
         {
@@ -105,14 +107,11 @@ int MiniGame::play_oscilloscopeGame() {
         }
 
         // pot val goes from 0 to 1024
-        double potValue;
-        cin >> potValue;
-
-        if (potValue == 1000 && fonctionState == noisy) {
+        if (potVal == 1000 && fonctionState == noisy) {
             fonctionState = lessNoisy;
-        } else if(potValue == 10 && fonctionState == lessNoisy){
+        } else if(potVal == 10 && fonctionState == lessNoisy){
             fonctionState = almostClear;
-        } else if(potValue == 500 && fonctionState == almostClear){
+        } else if(potVal == 500 && fonctionState == almostClear){
             fonctionState = clear;
         }
     }

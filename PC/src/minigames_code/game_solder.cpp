@@ -22,19 +22,22 @@ struct SolderState {
     bool pin4 = 0;
 };
 int gameState = 1;
-void UpdateAxis(AxisState& axisState) {
+void UpdateAxis(AxisState& axisState, Engine* engine) {
+    
+    engine.updateComponents(j_msg_rcv["accelerometer"]["x"]);
+    engine.updateComponents(j_msg_rcv["accelerometer"]["y"]);
     axisState.x = 0;
     axisState.y = 0;
 
-    if (GetAsyncKeyState('A') & 0x8000) {
+    if (engine->input->accelerometer_X == -1) {
         axisState.x = -1;
-    } else if (GetAsyncKeyState('D') & 0x8000) {
+    } else if (engine->input->accelerometer_X == 1) {
         axisState.x = 1;
     }
 
-    if (GetAsyncKeyState('W') & 0x8000) {
+    if (engine->input->accelerometer_Y == 1) {
         axisState.y = 1;
-    } else if (GetAsyncKeyState('S') & 0x8000) {
+    } else if (engine->input->accelerometer_Y == -1) {
         axisState.y = -1;
     }
     if (GetAsyncKeyState('q') & 0x8000) {
@@ -61,22 +64,25 @@ void printValues(AxisState& axisState, Position& pos, SolderState& solder){
     else
         cout << "" << endl;
     cout << "    Pin 4: (400,650)";
-    if(solder.pin4 == 1)
+    if(solder.pin4 == 1){
         cout << " SOLDER COMPLETED" << endl;
+        Sleep(3000);
+        gameState = 0;
+    }
     else
         cout << "" << endl;
     cout <<""<<endl;
     cout << "X = " << axisState.x << ", Y = " << axisState.y << endl;
     cout << "POSX = " << pos.x << ", POSY = " << pos.y << endl;
 }
-int MiniGame::play_solderGame() {
+int MiniGame::play_solderGame(int key[6], int cell_type, Engine* engine) {
     AxisState axisState;
     Position pos;
     SolderState solder;
     int solderTimer = 0;
     while(gameState)
     {
-        UpdateAxis(axisState);
+        UpdateAxis(axisState,engine);
         if(axisState.x != axisState.lastX || axisState.y != axisState.lastY){
             system("cls");
             printValues(axisState, pos, solder);

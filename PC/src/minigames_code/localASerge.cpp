@@ -23,7 +23,7 @@ void printSentence(WhoState& whoState, string msg){
 
 }
 
-int MiniGame::finLocalASerge() {
+int MiniGame::finLocalASerge(int key[6], int cell_type) {
     WhoState whoState;
     bool localASergeState = true;
     while(localASergeState){
