@@ -97,7 +97,7 @@ void ActiveCell::cpyCell(Cell* cell)
 }
 
 
-void ActiveCell::move(int direction)
+void ActiveCell::move(int direction, Engine *engine)
 {
     std::cout << "move" << std::endl;
     int directionPossible[] = {north, east, south, west}; // ici c'est pour pas faire des switchs cases pour tourner à droite ou à gauche J'ai mis un XXX ou que c'est utilisé

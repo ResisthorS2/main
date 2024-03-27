@@ -2,21 +2,11 @@
 
 /*---------------------------Definition de fonctions ------------------------*/
 
-Engine::Engine()
-{
 
-    char com[] = "\\\\.\\COM4"; 
-    arduino = new SerialPort(com, BAUD);
-    if(!arduino->isConnected()){
-        std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
-        exit(1);
-    }
+Engine::Engine(SerialPort *arduino){
+    this->arduino = arduino;
 }
 
-Engine::~Engine()
-{
-    delete arduino;
-}
 
 bool Engine::SendToSerial(SerialPort *arduino, json j_msg)
 {

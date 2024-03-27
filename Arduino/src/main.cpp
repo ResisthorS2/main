@@ -6,6 +6,7 @@
 /*------------------------------ Librairies ---------------------------------*/
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include "../myLibraries/components.h"
 
 /*------------------------------ Constantes ---------------------------------*/
 
@@ -32,17 +33,20 @@ void setup() {
   digitalWrite(pinLED, 1);
 
   pinMode(22, INPUT_PULLUP);
+
 }
 
+
+JoyStick joystick;
 /* Boucle principale (infinie) */
 void loop() {
 
   if(shouldRead_ == true)
   {
+    StaticJsonDocument<500> jsg_msg;
     if(digitalRead(28) == LOW)
     {
       while(digitalRead(28) == LOW){delay(10);}
-      StaticJsonDocument<500> jsg_msg;
       // Serialisation
       jsg_msg["btn_180"] = digitalRead(28);
       serializeJson(jsg_msg, Serial);
@@ -51,7 +55,6 @@ void loop() {
     if(digitalRead(24) == LOW)
     {
       while(digitalRead(24) == LOW){delay(10);}
-      StaticJsonDocument<500> jsg_msg;
       // Serialisation
       jsg_msg["btn_up"] = digitalRead(24);
       serializeJson(jsg_msg, Serial);
@@ -60,7 +63,6 @@ void loop() {
     if(digitalRead(/26) == LOW)
     {
       while(digitalRead(26) == LOW){delay(10);}
-      StaticJsonDocument<500> jsg_msg;
       // Serialisation
       jsg_msg["btn_left"] = digitalRead(26);
       serializeJson(jsg_msg, Serial);
@@ -69,7 +71,6 @@ void loop() {
     if(digitalRead(22) == LOW)
     {
       while(digitalRead(22) == LOW) {delay(10);}
-      StaticJsonDocument<500> jsg_msg;
       // Serialisation
       jsg_msg["btn_right"] = digitalRead(22);
       serializeJson(jsg_msg, Serial);
@@ -78,7 +79,7 @@ void loop() {
     if(digitalRead(/**Pin à mettre*/) == LOW)
     {
       while(digitalRead() == LOW){delay(10);}
-      StaticJsonDocument<500> jsg_msg;
+      
       // Serialisation
       jsg_msg["btn_select"] = digitalRead(/**Pin à mettre*/);
       serializeJson(jsg_msg, Serial);
@@ -86,7 +87,8 @@ void loop() {
 
     jsg_msg["accelerometer"] = ReadAxis();
 
-    jsg_msg["potentiometer"] = {getX(), getY()};
+    jsg_msg["potentiometer_X"] = joystick.getX();
+    jsg_msg["potentiometer_Y"] = joystick.getY();
 
     jsg_msg["motor"] = getMotorState();
 

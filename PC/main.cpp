@@ -11,7 +11,12 @@
 
 /*-------------------------- Librairies externes ----------------------------*/
 
-#include "./src/libs/engine.h"
+
+#include "./include/serial/SerialPort.hpp"
+#include "./include/json.hpp"
+using json = nlohmann::json;
+#define BAUD 9600           // Frequence de transmission serielle
+   // Longueur maximale d'un message
 
 
 /*------------------------------ Constantes ---------------------------------*/
@@ -23,6 +28,10 @@
 /*---------------------------- Variables globales ---------------------------*/
 
 
+char com[] = "\\\\.\\COM4"; 
+SerialPort *arduino = new SerialPort(com, BAUD);
+#include "./src/libs/engine.h"
+Engine *engine = new Engine(arduino);
 /*----------------------------- Fonction "Main" -----------------------------*/
 
 
@@ -42,8 +51,8 @@
 
 int main(){
     
-    #define TEST 1
-    Engine *engine = new Engine();
+    #define TEST 0
+    
 
     if(TEST != 1)
     {    
@@ -54,7 +63,10 @@ int main(){
         Map map;
         std::string raw_msg;
 
-        
+        if(!arduino->isConnected()){
+            std::cerr << "Impossible de se connecter au port "<< std::string(com) <<". Fermeture du programme!" <<std::endl;
+            exit(1);
+        }
 
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
         while(1)
