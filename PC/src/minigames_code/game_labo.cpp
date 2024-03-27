@@ -1,5 +1,6 @@
 #include "../libs/minigames.h"
-
+#include "../libs/engine.h"
+#include "../libs/globalVar.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +24,7 @@ car la seed ne change pas.
 }
 
 
-int MiniGame::play_laboGame(){
+int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
 
     int nombre_aleatoire=5;
     int nombre_phrase=8;
@@ -122,26 +123,33 @@ int MiniGame::play_laboGame(){
 
         string clavier;
 
-        cin>>clavier;
+   
 
-        if(clavier == "a"){
+        if(*engine->input->btn_left == HIGH){
             if(pointeur>1){
                 pointeur--;
             }
         }
 
-        if(clavier == "d"){
+        if(*engine->input->btn_right){
             if(pointeur<5){
                 pointeur++;
             }
         }
         
-        if(clavier == "w"){
+        if(*engine->input->btn_select){
             if(count == position_mots[pointeur - 1]){
                 count++;
             }
         }
-        
+/*
+=============================================================================================================================================
+allumer les LED
+=============================================================================================================================================
+*/
+
+
+        engine.updateComponents(j_msg_rcv);
     }
 
     cout << "Felicitations vous avez reussis"<<endl;
@@ -156,32 +164,43 @@ int MiniGame::play_laboGame(){
 
     system("cls");
 
-    cout<<"L'ordianteur de l'universite a planter, relancer l'ordinateur en appuyant sur une touche"<<endl;
+    cout<<"L'ordianteur de l'universite a planter, relancer l'ordinateur en appuyant sur le bouton central"<<endl;
+    bool arret_boucle=true;
+    while(arret_boucle)
+    if(*engine->input->btn_select){
+        cout<<"Redémarage en cours"<<endl;
 
-    string reset_ordi;
+        system("cls");
+        cout<< "Ordi allumé"<< endl;
 
-    cin>> reset_ordi;
+        system("cls");
+        cout<< "Execution du programme"<< endl;
+        cout << "Voici votre code : "<<endl;
+        for(int y=0 ; y<count; y++)
+        {
+            cout << mots[y]<< " ";
+        }
 
-    cout<<"Redémarage en cours"<<endl;
+        cout<<endl;
 
-    system("cls");
-    cout<< "Ordi allumé"<< endl;
+        cout<<"Voici la sortie console : "<<endl;
 
-    system("cls");
-    cout<< "Execution du programme"<< endl;
-    cout << "Voici votre code : "<<endl;
-    for(int y=0 ; y<count; y++)
-    {
-        cout << mots[y]<< " ";
+        cout<< "Hello word"<<endl;
+        engine.updateComponents(j_msg_rcv);
+
+        arret_boucle=false;
     }
 
-    cout<<endl;
+    bool retour_jeu=true;
 
-    cout<<"Voici la sortie console : "<<endl;
+    cout<<" Appuyer sur le bouton central"<<endl;
+    while(retour_jeu){
+        if(*engine->input->btn_select){
+            retour_jeu=false;
+        }
+        engine.updateComponents(j_msg_rcv);
+    }
 
-    cout<< "Hello word"<<endl;
-
-    cout << "Appuyer sur une touche afin de retourner sur la carte" << endl;
 
 
     return 0;

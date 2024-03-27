@@ -1,5 +1,6 @@
 #include "../libs/minigames.h"
-
+#include "../libs/engine.h"
+#include "../libs/globalVar.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +24,7 @@ car la seed ne change pas.
 }
 
 
-int MiniGame::play_proceduralGame(){
+int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine){
 
     int nombre_aleatoire=5;
     int nombre_phrase=8;
@@ -120,28 +121,30 @@ int MiniGame::play_proceduralGame(){
 
         cout<<"Utiliser a ou d pour déplacer le pointeur et sélectionner avec w"<<endl;
 
-        string clavier;
-
-        cin>>clavier;
-
-        if(clavier == "a"){
+        if(*engine->input->btn_left == HIGH){
             if(pointeur>1){
                 pointeur--;
             }
         }
 
-        if(clavier == "d"){
+        if(*engine->input->btn_right){
             if(pointeur<5){
                 pointeur++;
             }
         }
         
-        if(clavier == "w"){
+        if(*engine->input->btn_select){
             if(count == position_mots[pointeur - 1]){
                 count++;
             }
         }
-        
+
+/*
+=============================================================================================================================================
+allumer les LED
+=============================================================================================================================================
+*/
+        engine.updateComponents(j_msg_rcv);
     }
 
     cout << "Felicitations vous avez reussis"<<endl;
