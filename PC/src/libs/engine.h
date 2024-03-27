@@ -7,15 +7,41 @@
 using json = nlohmann::json;
 #define MSG_MAX_SIZE 1024
 
+struct input
+        {
+            int *potentiometer_X;
+            int *potentiometer_Y;
+            int *motor;
+            int *btn_180;
+            int *btn_up;
+            int *btn_left;
+            int *btn_right;
+            int *btn_select;
+            int *accelerometer_X;
+            int *accelerometer_Y;
+            int *accelerometer_Z;
+        };
+        typedef struct input Input;
+
+        struct output
+        {
+            int motor;
+            int led;
+        };
 class Engine
 {
     public:
-        Engine(SerialPort *arduino);	
+        Engine(SerialPort *arduino);
+        ~Engine();	
         bool SendToSerial(SerialPort *arduino, json j_msg);
         bool RcvFromSerial(SerialPort *arduino, std::string &msg);
+        void updateComponents(json j_msg_rcv);
         json j_msg_send, j_msg_rcv;
         std::string dialogue;
         SerialPort *arduino;
+        Input * input;
+        
+
 };
 
 #endif

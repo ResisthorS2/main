@@ -18,6 +18,9 @@
 #define UP 2
 #define DOWN 3
 
+#define HIGH 1
+#define LOW 0
+
 
 const int NONE=-1;
 const int north=0;

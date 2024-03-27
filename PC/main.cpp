@@ -83,25 +83,25 @@ int main(){
                 std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
             }
 
-            if(engine->j_msg_rcv["btn_180"] == "HIGH")
+            if(*engine->input->btn_180 == HIGH)
             {
                 map.activeCell->move(DOWN, engine);
                 continue;
             }
 
-            if(engine->j_msg_rcv["btn_up"] == "HIGH")
+            if(*engine->input->btn_up == HIGH)
             {
                 map.activeCell->move(UP, engine);
                 continue;
             }
 
-            if(engine->j_msg_rcv["btn_left"] == "HIGH")
+            if(*engine->input->btn_left == HIGH)
             {
                 map.activeCell->move(LEFT, engine);
                 continue;
             }
 
-            if(engine->j_msg_rcv["btn_right"] == "HIGH")
+            if(*engine->input->btn_right == HIGH)
             {
                 map.activeCell->move(RIGHT, engine);
                 continue;
