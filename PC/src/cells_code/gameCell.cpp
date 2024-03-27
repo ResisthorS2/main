@@ -19,8 +19,9 @@ GameCell::GameCell(int type)
     locked = new int;
     *locked = LOCKED;
     int null[] = {-1,-1,-1,-1,-1,-1};
-    if(type == 3016)
+    if(type == 3018)
     {
+        std::cout << "type = " << type << std::endl;
         *locked = UNLOCKED;
     }
     this->setImageCell(this, null);
@@ -100,18 +101,40 @@ void GameCell::setImageCell(Cell *cell, int key[6])
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
+    
     typeColor = RED;
-    if(type == LOCKED)
+    std::cout << "locked" <<*locked << std::endl;
+    if(*locked == LOCKED)
     {
         for(int i=0; i<6; i++)
         {
+            std::cout << "key[i]" << key[i] << " *key_to_unlock" << *key_to_unlock << std::endl;
             if(key[i] == *key_to_unlock)
             {
+                
                 typeColor = GREEN;
                 *locked = UNLOCKED;
+                break;
             }
         }
     }
+    if(*locked == UNLOCKED)
+    {
+       typeColor = GREEN; 
+    }
+    std::cout << "----------setImageCell----------" << std::endl;
+    std::cout << "Type : " << this->type << std::endl;
+    if(typeColor == RED)
+    {
+        std::cout << "TypeColor : red" << std::endl;
+
+    }
+    else if(typeColor == GREEN)
+    {
+        std::cout << "TypeColor : green" << std::endl;
+    }
+
+
 
 
     for(int i=0; i<3; i++)
@@ -169,6 +192,10 @@ void GameCell::l3018(int key[6], int cell_type)
     system("cls");
     std::cout << "Jeu local 3018" << std::endl;
     minigame.play_resistanceGame(key, this->type);
+    for(int i=0; i<6; i++)
+    {
+        std::cout << "key[i] " << key[i] << std::endl; 
+    }
 }
 
 void GameCell::l3041(int key[6], int cell_type)

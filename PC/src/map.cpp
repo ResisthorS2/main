@@ -174,7 +174,7 @@ Map::~Map()
 void Map::printMap()
 {
 	
-	system("cls");
+	//Ssystem("cls");
 	for(int y=0;y<hauteur;y++)
 	{
 		for(int i=0;i<3;i++)
@@ -223,7 +223,7 @@ void Map::updateMap()
 		for(int x=0;x<this->largeur;x++)
 		{
 			int null[] = {-1,-1,-1,-1,-1,-1};
-			cell[x][y]->setImageCell(cell[x][y], null);
+			cell[x][y]->setImageCell(cell[x][y], activeCell->player->objects);
 		}
 	}
 	
