@@ -3,7 +3,7 @@
 
 
 MiniGame minigame;
-
+int localASergeCnt = 0;
 GameCell::GameCell(int type)
 {
     std::cout << "Constructeur GameCell" << std::endl;
@@ -118,8 +118,13 @@ void GameCell::l3019()
 {
     system("cls");
     std::cout << "Jeu local 3019" << std::endl;
-    char wait;
-    std::cin >> wait;
+    if(localASergeCnt == 0){
+        minigame.departLocalASerge();
+        localASergeCnt++;
+    }else{
+        minigame.finLocalASerge();
+    }
+
 }
 
 void GameCell::l3018()

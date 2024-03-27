@@ -69,7 +69,7 @@ void printValues(AxisState& axisState, Position& pos, SolderState& solder){
     cout << "X = " << axisState.x << ", Y = " << axisState.y << endl;
     cout << "POSX = " << pos.x << ", POSY = " << pos.y << endl;
 }
-int MiniGame::play_solderGame(ActiveCell*a_cell) {
+int MiniGame::play_solderGame() {
     AxisState axisState;
     Position pos;
     SolderState solder;

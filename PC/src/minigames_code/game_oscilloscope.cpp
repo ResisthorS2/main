@@ -23,7 +23,7 @@ enum fctState{
     clear = 4
 };
 
-int MiniGame::play_oscilloscopeGame(ActiveCell*a_cell) {
+int MiniGame::play_oscilloscopeGame() {
     
     
     fct.sine = "Sine";
