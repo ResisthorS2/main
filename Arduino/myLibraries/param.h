@@ -6,10 +6,11 @@
 struct pin 
 {
 
-    int btn_droit = 22;
-    int btn_devant = 24;
-    int btn_gauche = 26;
-    int btn_180 = 28;
+    int btn_right = 50;
+    int btn_up = 51;
+    int btn_left = 48;
+    int btn_180 = 53;
+    int btn_select = 39;
 
 };
 

@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "../myLibraries/components.h"
+#include "../myLibraries/param.h"
 
 /*------------------------------ Constantes ---------------------------------*/
 
@@ -35,6 +36,10 @@ void setup()
 }
 
 JoyStick joystick;
+Accelerometer accelerometer;
+Motor motor;
+Pin pin;
+
 /* Boucle principale (infinie) */
 void loop()
 {
@@ -47,7 +52,7 @@ void loop()
 			while (digitalRead(53) == LOW) { delay(10); }
 
 			// Serialisation
-			jsg_msg["btn_180"] = digitalRead(53);
+			jsg_msg["btn_180"] = digitalRead(pin.btn_180);
 			serializeJson(jsg_msg, Serial);
 		}
 
@@ -56,7 +61,7 @@ void loop()
 			while (digitalRead(51) == LOW) { delay(10); }
 
 			// Serialisation
-			jsg_msg["btn_up"] = digitalRead(51);
+			jsg_msg["btn_up"] = digitalRead(pin.btn_up);
 			serializeJson(jsg_msg, Serial);
 		}
 
@@ -65,7 +70,7 @@ void loop()
 			while (digitalRead(48) == LOW) { delay(10); }
 
 			// Serialisation
-			jsg_msg["btn_left"] = digitalRead(48);
+			jsg_msg["btn_left"] = digitalRead(pin.btn_left);
 			serializeJson(jsg_msg, Serial);
 		}
 
@@ -74,7 +79,7 @@ void loop()
 			while (digitalRead(50) == LOW) { delay(10); }
 
 			// Serialisation
-			jsg_msg["btn_right"] = digitalRead(50);
+			jsg_msg["btn_right"] = digitalRead(pin.btn_right);
 			serializeJson(jsg_msg, Serial);
 		}
 
@@ -83,16 +88,16 @@ void loop()
 			while (digitalRead(39) == LOW) { delay(10); }
 
 			// Serialisation
-			jsg_msg["btn_select"] = digitalRead(39);
+			jsg_msg["btn_select"] = digitalRead(pin.btn_select);
 			serializeJson(jsg_msg, Serial);
 		}
 
-		jsg_msg["accelerometer"] = ReadAxis();
+		jsg_msg["accelerometer"] = accelerometer.ReadAxis();
 
 		jsg_msg["potentiometer_X"] = joystick.getX();
 		jsg_msg["potentiometer_Y"] = joystick.getY();
 
-		jsg_msg["motor"] = getMotorState();
+		jsg_msg["motor"] = motor.getMotorState();
 
 		// Envoie
 		Serial.println();

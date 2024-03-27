@@ -49,6 +49,21 @@ public:
     void setMotorState(bool motorState);
 };
 
-Acceleration ReadAxis()
+struct Acceleration {
+  float x;
+  float y;
+  float z;
+};
+
+class Accelerometer
+{
+    public:
+        Accelerometer();
+        float x;
+        float y;
+        float z;
+        Acceleration ReadAxis();
+};
+
 
 #endif

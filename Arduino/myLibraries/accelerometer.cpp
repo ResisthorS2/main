@@ -6,13 +6,9 @@ const int zInput = A2;
 
 const int sampleSize = 10;
 
-struct Acceleration {
-  float x;
-  float y;
-  float z;
-};
 
-Acceleration ReadAxis()
+
+Acceleration Accelerometer::ReadAxis()
 {
   float xReading = 0.0;
   float yReading = 0.0;
