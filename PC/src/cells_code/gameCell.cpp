@@ -149,7 +149,7 @@ void GameCell::l3016()
 void GameCell::l3024()
 {
     system("cls");
-    std::cout << "Jeu local 3024" << std::endl;
+    minigame.play_laboGame();
     char wait;
     std::cin >> wait;
 }

@@ -10,7 +10,7 @@
 
 
 
-int random_procedural(int base)     //Génère un chiffre aleatoire entre 0 et base ( inclut 0 et exclut base)
+int random_labo(int base)     //Génère un chiffre aleatoire entre 0 et base ( inclut 0 et exclut base)
 {
 /*
 Note utiliser ce code ralentit l'exécution du code car time(NULL) varie très lentements donc la fonction revoit plusieurs fois d'affiller le même nombre
@@ -23,7 +23,7 @@ car la seed ne change pas.
 }
 
 
-int MiniGame::play_proceduralGame(){
+int MiniGame::play_laboGame(){
 
     int nombre_aleatoire=5;
     int nombre_phrase=8;
@@ -31,7 +31,7 @@ int MiniGame::play_proceduralGame(){
     int nombre_mots=0;
     using namespace std;
     vector<string> mots;
-    ifstream question("procedural.txt");
+    ifstream question("labo.txt");
 
 
     if (question.fail()) {
@@ -41,9 +41,8 @@ int MiniGame::play_proceduralGame(){
     
     string lecture;
 
-    for(int h=0;h<random_procedural(nombre_phrase);h++){
-        getline(question, lecture);
-    }
+
+    getline(question, lecture);
     
 
     question.close();
@@ -58,12 +57,12 @@ int MiniGame::play_proceduralGame(){
 
     vector<int> position_mots;
     
-    cout<<"Arranger les mots suivants dans le bon ordre"<<endl;
+    cout<<"Programmer un programme pour imprimer Hello word en C"<<endl;
 
     int index = 0;
 
     while(index < 5){                                       //Scramble les mots
-        int position = random_procedural(5);
+        int position = random_labo(5);
         if(position_mots.size() ==0){                       // Ajoute le premier mots
             position_mots.push_back(position);
             index++;
@@ -97,7 +96,8 @@ int MiniGame::play_proceduralGame(){
     while(count<5)
     {
         system("cls");
-        cout<<" Ordre melanger : "<<endl;
+        cout<<"Programmer un programme pour imprimer Hello word en C"<<endl;
+        cout<<" Fonction connue : "<<endl;
         cout<< YELLOW;
         for(int y=0 ; y<position_mots.size(); y++)
         {
@@ -110,15 +110,15 @@ int MiniGame::play_proceduralGame(){
         cout<<endl;
 
 
-        cout<<" Ordre organise : "<<endl;
+        cout<<" Ce que vous avez ecris : "<<endl;
         for(int y=0 ; y<count; y++)
         {
-            cout << mots[y] << "  :  ";
+            cout << mots[y];
         }
 
         cout<<endl;
 
-        cout<<"Utiliser a ou d pour déplacer le pointeur et sélectionner avec w"<<endl;
+        cout<<"Utiliser a ou d pour deplacer le pointeur et selectionner avec w"<<endl;
 
         string clavier;
 
@@ -145,7 +145,7 @@ int MiniGame::play_proceduralGame(){
     }
 
     cout << "Felicitations vous avez reussis"<<endl;
-    cout << "Voici la phrase : "<<endl;
+    cout << "Voici votre code : "<<endl;
     for(int y=0 ; y<count; y++)
     {
         cout << mots[y]<< " ";
@@ -153,8 +153,36 @@ int MiniGame::play_proceduralGame(){
 
     cout<<endl;
 
+
+    system("cls");
+
+    cout<<"L'ordianteur de l'universite a planter, relancer l'ordinateur en appuyant sur une touche"<<endl;
+
+    string reset_ordi;
+
+    cin>> reset_ordi;
+
+    cout<<"Redémarage en cours"<<endl;
+
+    system("cls");
+    cout<< "Ordi allumé"<< endl;
+
+    system("cls");
+    cout<< "Execution du programme"<< endl;
+    cout << "Voici votre code : "<<endl;
+    for(int y=0 ; y<count; y++)
+    {
+        cout << mots[y]<< " ";
+    }
+
+    cout<<endl;
+
+    cout<<"Voici la sortie console : "<<endl;
+
+    cout<< "Hello word"<<endl;
+
     cout << "Appuyer sur une touche afin de retourner sur la carte" << endl;
 
+
     return 0;
-    
 }
