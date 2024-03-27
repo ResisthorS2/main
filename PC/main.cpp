@@ -78,6 +78,7 @@ int main(){
             // Reception message Arduino
 
             j_msg_rcv1.clear();
+            raw_msg.clear();
             while(raw_msg.back()!='\n')
             {
                 if(raw_msg.size()>MSG_MAX_SIZE)
@@ -101,7 +102,7 @@ int main(){
                 {
                     j_msg_rcv1 = json::parse(raw_msg);
                     //engine->updateComponents(j_msg_rcv1, raw_msg);
-                    //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
+                    std::cout << "parse "<< std::endl;
                 } 
                 catch (json::exception& e) {}
             }
@@ -111,7 +112,7 @@ int main(){
                 
             //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
 
-            if(j_msg_rcv1["btn_180"] == HIGH)
+            if(j_msg_rcv1["btn_180"] == LOW)
             {
                 map.activeCell->move(DOWN, engine);
                 map.updateMap();
@@ -119,7 +120,7 @@ int main(){
                 continue;
             }
             //std::cout << "l.117" << std::endl;
-            if(j_msg_rcv1["btn_up"] == HIGH)
+            if(j_msg_rcv1["btn_up"] == LOW)
             {
                 map.activeCell->move(UP, engine);
                 map.updateMap();
@@ -127,7 +128,7 @@ int main(){
                 continue;
             }
 
-            if(j_msg_rcv1["btn_left"] == HIGH)
+            if(j_msg_rcv1["btn_left"] == LOW)
             {
                 map.activeCell->move(LEFT, engine);
                 map.updateMap();
@@ -135,7 +136,7 @@ int main(){
                 continue;
             }
 
-            if(j_msg_rcv1["btn_right"] == HIGH)
+            if(j_msg_rcv1["btn_right"] == LOW)
             {
                 map.activeCell->move(RIGHT, engine);
                 map.updateMap();

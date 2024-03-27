@@ -38,6 +38,12 @@ JoyStick joystick;
 Accelerometer accelerometer;
 Motor motor;
 Pin pin;
+int btnStateUp = 1;
+int btnStateDown = 1;
+int btnStateRight = 1;
+int btnStateLeft = 1;
+int btnStateCenter = 1;
+int btnStateJoyStick = 1;
 
 
 /* Boucle principale (infinie) */
@@ -71,21 +77,19 @@ void loop()
     
     StaticJsonDocument<1000> jsg_msg;
     //jsg_msg["led"] = 0;
-    jsg_msg["btn_180"] = 0;
-    jsg_msg["btn_up"] = 0;
-    jsg_msg["btn_left"] = 0;
-    jsg_msg["btn_right"] = 0;
-    jsg_msg["btn_select"] = 0;
     //jsg_msg["accelerometer_X"] = 0;
     //jsg_msg["accelerometer_Y"] = 0;
     //jsg_msg["accelerometer_Z"] = 0;
     //jsg_msg["potentiometer_X"] = 0;
     //jsg_msg["potentiometer_Y"] = 0;
     //jsg_msg["motor"] = 0;
+    jsg_msg["btn_180"] = digitalRead(53);
+    jsg_msg["btn_up"] = digitalRead(51);
+    jsg_msg["btn_left"] = digitalRead(48);
+    jsg_msg["btn_right"] = digitalRead(50);
+    jsg_msg["btn_select"] = digitalRead(39);
 
-    int state = 0;
-
-    if (digitalRead(53) == LOW)
+    /**if (digitalRead(53) == LOW)
     {
         while (digitalRead(53) == LOW)
         {
@@ -94,7 +98,6 @@ void loop()
 
         // Serialisation
         jsg_msg["btn_180"] =  1;
-        state = 1;
 
     }
 
@@ -107,7 +110,6 @@ void loop()
 
         // Serialisation
         jsg_msg["btn_up"] =  1;
-        state = 1;
  
     }
 
@@ -120,7 +122,6 @@ void loop()
 
         // Serialisation
         jsg_msg["btn_left"] =  1;
-        state = 1;
 
     }
 
@@ -133,7 +134,6 @@ void loop()
 
         // Serialisation
         jsg_msg["btn_right"] =  1;
-        state = 1;
 
     }
 
@@ -146,9 +146,8 @@ void loop()
 
         // Serialisation
         jsg_msg["btn_select"] = 1;
-        state = 1;
 
-    }
+    }**/
     /**
     Acceleration accel = accelerometer.ReadAxis();
     jsg_msg["accelerometer_X"] = accel.x;
@@ -162,14 +161,21 @@ void loop()
     jsg_msg["motor"] = 0;*/
 
     // Envoie
-    if(state == 1)
+    if(jsg_msg["btn_180"] != btnStateDown || jsg_msg["btn_up"] != btnStateUp || jsg_msg["btn_left"] != btnStateLeft || jsg_msg["btn_right"] != btnStateRight || jsg_msg["btn_select"] != btnStateCenter)
     {
         serializeJson(jsg_msg, Serial);
         Serial.println();
     }
+
+
+    btnStateCenter = jsg_msg["btn_select"];
+    btnStateDown = jsg_msg["btn_180"];
+    btnStateUp = jsg_msg["btn_up"];
+    btnStateLeft = jsg_msg["btn_left"];
+    btnStateRight = jsg_msg["btn_right"];
     
 
-    delay(200); // delais de 10 ms**/
+    delay(100); // delais de 10 ms**/
 }
 
 /*---------------------------Definition de fonctions ------------------------*/
