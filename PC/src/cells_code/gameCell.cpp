@@ -132,9 +132,8 @@ void GameCell::l3018()
 
 void GameCell::l3041()
 {
-    
     system("cls");
-    std::cout << "Jeu local 3041" << std::endl;
+    minigame.play_proceduralGame();
     char wait;
     std::cin >> wait;
 }
