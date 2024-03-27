@@ -35,7 +35,7 @@ class Engine
         ~Engine();	
         bool SendToSerial(SerialPort *arduino, json j_msg);
         bool RcvFromSerial(SerialPort *arduino, std::string &msg);
-        void updateComponents(json j_msg_rcv, std::string raw_msg);
+        json updateComponents(SerialPort *arduino, json j_msg_rcv, std::string raw_msg);
         json j_msg_send, j_msg_rcv;
         std::string dialogue;
         SerialPort *arduino;

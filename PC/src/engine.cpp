@@ -67,35 +67,38 @@ bool Engine::RcvFromSerial(SerialPort *arduino, std::string &msg){
     return true;
 }
 
-void Engine::updateComponents(json j_msg_rcv, std::string raw_msg)
+json Engine::updateComponents(SerialPort *arduino, json j_msg_rcv1, std::string raw_msg)
 {
-    //std::cout << "updateComponents" << std::endl;
-    try
-    {
-        
-        if (j_msg_rcv.empty())
-        {   
-            throw std::runtime_error("Empty message");
-        }
-    }
-    catch(const std::exception& e)
-    {
-        
-        return;
-    }
-    
+            j_msg_rcv1.clear();
+            raw_msg.clear();
+            while(raw_msg.back()!='\n')
+            {
+                if(raw_msg.size()>MSG_MAX_SIZE)
+                {
+                    break;
+                }
+                std::string str_buffer;
+                char char_buffer[MSG_MAX_SIZE];
+                int buffer_size;
+                buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
+                str_buffer.assign(char_buffer, buffer_size);
+                raw_msg.append(str_buffer);
+            }
+            
+            
+            // Impression du message de l'Arduino si valide
+            if(raw_msg.size()>0){
+                //std::cout << "raw_msg: " << raw_msg  << "----------" << std::endl;  // debug
+                // Transfert du message en json
+                try
+                {
+                    j_msg_rcv1 = json::parse(raw_msg);
+                    //engine->updateComponents(j_msg_rcv1, raw_msg);
+                    //std::cout << "parse "<< std::endl;
+                } 
+                catch (json::exception& e) {}
+            }
 
-    
-    // Update components
-    input->potentiometer_X = j_msg_rcv["potentiometer_X"];
-    input->potentiometer_Y = j_msg_rcv["potentiometer_Y"];
-    input->motor = j_msg_rcv["motor"];
-    input->btn_180 = j_msg_rcv["btn_180"];
-    input->btn_up = j_msg_rcv["btn_up"];
-    input->btn_left = j_msg_rcv["btn_left"];
-    input->btn_right = j_msg_rcv["btn_right"];
-    input->btn_select = j_msg_rcv["btn_select"];
-    input->accelerometer_X = j_msg_rcv["accelerometer"]["x"];
-    input->accelerometer_Y = j_msg_rcv["accelerometer"]["y"];
-    input->accelerometer_Z = j_msg_rcv["accelerometer"]["z"];
+            return j_msg_rcv1;
+
 }

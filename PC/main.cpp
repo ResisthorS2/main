@@ -70,48 +70,9 @@ int main(){
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
         map.printMap();
         while(1)
-        {
-
-
-
-            
-            // Reception message Arduino
-
-            j_msg_rcv1.clear();
-            raw_msg.clear();
-            while(raw_msg.back()!='\n')
-            {
-                if(raw_msg.size()>MSG_MAX_SIZE)
-                {
-                    break;
-                }
-                std::string str_buffer;
-                char char_buffer[MSG_MAX_SIZE];
-                int buffer_size;
-                buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-                str_buffer.assign(char_buffer, buffer_size);
-                raw_msg.append(str_buffer);
-            }
-            
-            
-            // Impression du message de l'Arduino si valide
-            if(raw_msg.size()>0){
-                cout << "raw_msg: " << raw_msg  << "----------" << endl;  // debug
-                // Transfert du message en json
-                try
-                {
-                    j_msg_rcv1 = json::parse(raw_msg);
-                    //engine->updateComponents(j_msg_rcv1, raw_msg);
-                    std::cout << "parse "<< std::endl;
-                } 
-                catch (json::exception& e) {}
-            }
-            
-            
-
-                
+        {  
             //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
-
+            j_msg_rcv1 = engine->updateComponents(arduino, j_msg_rcv1, raw_msg);
             if(j_msg_rcv1["btn_180"] == LOW)
             {
                 map.activeCell->move(DOWN, engine);

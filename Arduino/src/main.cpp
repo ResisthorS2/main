@@ -43,7 +43,15 @@ int btnStateDown = 1;
 int btnStateRight = 1;
 int btnStateLeft = 1;
 int btnStateCenter = 1;
-int btnStateJoyStick = 1;
+int joyState_X = 1;
+int joyState_Y = 1;
+int motorState = 1;
+int accSate_X = 1;
+int accSate_Y = 1;
+int accSate_Z = 1;
+int potState = 1;
+
+
 
 
 /* Boucle principale (infinie) */
@@ -76,13 +84,14 @@ void loop()
 
     
     StaticJsonDocument<1000> jsg_msg;
-    //jsg_msg["led"] = 0;
-    //jsg_msg["accelerometer_X"] = 0;
-    //jsg_msg["accelerometer_Y"] = 0;
-    //jsg_msg["accelerometer_Z"] = 0;
-    //jsg_msg["potentiometer_X"] = 0;
-    //jsg_msg["potentiometer_Y"] = 0;
-    //jsg_msg["motor"] = 0;
+    jsg_msg["led"] = 0;
+    Acceleration accel = accelerometer.ReadAxis();
+    jsg_msg["accelerometer_X"] = accel.x;
+    jsg_msg["accelerometer_Y"] = accel.y;
+    jsg_msg["accelerometer_Z"] = accel.z;
+    jsg_msg["joystick_X"] = joystick.getX();
+    jsg_msg["joystick_Y"] = joystick.getY();
+    jsg_msg["potentiometer"] = analogRead(0);
     jsg_msg["btn_180"] = digitalRead(53);
     jsg_msg["btn_up"] = digitalRead(51);
     jsg_msg["btn_left"] = digitalRead(48);
@@ -173,6 +182,16 @@ void loop()
     btnStateUp = jsg_msg["btn_up"];
     btnStateLeft = jsg_msg["btn_left"];
     btnStateRight = jsg_msg["btn_right"];
+    joyState_X = jsg_msg["joystick_X"];
+    joyState_Y = jsg_msg["joystick_Y"];
+    accSate_X = jsg_msg["accelerometer_X"];
+    accSate_Y = jsg_msg["accelerometer_Y"];
+    accSate_Z = jsg_msg["accelerometer_Z"];
+    potState = jsg_msg["potentiometer"];
+
+
+
+
     
 
     delay(100); // delais de 10 ms**/

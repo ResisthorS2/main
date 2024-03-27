@@ -174,7 +174,7 @@ Map::~Map()
 void Map::printMap()
 {
 	
-	//system("cls");
+	system("cls");
 	for(int y=0;y<hauteur;y++)
 	{
 		for(int i=0;i<3;i++)
