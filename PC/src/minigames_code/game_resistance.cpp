@@ -2,6 +2,7 @@
 
 
 
+
 using namespace std;
 
 // Definition de la serie E24
@@ -40,7 +41,7 @@ double findResistance(double valeur) {
 }
 
 // Fonction principale du jeu
-int MiniGame::play_resistanceGame() {
+int MiniGame::play_resistanceGame(int key[6], int cell_type) {
     
 
     while(1)
@@ -72,6 +73,14 @@ int MiniGame::play_resistanceGame() {
             cout << "Appuyer sur une touche pour sortir du local" << endl;
             char wait;
             std::cin >> wait;
+            for(int i = 0; i < 6; i++)
+            {
+                if(key[i] == -1)
+                {
+                    key[i] = 3016;
+                    break;
+                }
+            }
             return 0; // Fin du jeu sans erreur
         } else {
             cout << "Desole, vous n'avez pas choisi la bonne resistance." << endl;

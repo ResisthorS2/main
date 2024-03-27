@@ -5,29 +5,7 @@
 
 #include <iostream>
 
-#define LOCKED 1
-#define UNLOCKED 0
-
-#define VIDE 0  
-#define COULOIR 1  
-#define DOORNORTH 2  
-#define DOORSOUTH 3  
-#define DOOREAST 4  
-#define DOORWEST 5  
-#define INTERSECTION 6
-
-#define LEFT 0
-#define RIGHT 1
-#define UP 2
-#define DOWN 3
-
-
-const int NONE=-1;
-const int north=0;
-const int east=1;
-const int south=2;
-const int west=3;
-const int maxRoom=50;
+#include "player.h"
 
 /**
  * @class Cell
@@ -68,7 +46,7 @@ class Cell
          * @brief Méthode pour définir l'image de la cellule
          * @param cell La cellule dont l'image doit être définie : Cell*
          */
-        virtual void setImageCell(Cell *cell);
+        virtual void setImageCell(Cell *cell, int key[6]);
 
         /**
          * @brief Méthode pour imprimer la cellule
@@ -113,7 +91,7 @@ class Cell
          * @param key La clé pour entrer dans la cellule : int[maxRoom]
          * @return Pointeur vers la cellule entrée
          */
-        virtual Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT);
+        virtual Cell *enterCell(int *orientation, int key[6], int direction = RIGHT);
 
         /**
          * @brief Méthode pour obtenir la cellule d'entrée

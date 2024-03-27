@@ -2,6 +2,7 @@
 #define ACTIVECELL_H
 
 #include "cell.h"
+#include "player.h"
 
 //direction
 #define LEFT 0
@@ -26,17 +27,7 @@ class ActiveCell : public Cell
          */
         ~ActiveCell();
 
-        /**
-         * @brief Méthode pour obtenir l'orientation de la cellule active
-         * @return L'orientation de la cellule active : int{NONE=-1, north=0, south=1, east=2, west=3}
-         */
-        int getOrientation();
-
-        /**
-         * @brief Méthode pour définir l'orientation de la cellule active
-         * @param orientation L'orientation à définir : int{NONE=-1, north=0, south=1, east=2, west=3}
-         */
-        void setOrientation(int orientation);
+        
 
         /**
          * @brief Méthode pour définir l'image de la cellule active
@@ -68,16 +59,16 @@ class ActiveCell : public Cell
          * @return La clé de la cellule active : int
          */
         int getKey();
-
+        Player *player; // Joueur
     private:
+        
         Cell* cell_north; // Cellule voisine au nord
         Cell* cell_south; // Cellule voisine au sud
         Cell* cell_east; // Cellule voisine à l'est
         Cell* cell_west; // Cellule voisine à l'ouest
-        int orientation; // Orientation de la cellule active int{NONE=-1, north=0, south=1, east=2, west=3}
         int *type; // Type de la cellule active : int{VIDE=0, COULOIR=1, DOORNORTH=2, DOORSOUTH=3, DOOREAST=4, DOORWEST=5}
         int *locked; // État de verrouillage de la cellule active : int{UNLOCKED=0, LOCKED=1}
         std::string *imageCell[3][3]; // Image de la cellule active : int[3][3]
-        int keys[1] = {1}; // Clé de la cellule active
+        
 };
 #endif

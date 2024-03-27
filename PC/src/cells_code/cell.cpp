@@ -17,7 +17,8 @@ Cell::Cell()
 
     this->type = VIDE;
     locked = UNLOCKED;
-    this->setImageCell(this);
+    int null[] = {-1,-1,-1,-1,-1,-1};
+    this->setImageCell(this, null);
     cell_north = NULL;
     cell_south = NULL;
     cell_east = NULL;
@@ -43,8 +44,8 @@ Cell::Cell(int type)
         this->locked = UNLOCKED;
     }
 
-
-    this->setImageCell(this);
+    int null[] = {-1,-1,-1,-1,-1,-1};
+    this->setImageCell(this, null);
     
 }
 
@@ -63,7 +64,7 @@ Cell::~Cell()
 
 
 
-void Cell::setImageCell(Cell *cell)
+void Cell::setImageCell(Cell *cell, int key[6])
 {
     //definition des couleurs pour les prints des cellules
     std::string RESET  = "\x1b[0m";
@@ -144,7 +145,8 @@ void Cell::printCell()
 void Cell::setType(int type)
 {
     this->type = type;
-    this->setImageCell(this);
+    int null[] = {-1,-1,-1,-1,-1,-1};
+    this->setImageCell(this, null);
 }
 
 void Cell::setLocked(int locked)
@@ -196,7 +198,7 @@ Cell* Cell::getCellAround(int orientation)
 }
 
 
-Cell *Cell::enterCell(int *orientation, int key[1], int direction) //Fonction super importante.
+Cell *Cell::enterCell(int *orientation, int key[6], int direction) //Fonction super importante.
 {
     int inverseOrientation[] = {south, north, west, east}; //tableau pour regarder l'orientation inverse du joueur. Exemple: si le joueur est orienté vers le nord, inverseOrientation[north] = south
     

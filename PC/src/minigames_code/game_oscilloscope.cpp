@@ -23,7 +23,7 @@ enum fctState{
     clear = 4
 };
 
-int MiniGame::play_oscilloscopeGame(ActiveCell*a_cell) {
+int MiniGame::play_oscilloscopeGame(int key[6], int cell_type) {
     
     
     fct.sine = "Sine";
@@ -116,6 +116,14 @@ int MiniGame::play_oscilloscopeGame(ActiveCell*a_cell) {
             fonctionState = clear;
         }
     }
+    /**for(int i = 0; i < 6; i++)
+    {
+        if(key[i] == -1)
+        {
+            key[i] = 3024;
+            break;
+        }
+    }**/
     return 0;
     // Fin du jeu sans erreur
 }

@@ -1,6 +1,7 @@
 #ifndef GAMECELL_H
 #define GAMECELL_H
 #include "cell.h"
+#include "player.h"
 
 
 class GameCell : public Cell
@@ -9,14 +10,17 @@ class GameCell : public Cell
         GameCell();
         GameCell(int type);
         ~GameCell();
-        Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT) override;
-        void l3022();
-        void l3019();
-        void l3018();
-        void l3041();
-        void l3016();
-        void l3024();
-        void setImageCell(Cell *cell) override;
+        Cell *enterCell(int *orientation, int key[6], int direction = RIGHT) override;
+        void l3022(int key[6], int cell_type);
+        void l3019(int key[6], int cell_type);
+        void l3018(int key[6], int cell_type);
+        void l3041(int key[6], int cell_type);
+        void l3016(int key[6], int cell_type);
+        void l3024(int key[6], int cell_type);
+        void setImageCell(Cell *cell, int key[6]) override;
+        int *locked;
+    private:
+        int *key_to_unlock;
 };
 
 #endif

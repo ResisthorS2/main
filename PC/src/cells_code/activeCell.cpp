@@ -13,8 +13,8 @@
 
 ActiveCell::ActiveCell()
 {
-    orientation = north;
-
+    
+    player = new Player;
     cell_north = nullptr;
     cell_south = nullptr;
     cell_east = nullptr;
@@ -32,10 +32,7 @@ ActiveCell::~ActiveCell()
 
 }
 
-int ActiveCell::getOrientation()
-{
-    return orientation;
-}
+
 
 void ActiveCell::setImageCell(ActiveCell *cell) //Ici c'est un fonction surloadé. Elle est utilisé pour mettre à jour l'image de la cellule active
 {
@@ -50,11 +47,12 @@ void ActiveCell::setImageCell(ActiveCell *cell) //Ici c'est un fonction surload�
     std::string WHITE  = "\x1b[37m";      /* White */
     std::string typeColor;
 
-    
-    if(orientation != NONE)
+
+    if(player->orientation != NONE)
     {   
         //printf("orientation : %d\n", orientation);
-        switch (orientation)
+        
+        switch (player->orientation)
         {
             
             case north:
@@ -101,13 +99,14 @@ void ActiveCell::cpyCell(Cell* cell)
 
 void ActiveCell::move(int direction)
 {
+    std::cout << "move" << std::endl;
     int directionPossible[] = {north, east, south, west}; // ici c'est pour pas faire des switchs cases pour tourner à droite ou à gauche J'ai mis un XXX ou que c'est utilisé
     int index;
 
 
     for(int i=0; i<4; i++)
     {
-        if(this->getOrientation() == directionPossible[i])
+        if(player->orientation == directionPossible[i])
         {
             index = i;
         }
@@ -132,17 +131,20 @@ void ActiveCell::move(int direction)
 
         case DOWN:
             
+            
             int inverseOrientation[] = {south, west, north, east};
-            this->setOrientation(inverseOrientation[this->getOrientation()]);
+            player->setOrientation(inverseOrientation[player->orientation]);
+            std::cout << "l.137" << player->orientation << std::endl;
             return;
     }
 
 
     if(*this->type > 1 && *this->type != 6 && *this->type < 3000)
     {
-        
-        if(orientation != (*this->type-2)) //TODO
+        std::cout << "l.144" << std::endl;
+        if(player->orientation != (*this->type-2)) //TODO
         {
+            std::cout << "Vous ne pouvez pas passer par là" << std::endl;
             return;
         }
     }
@@ -150,9 +152,14 @@ void ActiveCell::move(int direction)
     
     if(this->getCellAround(index) != NULL)
     {
+        std::cout << "l.156"  << std::endl;
         if(*(this->getCellAround(index))->getType() != 6)
         {
-            Cell *cell = (this->getCellAround(index))->enterCell(&index, this->keys, direction);
+            std::cout << "l.159" << std::endl;
+            std::cout << "index : " << index << std::endl;
+            std::cout << "player->orientation : " << player->orientation << std::endl;
+            std::cout << "direction : " << direction << std::endl;
+            Cell *cell = (this->getCellAround(index))->enterCell(&index, player->objects, direction);
             if(cell != NULL)
             {
                 this->cpyCell(cell);
@@ -162,7 +169,8 @@ void ActiveCell::move(int direction)
 
         else
         {
-            Cell *cell = (this->getCellAround(orientation))->enterCell(&orientation, this->keys, direction);
+            std::cout << "l.170" << std::endl;
+            Cell *cell = (this->getCellAround(player->orientation))->enterCell(&player->orientation, player->objects, direction);
             if(cell != NULL)
             {
                 this->cpyCell(cell);
@@ -173,15 +181,12 @@ void ActiveCell::move(int direction)
     }
     else
     {
+        std::cout << "l.178" << player->orientation << std::endl;
         return;
     }
 
 }
 
-void ActiveCell::setOrientation(int orientation)
-{
-    this->orientation = orientation;
-}
 
 Cell *ActiveCell::getCellAround(int orientation)
 {
@@ -204,9 +209,5 @@ Cell *ActiveCell::getCellAround(int orientation)
     return NULL;
 }
 
-int ActiveCell::getKey()
-{
-    return keys[0];
-}
 
 

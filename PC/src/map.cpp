@@ -217,11 +217,13 @@ bool Map::verifCle(int index)
 void Map::updateMap()
 {
 	
+
 	for(int y=0;y<this->hauteur;y++)
 	{
 		for(int x=0;x<this->largeur;x++)
 		{
-			cell[x][y]->setImageCell(cell[x][y]);
+			int null[] = {-1,-1,-1,-1,-1,-1};
+			cell[x][y]->setImageCell(cell[x][y], null);
 		}
 	}
 	
