@@ -116,7 +116,7 @@ int MiniGame::play_proceduralGame(){
 
         cout<<endl;
 
-        cout<<"Entrez au clavier l'ordre dans lequel il faut mettre les mots afin de comprendre ce que voulait dire le prof"<<endl;
+        cout<<"Utiliser a ou d pour déplacer le pointeur et sélectionner avec w"<<endl;
 
         string clavier;
 
