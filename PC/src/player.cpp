@@ -5,7 +5,7 @@
 Player::Player()
 {
     objects = new int[6];
-    objects[0] = 3022;
+    objects[0] = 3019;
     for(int i = 1; i < 6; i++)
     {
         objects[i] = -1;

@@ -28,8 +28,14 @@ void serialEvent();
 void setup()
 {
     Serial.begin(BAUD); // Initialisation de la communication serielle
-    pinMode(pinLED, OUTPUT);
-    digitalWrite(pinLED, 1);
+
+
+    pinMode(36, OUTPUT);
+    pinMode(35, OUTPUT);
+    pinMode(34, OUTPUT);
+    pinMode(33, OUTPUT);
+    pinMode(32, OUTPUT);
+    pinMode(31, OUTPUT);
 
     pinMode(22, INPUT_PULLUP);
 }
@@ -97,6 +103,15 @@ void loop()
     jsg_msg["btn_left"] = digitalRead(48);
     jsg_msg["btn_right"] = digitalRead(50);
     jsg_msg["btn_select"] = digitalRead(52);
+
+    digitalWrite(35, jsg_msg["btn_180"]);
+    digitalWrite(33, jsg_msg["btn_up"]);
+    digitalWrite(31, jsg_msg["btn_left"]);
+    digitalWrite(32, jsg_msg["btn_right"]);
+    digitalWrite(36, jsg_msg["btn_select"]);
+
+
+
 
     /**if (digitalRead(53) == LOW)
     {

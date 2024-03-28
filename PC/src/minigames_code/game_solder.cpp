@@ -5,14 +5,14 @@
 using namespace std;
 struct AxisState {
     int y = 0;
-    int z = 0;
+    int x = 0;
+    int lastX = 1;
     int lastY = 1;
-    int lastZ = 1;
 };
 struct Position {
-    int z = 0;
+    int x = 0;
     int y = 0;
-    int lastZ = 1;
+    int lastX = 1;
     int lastY = 1;
 };
 struct SolderState {
@@ -25,7 +25,7 @@ int gameState = 1;
 void UpdateAxis(AxisState& axisState, Engine* engine) {
     
     engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-    axisState.z = 0;
+    axisState.x = 0;
     axisState.y = 0;
 
     if (engine->j_msg_rcv["accelerometer_Y"] < -0.2) {
@@ -35,9 +35,9 @@ void UpdateAxis(AxisState& axisState, Engine* engine) {
     }
 
     if (engine->j_msg_rcv["accelerometer_Z"]  > 0.2) {
-        axisState.z = 1;
+        axisState.x = -1;
     } else if (engine->j_msg_rcv["accelerometer_Z"]  < -0.2) {
-        axisState.z = -1;
+        axisState.x = 1;
     }
     if (GetAsyncKeyState('q') & 0x8000) {
         gameState = 0;
@@ -71,69 +71,70 @@ void printValues(AxisState& axisState, Position& pos, SolderState& solder){
     else
         cout << "" << endl;
     cout <<""<<endl;
-    cout << "Z = " << axisState.z << ", Y = " << axisState.y << endl;
-    cout << "POSZ = " << pos.z << ", POSY = " << pos.y << endl;
+    cout << "X = " << axisState.x << ", Y = " << axisState.y << endl;
+    cout << "POSX = " << pos.x << ", POSY = " << pos.y << endl;
 }
 int MiniGame::play_solderGame(int key[6], int cell_type, Engine* engine) {
     AxisState axisState;
     Position pos;
     SolderState solder;
     int solderTimer = 0;
+    int delay = 20;
     while(gameState)
     {
         UpdateAxis(axisState,engine);
-        if(axisState.z != axisState.lastZ || axisState.y != axisState.lastY){
+        if(axisState.x != axisState.lastX || axisState.y != axisState.lastY){
             system("cls");
             printValues(axisState, pos, solder);
         }
-        axisState.lastZ = axisState.z;
+        axisState.lastX = axisState.x;
         axisState.lastY = axisState.y;
-        if(axisState.z == -1 && pos.z > 0)  
-            pos.z -= 1;
-        else if(axisState.z == 1 && pos.z < 1022)
-            pos.z += 1;
+        if(axisState.x == -1 && pos.x > 0)  
+            pos.x -= 1;
+        else if(axisState.x == 1 && pos.x < 1022)
+            pos.x += 1;
         if(axisState.y == -1 && pos.y > 0)  
             pos.y -= 1;
         else if(axisState.y == 1 && pos.y < 1023)
             pos.y += 1;
         
-        if(pos.z != pos.lastZ || pos.y != pos.lastY){
+        if(pos.x != pos.lastX || pos.y != pos.lastY){
             system("cls");
             printValues(axisState, pos, solder);
         }
-        pos.lastZ = pos.z;
+        pos.lastX = pos.x;
         pos.lastY = pos.y;
 
-        if(pos.z == 10 && pos.y == 10){
+        if(pos.x >= 8 && pos.x <= 12 && pos.y <= 12 && pos.y >= 8){
             solderTimer +=1;
-            if(pos.z == 10 && pos.y == 10 && solderTimer == 333){
+            if(pos.x >= 8 && pos.x <= 12 && pos.y <= 12 && pos.y >= 8 && solderTimer == delay){
                 solderTimer = 0;
                 solder.pin1 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.z == 10 && pos.y == 15){
+        else if(pos.x >= 8 && pos.x <= 12 && pos.y <= 17 && pos.y >= 13){
             solderTimer +=1;
-            if(pos.z == 10 && pos.y == 15 && solderTimer == 333){
+            if(pos.x >= 8 && pos.x <= 12 && pos.y <= 17 && pos.y >= 13 && solderTimer == delay){
                 solderTimer = 0;
                 solder.pin2 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.z == 0 && pos.y == 15){
+        else if(pos.x >= 0 && pos.x <= 4 && pos.y <= 17 && pos.y >= 13){
             solderTimer +=1;
-            if(pos.z == 0 && pos.y == 15 && solderTimer == 333){
+            if(pos.x >= 0 && pos.x <= 4 && pos.y <= 17 && pos.y >= 13 && solderTimer == delay){
                 solderTimer = 0;
                 solder.pin3 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.z == 50 && pos.y == 50){
+        else if(pos.x >= 48 && pos.x <= 52 && pos.y <= 52 && pos.y >= 48){
             solderTimer +=1;
-            if(pos.z == 50 && pos.y == 50 && solderTimer == 333){
+            if(pos.x >= 48 && pos.x <= 52 && pos.y <= 52 && pos.y >= 48 && solderTimer == delay){
                 solderTimer = 0;
                 solder.pin4 = 1;
                 system("cls");

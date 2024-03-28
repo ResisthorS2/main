@@ -4,6 +4,7 @@
 
 
 MiniGame minigame;
+int localASergeCnt = 0;
 
 GameCell::GameCell(int type)
 {
@@ -19,7 +20,7 @@ GameCell::GameCell(int type)
     locked = new int;
     *locked = LOCKED;
     int null[] = {-1,-1,-1,-1,-1,-1};
-    if(type == 3022)
+    if(type == 3019)
     {
         std::cout << "type = " << type << std::endl;
         *locked = UNLOCKED;
@@ -184,9 +185,12 @@ void GameCell::l3019(int key[6], int cell_type, Engine *engine)
 {
     system("cls");
     std::cout << "Jeu local 3019" << std::endl;
-
-    char wait;
-    std::cin >> wait;
+    if(localASergeCnt == 0){
+        minigame.departLocalASerge(key, engine);
+        localASergeCnt++;
+    }else{
+        minigame.finLocalASerge(key, engine);
+    }
 }
 
 void GameCell::l3018(int key[6], int cell_type, Engine *engine)

@@ -114,6 +114,7 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
             cout << "You have succeded to clarify the " << fonction << " Wave." << endl;
             gameState = 0;
             Sleep(5000);
+            engine->addObjects(key, 3019);
             return 0;
         }
 

@@ -14,6 +14,8 @@ class MiniGame
         int play_solderGame(int key[6], int cell_type, Engine* engine);
         int play_laboGame(int key[6], int cell__type, Engine* engine);
         int play_proceduralGame(int key[6], int cell__type, Engine* engine);
+        int finLocalASerge(int key[6], Engine *engine);
+        int departLocalASerge(int key[6], Engine *engine);
         //ajouter votre fonction ici
 };
 

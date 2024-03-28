@@ -68,6 +68,7 @@ int main(){
         
 
         // Boucle pour tester la communication bidirectionnelle Arduino-PC
+       
         map.printMap();
         while(1)
         {  

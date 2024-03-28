@@ -35,7 +35,7 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
     ifstream question("labo.txt");
 
     
-    string lecture = "printf (\" Hello word \")";
+    string lecture = "printf (\" Hello world \")";
 
     stringstream ss(lecture);
     std::string mot;
@@ -47,7 +47,7 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
 
     vector<int> position_mots;
     
-    cout<<"Programmer un programme pour imprimer Hello word en C"<<endl;
+    cout<<"Programmer un programme pour imprimer Hello world en C"<<endl;
 
     int index = 0;
 
@@ -86,7 +86,7 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
     while(count<5)
     {
         system("cls");
-        cout<<"Programmer un programme pour imprimer Hello word en C"<<endl;
+        cout<<"Programmer un programme pour imprimer Hello world en C"<<endl;
         cout<<" Fonction connue : "<<endl;
         cout<< YELLOW;
         for(int y=0 ; y<position_mots.size(); y++)
@@ -138,7 +138,7 @@ allumer les LED
 */
 
 
-        engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+        engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
     }
 
     cout << "Felicitations vous avez reussis"<<endl;
@@ -156,39 +156,43 @@ allumer les LED
     cout<<"L'ordianteur de l'universite a planter, relancer l'ordinateur en appuyant sur le bouton central"<<endl;
     bool arret_boucle=true;
     while(arret_boucle)
-    if(engine->j_msg_rcv["btn_select"] == HIGH){
-        cout<<"Redémarage en cours"<<endl;
-
-        system("cls");
-        cout<< "Ordi allumé"<< endl;
-
-        system("cls");
-        cout<< "Execution du programme"<< endl;
-        cout << "Voici votre code : "<<endl;
-        for(int y=0 ; y<count; y++)
+    {
+        engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+        if(engine->j_msg_rcv["btn_select"] == 0)
         {
-            cout << mots[y]<< " ";
+            cout<<"Redémarage en cours"<<endl;
+
+            system("cls");
+            cout<< "Ordi allumé"<< endl;
+
+            system("cls");
+            cout<< "Execution du programme"<< endl;
+            cout << "Voici votre code : "<<endl;
+            for(int y=0 ; y<count; y++)
+            {
+                cout << mots[y]<< " ";
+            }
+
+            cout<<endl;
+
+            cout<<"Voici la sortie console : "<<endl;
+
+            cout<< "Hello world"<<endl;
+            engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+
+            arret_boucle=false;
         }
-
-        cout<<endl;
-
-        cout<<"Voici la sortie console : "<<endl;
-
-        cout<< "Hello word"<<endl;
-        engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-
-        arret_boucle=false;
     }
 
     bool retour_jeu=true;
 
-    cout<<" Appuyer sur le bouton central"<<endl;
+    /**cout<<" Appuyer sur le bouton central"<<endl;
     while(retour_jeu){
-        if(engine->j_msg_rcv["btn_select"] == HIGH){
+        if(engine->j_msg_rcv["btn_select"] == 0){
             retour_jeu=false;
         }
         engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-    }
+    }**/
 
 
     engine->addObjects(key, 3022);
