@@ -16,9 +16,9 @@ Acceleration Accelerometer::ReadAxis()
 
   for (int i = 0; i < sampleSize; i++)
   {
-    xReading += analogRead(xInput);
-    yReading += analogRead(yInput);
-    zReading += analogRead(zInput);
+    xReading += analogRead(A4);
+    yReading += analogRead(A5);
+    zReading += analogRead(A6);
   }
 
   int xValue = xReading / sampleSize;

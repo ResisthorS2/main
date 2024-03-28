@@ -72,6 +72,7 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
         std::string raw_msg;
         while(1)
         {
+            /**
             //if(!RcvFromSerial(arduino, raw_msg)){
             if(engine->RcvFromSerial(engine->arduino, raw_msg)){
                 std::cerr << "Erreur lors de la reception du message. " << std::endl;
@@ -80,12 +81,16 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
             if(raw_msg.size()>0){
                 engine->j_msg_rcv = json::parse(raw_msg);
                 std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
-            }
+            }**/
 
-            engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+            engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+            system("cls");
+            cout << "Valeur de resistance a trouver: " << resistance_voulue << " Ohms" << endl;
+            cout << "Serie E24: " << pe24_series << endl;
+            std::cout << base << " x " << mult <<std::endl;
 
 
-            if(engine->j_msg_rcv["btn_180"] == "HIGH")
+            if(engine->j_msg_rcv["btn_180"] == 0)
             {
                 if(mode == BASE)
                 {
@@ -104,7 +109,7 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
             }
 
             //if(j_msg_rcv["btn_up"] == "HIGH")
-            if(engine->j_msg_rcv["btn_up"] == "HIGH")
+            if(engine->j_msg_rcv["btn_up"] == 0)
             {
                 if(mode == BASE)
                 {
@@ -123,61 +128,44 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
             }
 
             //if(j_msg_rcv["btn_left"] == "HIGH")
-            if(engine->j_msg_rcv["btn_left"] == "HIGH")
+            if(engine->j_msg_rcv["btn_left"] == 0)
             {
                 if(mode == BASE)
                     mode = MULT;
-                if(mode == MULT)
+                else if(mode == MULT)
                     mode = BASE;
             }
 
             //if(j_msg_rcv["btn_right"] == "HIGH")
-            if(engine->j_msg_rcv["btn_right"] == "HIGH")
+            if(engine->j_msg_rcv["btn_right"] == 0)
             {
                 if(mode == BASE)
                     mode = MULT;
-                if(mode == MULT)
+                else if(mode == MULT)
                     mode = BASE;
             }
             //if(j_msg_rcv["btn_quit"] == "HIGH")
-            if(engine->j_msg_rcv["btn_select"] == "HIGH")
+            if(engine->j_msg_rcv["btn_select"] == 0)
             {
                 break;
             }
+
         }
         resistance_choisie = base * mult;
 
         double resistance_proche = findResistance(resistance_voulue);
         cout << "La resistance la plus proche dans la serie E24 est : " << resistance_proche << " Ohms" << endl;
 
-        if (resistance_choisie == resistance_proche) {
+        if (resistance_choisie == resistance_proche) 
+        {
             cout << "Felicitations! Vous avez choisi la resistance exacte!" << endl;
             cout << "Appuyer sur une touche pour sortir du local" << endl;
-            char wait;
-            //cin >> wait;
-            while(1)
-            {
-                //if(!RcvFromSerial(arduino, raw_msg)){
-                if(engine->RcvFromSerial(engine->arduino, raw_msg)){
-                    std::cerr << "Erreur lors de la reception du message. " << std::endl;
-                }
-                //if(raw_msg.size()>0){
-                if(raw_msg.size()>0){
-                    engine->j_msg_rcv = json::parse(raw_msg);
-                    std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
-                }
-
-                engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-
-                //if(j_msg_rcv["btn_quit"] == "HIGH")
-                if(engine->j_msg_rcv["btn_select"] == "HIGH")
-                {
-                    break;
-                }
-            }
             engine->addObjects(key, 3024);
+            Sleep(1000);
             return 0; // Fin du jeu sans erreur
-        } else {
+        }
+
+        else {
             cout << "Desole, vous n'avez pas choisi la bonne resistance." << endl;
             cout << "Appuyer sur une touche pour reessayer" << endl;
         }

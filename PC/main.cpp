@@ -72,7 +72,7 @@ int main(){
         while(1)
         {  
             //std::cout << "*engine->input->btn_180 = " << j_msg_rcv1["btn_180"] << std::endl;
-            j_msg_rcv1 = engine->updateComponents(arduino, j_msg_rcv1, raw_msg);
+            j_msg_rcv1 = engine->updateComponents(arduino, j_msg_rcv1);
             if(j_msg_rcv1["btn_180"] == LOW)
             {
                 map.activeCell->move(DOWN, engine);

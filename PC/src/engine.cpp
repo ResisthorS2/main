@@ -6,6 +6,7 @@
 Engine::Engine(SerialPort *ardui){
     this->arduino = ardui;
     input = new Input;
+    output = new Output;
     input->potentiometer_X = 0;
     input->potentiometer_Y = 0;
     input->motor = 0;
@@ -23,6 +24,7 @@ Engine::~Engine()
 {
 
     delete input;
+    delete output;
 }
 
 
@@ -111,7 +113,10 @@ void Engine::addObjects(int key[6], int new_key)
     {
         if(key[i] == -1)
         {
+            key[i] = new_key;
+            std::cout << "addobjects1" << std::endl;
             this->output->bargraph = i;
+            std::cout << "addobjects2" << std::endl;
             return;
         }
     }

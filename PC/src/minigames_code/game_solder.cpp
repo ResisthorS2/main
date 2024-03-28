@@ -4,15 +4,15 @@
 #include <windows.h>
 using namespace std;
 struct AxisState {
-    int x = 0;
     int y = 0;
-    int lastX = 1;
+    int z = 0;
     int lastY = 1;
+    int lastZ = 1;
 };
 struct Position {
-    int x = 0;
+    int z = 0;
     int y = 0;
-    int lastX = 1;
+    int lastZ = 1;
     int lastY = 1;
 };
 struct SolderState {
@@ -25,19 +25,19 @@ int gameState = 1;
 void UpdateAxis(AxisState& axisState, Engine* engine) {
     
     engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-    axisState.x = 0;
+    axisState.z = 0;
     axisState.y = 0;
 
-    if (engine->input->accelerometer_X == -1) {
-        axisState.x = -1;
-    } else if (engine->input->accelerometer_X == 1) {
-        axisState.x = 1;
+    if (engine->j_msg_rcv["accelerometer_Y"] < -0.2) {
+        axisState.y = 1;
+    } else if (engine->j_msg_rcv["accelerometer_Y"] > 0.2) {
+        axisState.y = -1;
     }
 
-    if (engine->input->accelerometer_Y == 1) {
-        axisState.y = 1;
-    } else if (engine->input->accelerometer_Y == -1) {
-        axisState.y = -1;
+    if (engine->j_msg_rcv["accelerometer_Z"]  > 0.2) {
+        axisState.z = 1;
+    } else if (engine->j_msg_rcv["accelerometer_Z"]  < -0.2) {
+        axisState.z = -1;
     }
     if (GetAsyncKeyState('q') & 0x8000) {
         gameState = 0;
@@ -46,23 +46,23 @@ void UpdateAxis(AxisState& axisState, Engine* engine) {
 void printValues(AxisState& axisState, Position& pos, SolderState& solder){
     cout << "You have two resistor to solder try to be as precise as possible" << endl;
     cout << "Here are their positions:" << endl;
-    cout << "    Pin 1: (400,150)";
+    cout << "    Pin 1: (10,10)";
     if(solder.pin1 == 1)
         cout << " SOLDER COMPLETED" << endl;
     else
         cout << "" << endl;
 
-    cout << "    Pin 2: (100,650)";
+    cout << "    Pin 2: (10,15)";
     if(solder.pin2 == 1)
         cout << " SOLDER COMPLETED" << endl;
     else
         cout << "" << endl;
-    cout << "    Pin 3: (700,150)";
+    cout << "    Pin 3: (0,15)";
     if(solder.pin3 == 1)
         cout << " SOLDER COMPLETED" << endl;
     else
         cout << "" << endl;
-    cout << "    Pin 4: (400,650)";
+    cout << "    Pin 4: (50,50)";
     if(solder.pin4 == 1){
         cout << " SOLDER COMPLETED" << endl;
         Sleep(3000);
@@ -71,8 +71,8 @@ void printValues(AxisState& axisState, Position& pos, SolderState& solder){
     else
         cout << "" << endl;
     cout <<""<<endl;
-    cout << "X = " << axisState.x << ", Y = " << axisState.y << endl;
-    cout << "POSX = " << pos.x << ", POSY = " << pos.y << endl;
+    cout << "Z = " << axisState.z << ", Y = " << axisState.y << endl;
+    cout << "POSZ = " << pos.z << ", POSY = " << pos.y << endl;
 }
 int MiniGame::play_solderGame(int key[6], int cell_type, Engine* engine) {
     AxisState axisState;
@@ -82,58 +82,58 @@ int MiniGame::play_solderGame(int key[6], int cell_type, Engine* engine) {
     while(gameState)
     {
         UpdateAxis(axisState,engine);
-        if(axisState.x != axisState.lastX || axisState.y != axisState.lastY){
+        if(axisState.z != axisState.lastZ || axisState.y != axisState.lastY){
             system("cls");
             printValues(axisState, pos, solder);
         }
-        axisState.lastX = axisState.x;
+        axisState.lastZ = axisState.z;
         axisState.lastY = axisState.y;
-        if(axisState.x == -1 && pos.x > 0)  
-            pos.x -= 1;
-        else if(axisState.x == 1 && pos.x < 1022)
-            pos.x += 1;
+        if(axisState.z == -1 && pos.z > 0)  
+            pos.z -= 1;
+        else if(axisState.z == 1 && pos.z < 1022)
+            pos.z += 1;
         if(axisState.y == -1 && pos.y > 0)  
             pos.y -= 1;
         else if(axisState.y == 1 && pos.y < 1023)
             pos.y += 1;
         
-        if(pos.x != pos.lastX || pos.y != pos.lastY){
+        if(pos.z != pos.lastZ || pos.y != pos.lastY){
             system("cls");
             printValues(axisState, pos, solder);
         }
-        pos.lastX = pos.x;
+        pos.lastZ = pos.z;
         pos.lastY = pos.y;
 
-        if(pos.x == 400 && pos.y == 150){
+        if(pos.z == 10 && pos.y == 10){
             solderTimer +=1;
-            if(pos.x == 400 && pos.y == 150 && solderTimer == 333){
+            if(pos.z == 10 && pos.y == 10 && solderTimer == 333){
                 solderTimer = 0;
                 solder.pin1 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.x == 100 && pos.y == 650){
+        else if(pos.z == 10 && pos.y == 15){
             solderTimer +=1;
-            if(pos.x == 100 && pos.y == 650 && solderTimer == 333){
+            if(pos.z == 10 && pos.y == 15 && solderTimer == 333){
                 solderTimer = 0;
                 solder.pin2 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.x == 700 && pos.y == 150){
+        else if(pos.z == 0 && pos.y == 15){
             solderTimer +=1;
-            if(pos.x == 700 && pos.y == 150 && solderTimer == 333){
+            if(pos.z == 0 && pos.y == 15 && solderTimer == 333){
                 solderTimer = 0;
                 solder.pin3 = 1;
                 system("cls");
                 printValues(axisState, pos, solder);
             }
         }
-        else if(pos.x == 400 && pos.y == 650){
+        else if(pos.z == 50 && pos.y == 50){
             solderTimer +=1;
-            if(pos.x == 400 && pos.y == 650 && solderTimer == 333){
+            if(pos.z == 50 && pos.y == 50 && solderTimer == 333){
                 solderTimer = 0;
                 solder.pin4 = 1;
                 system("cls");
@@ -146,6 +146,6 @@ int MiniGame::play_solderGame(int key[6], int cell_type, Engine* engine) {
         
         Sleep(15);
     }
-    
+    engine->addObjects(key, 3016);
     return gameState;
 }

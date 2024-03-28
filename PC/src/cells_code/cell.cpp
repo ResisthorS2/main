@@ -184,21 +184,18 @@ Cell* Cell::getCellAround(int orientation)
     {
         case north:
             return this->cell_north;
-            break;
         case south:
             return this->cell_south;
-            break;
         case east:
+            std::cout << "east" << std::endl;
             return this->cell_east;
-            break;
         case west:
             return this->cell_west;
-            break;
     }
 }
 
 
-Cell *Cell::enterCell(int *orientation, int key[6], int direction) //Fonction super importante.
+Cell *Cell::enterCell(int *orientation, int key[6], Engine *engine, int direction) //Fonction super importante.
 {
     int inverseOrientation[] = {south, north, west, east}; //tableau pour regarder l'orientation inverse du joueur. Exemple: si le joueur est orienté vers le nord, inverseOrientation[north] = south
     

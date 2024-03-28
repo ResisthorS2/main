@@ -20,7 +20,7 @@ class IntersectionCell : public Cell
          */
         IntersectionCell(int type);;
 
-        Cell *enterCell(int *orientation, int key[maxRoom], int direction = RIGHT) override;
+        Cell *enterCell(int *orientation, int key[maxRoom], Engine *engine, int direction = RIGHT) override;
 };
 
 #endif

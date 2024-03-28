@@ -96,7 +96,7 @@ void loop()
     jsg_msg["btn_up"] = digitalRead(51);
     jsg_msg["btn_left"] = digitalRead(48);
     jsg_msg["btn_right"] = digitalRead(50);
-    jsg_msg["btn_select"] = digitalRead(39);
+    jsg_msg["btn_select"] = digitalRead(52);
 
     /**if (digitalRead(53) == LOW)
     {
@@ -170,7 +170,7 @@ void loop()
     jsg_msg["motor"] = 0;*/
 
     // Envoie
-    if(jsg_msg["btn_180"] != btnStateDown || jsg_msg["btn_up"] != btnStateUp || jsg_msg["btn_left"] != btnStateLeft || jsg_msg["btn_right"] != btnStateRight || jsg_msg["btn_select"] != btnStateCenter)
+    if(jsg_msg["btn_180"] != btnStateDown || jsg_msg["btn_up"] != btnStateUp || jsg_msg["btn_left"] != btnStateLeft || jsg_msg["btn_right"] != btnStateRight || jsg_msg["btn_select"] != btnStateCenter || jsg_msg["joystick_X"] != joyState_X || jsg_msg["joystick_Y"] != joyState_Y || jsg_msg["accelerometer_X"] != accSate_X || jsg_msg["accelerometer_Y"] != accSate_Y || jsg_msg["accelerometer_Z"] != accSate_Z || jsg_msg["potentiometer"] != potState)
     {
         serializeJson(jsg_msg, Serial);
         Serial.println();

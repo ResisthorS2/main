@@ -10,11 +10,31 @@ IntersectionCell::IntersectionCell(int type) : Cell(type)
     std::cout << "Constructeur Intersection" << std::endl;
 }
 
-Cell *IntersectionCell::enterCell(int *orientation, int key[maxRoom], int direction)
+Cell *IntersectionCell::enterCell(int *orientation, int key[maxRoom], Engine *engine, int direction)
 {
-    std::cout << "EnterCell Intersection" << std::endl;
+    int lastDir = direction;
     char dir;
-    std::cin >> dir;
+    while(1)
+    {
+        engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+        if(engine->j_msg_rcv["btn_up"] == 0)
+        {
+            dir = 'w';
+            break;
+        }
+
+        if(engine->j_msg_rcv["btn_left"] == 0)
+        {
+            dir = 'a';
+            break;
+        }
+
+        if(engine->j_msg_rcv["btn_right"] == 0)
+        {
+            dir = 'd';
+            break;
+        }
+    }
     switch(dir)
     {
         case 'a':
@@ -25,9 +45,6 @@ Cell *IntersectionCell::enterCell(int *orientation, int key[maxRoom], int direct
             break;
         case 'w':
             direction = UP;
-            break;
-        default:
-            direction = RIGHT;
             break;
     }
 
@@ -56,11 +73,12 @@ Cell *IntersectionCell::enterCell(int *orientation, int key[maxRoom], int direct
     
     Cell *cell = this->getCellAround(*orientation);
     if (cell != nullptr) {
-        cell = cell->enterCell(orientation, key);
+        cell = cell->enterCell(orientation, key, engine);
         if (cell != nullptr && !dynamic_cast<IntersectionCell*>(cell)) {
             return cell;
         }
     }
+    direction = lastDir;
     return NULL;
     
 }

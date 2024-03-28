@@ -34,19 +34,8 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
     vector<string> mots;
     ifstream question("labo.txt");
 
-
-    if (question.fail()) {
-        cerr << "Erreur d'ouverture du fichier" << std::endl;
-        return -1;
-    }
     
-    string lecture;
-
-
-    getline(question, lecture);
-    
-
-    question.close();
+    string lecture = "printf (\" Hello word \")";
 
     stringstream ss(lecture);
     std::string mot;
@@ -125,19 +114,19 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
 
    
 
-        if(engine->input->btn_left == HIGH){
+        if(engine->j_msg_rcv["btn_left"] == 0){
             if(pointeur>1){
                 pointeur--;
             }
         }
 
-        if(engine->input->btn_right){
+        if(engine->j_msg_rcv["btn_right"] == 0){
             if(pointeur<5){
                 pointeur++;
             }
         }
         
-        if(engine->input->btn_select){
+        if(engine->j_msg_rcv["btn_select"] == 0){
             if(count == position_mots[pointeur - 1]){
                 count++;
             }
@@ -202,6 +191,6 @@ allumer les LED
     }
 
 
-    engine->addObjects(key, 3016);
+    engine->addObjects(key, 3022);
     return 0;
 }

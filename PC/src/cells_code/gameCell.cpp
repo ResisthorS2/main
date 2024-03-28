@@ -19,7 +19,7 @@ GameCell::GameCell(int type)
     locked = new int;
     *locked = LOCKED;
     int null[] = {-1,-1,-1,-1,-1,-1};
-    if(type == 3018)
+    if(type == 3022)
     {
         std::cout << "type = " << type << std::endl;
         *locked = UNLOCKED;
@@ -41,7 +41,7 @@ GameCell::~GameCell()
     this->setImageCell(this, null);
 }
 
-Cell *GameCell::enterCell(int *orientation, int key[6], int direction)
+Cell *GameCell::enterCell(int *orientation, int key[6], Engine *engine, int directionT)
 {
     int inverseOrientation[] = {south, west, north, east};
     
@@ -61,28 +61,29 @@ Cell *GameCell::enterCell(int *orientation, int key[6], int direction)
         switch(type)
         {
             case(3022):
-                l3022(key, this->type);
+                l3022(key, this->type, engine);
                 break;
             case(3019):
-                l3019(key, this->type);
+                l3019(key, this->type, engine);
                 break;
             case(3018):
-                l3018(key, this->type);
+                l3018(key, this->type, engine);
                 break;
             case(3041):
-                l3041(key, this->type);
+                l3041(key, this->type, engine);
                 break;
             case(3016):
-                l3016(key, this->type);
+                l3016(key, this->type, engine);
                 break;
             case(3024):
-                l3024(key, this->type);
+                l3024(key, this->type, engine);
                 break;
         }
     }
 
-
+    std::cout << "ici1" <<  std::endl;
     *orientation = inverseOrientation[*orientation];
+    std::cout << "ici" <<  std::endl;
     return this->getCellAround(*orientation);
 
 
@@ -171,54 +172,51 @@ void GameCell::setImageCell(Cell *cell, int key[6])
     }
 }
 
-void GameCell::l3022(int key[6], int cell_type)
+void GameCell::l3022(int key[6], int cell_type, Engine *engine)
 {
-    system("cls");
+    //system("cls");
     std::cout << "Jeu local 3022" << std::endl;
-    minigame.play_solderGame(key, this->type);
+    minigame.play_solderGame(key, this->type, engine);
     
 }
 
-void GameCell::l3019(int key[6], int cell_type)
+void GameCell::l3019(int key[6], int cell_type, Engine *engine)
 {
     system("cls");
     std::cout << "Jeu local 3019" << std::endl;
+
     char wait;
     std::cin >> wait;
 }
 
-void GameCell::l3018(int key[6], int cell_type)
+void GameCell::l3018(int key[6], int cell_type, Engine *engine)
 {
     system("cls");
     std::cout << "Jeu local 3018" << std::endl;
-    minigame.play_resistanceGame(key, this->type);
-    for(int i=0; i<6; i++)
-    {
-        std::cout << "key[i] " << key[i] << std::endl; 
-    }
+    minigame.play_resistanceGame(key, this->type, engine);
 }
 
-void GameCell::l3041(int key[6], int cell_type)
+void GameCell::l3041(int key[6], int cell_type, Engine *engine)
 {
     
-    system("cls");
+    //system("cls");
     std::cout << "Jeu local 3041" << std::endl;
-    char wait;
-    std::cin >> wait;
+    minigame.play_proceduralGame(key, this->type, engine);
+
 }
 
-void GameCell::l3016(int key[6], int cell_type)
+void GameCell::l3016(int key[6], int cell_type, Engine *engine)
 {
-    system("cls");
+    //system("cls");
     std::cout << "Jeu local 3016" << std::endl;
-    minigame.play_oscilloscopeGame(key, this->type);
+    minigame.play_oscilloscopeGame(key, this->type, engine);
 }
 
-void GameCell::l3024(int key[6], int cell_type)
+void GameCell::l3024(int key[6], int cell_type, Engine *engine)
 {
     system("cls");
     std::cout << "Jeu local 3024" << std::endl;
-    char wait;
-    std::cin >> wait;
+    minigame.play_laboGame(key, this->type, engine);
+
 }
 

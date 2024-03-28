@@ -35,10 +35,20 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
     int random = 1 + (rand() % 2);
     fctState fonctionState = noisy;
     int gameState = 1;
+
+    engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+    int potVal = engine->j_msg_rcv["potentiometer"];
+
     while(gameState)
     {
-        engine->updateComponents(engine->arduino, engine->j_msg_rcv);
-        int potVal = engine->j_msg_rcv["pot"];
+        try
+        {
+            engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+            potVal = engine->j_msg_rcv["potentiometer"];
+        }
+        catch(const std::exception& e){}
+
+
         string fonction;
         switch (random)
         {
@@ -56,6 +66,7 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
         switch (fonctionState)
         {
         case noisy:
+            system("cls");
             cout << "****"<< fonction <<" Wave With noise****" << endl;
             cout << "****";
             cout << RED << "Light" << RESET;
@@ -103,18 +114,21 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
             cout << "You have succeded to clarify the " << fonction << " Wave." << endl;
             gameState = 0;
             Sleep(5000);
-            break;
+            return 0;
         }
 
         // pot val goes from 0 to 1024
-        if (potVal == 1000 && fonctionState == noisy) {
+        if (potVal > 990 && potVal < 1010 && fonctionState == noisy) {
             fonctionState = lessNoisy;
-        } else if(potVal == 10 && fonctionState == lessNoisy){
+        } else if(potVal > 0 && potVal < 20  && fonctionState == lessNoisy){
             fonctionState = almostClear;
-        } else if(potVal == 500 && fonctionState == almostClear){
+        } else if(potVal > 490 && potVal < 510  && fonctionState == almostClear){
             fonctionState = clear;
+            continue;
         }
+
+        std::cout << "Potentiometer value: " << potVal << std::endl;
     }
-    return 0;
+
     // Fin du jeu sans erreur
 }

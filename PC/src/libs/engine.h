@@ -30,6 +30,7 @@ struct input
             int bargraph;
         };
         typedef struct output Output;
+        
 class Engine
 {
     public:

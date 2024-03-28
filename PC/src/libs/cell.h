@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "player.h"
+#include "engine.h"
 
 /**
  * @class Cell
@@ -91,7 +92,7 @@ class Cell
          * @param key La clé pour entrer dans la cellule : int[maxRoom]
          * @return Pointeur vers la cellule entrée
          */
-        virtual Cell *enterCell(int *orientation, int key[6], int direction = RIGHT);
+        virtual Cell *enterCell(int *orientation, int key[6], Engine *engine, int direction = RIGHT);
 
         /**
          * @brief Méthode pour obtenir la cellule d'entrée

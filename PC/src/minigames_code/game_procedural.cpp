@@ -9,6 +9,17 @@
 #include <vector>
 #include <time.h>
 
+std::string question[]= 
+{
+"calculez la derivee de f(x)",
+"utiliser les series de fourrier",
+"le make file est-il fonctionnele",
+"utiliser un filtre passe bas",
+"utilliser un filtre passe haut",
+"utiliser un filtre passe bande",
+"faire une simulation monte carlo",
+"calculez la fonction de transfert"
+};
 
 
 int random_procedural(int base)     //Génère un chiffre aleatoire entre 0 et base ( inclut 0 et exclut base)
@@ -33,22 +44,12 @@ int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine)
     int nombre_mots=0;
     using namespace std;
     vector<string> mots;
-    ifstream question("procedural.txt");
 
-
-    if (question.fail()) {
-        cerr << "Erreur d'ouverture du fichier" << std::endl;
-        return -1;
-    }
     
     string lecture;
 
-    for(int h=0;h<random_procedural(nombre_phrase);h++){
-        getline(question, lecture);
-    }
-    
+    lecture = question[random_procedural(nombre_phrase)];
 
-    question.close();
 
     stringstream ss(lecture);
     std::string mot;
@@ -98,6 +99,7 @@ int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine)
     int count=0;
     while(count<5)
     {
+        engine->j_msg_rcv = engine->updateComponents(engine->arduino, engine->j_msg_rcv);
         system("cls");
         std::cout<<" Ordre melanger : "<<std::endl;
         std::cout<< YELLOW;
@@ -122,20 +124,20 @@ int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine)
 
         std::cout<<"Utiliser a ou d pour déplacer le pointeur et sélectionner avec w"<<std::endl;
 
-        if(engine->j_msg_rcv["btn_left"] == "HIGH")
+        if(engine->j_msg_rcv["btn_left"] == 0)
         {
             if(pointeur>1){
                 pointeur--;
             }
         }
 
-        if(engine->j_msg_rcv["btn_right"] == "HIGH"){
+        if(engine->j_msg_rcv["btn_right"] == 0){
             if(pointeur<5){
                 pointeur++;
             }
         }
         
-        if(engine->j_msg_rcv["btn_select"] == "HIGH"){
+        if(engine->j_msg_rcv["btn_select"] == 0){
             if(count == position_mots[pointeur - 1]){
                 count++;
             }
@@ -147,7 +149,7 @@ int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine)
 allumer les LED
 =============================================================================================================================================
 */
-    engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+
     
 
     std::cout << "Felicitations vous avez reussis"<<std::endl;

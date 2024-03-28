@@ -159,7 +159,7 @@ void ActiveCell::move(int direction, Engine *engine)
             std::cout << "index : " << index << std::endl;
             std::cout << "player->orientation : " << player->orientation << std::endl;
             std::cout << "direction : " << direction << std::endl;
-            Cell *cell = (this->getCellAround(index))->enterCell(&index, player->objects, direction);
+            Cell *cell = (this->getCellAround(index))->enterCell(&index, player->objects, engine, direction);
             if(cell != NULL)
             {
                 this->cpyCell(cell);
@@ -170,7 +170,7 @@ void ActiveCell::move(int direction, Engine *engine)
         else
         {
             std::cout << "l.170" << std::endl;
-            Cell *cell = (this->getCellAround(player->orientation))->enterCell(&player->orientation, player->objects, direction);
+            Cell *cell = (this->getCellAround(player->orientation))->enterCell(&player->orientation, player->objects, engine, direction);
             if(cell != NULL)
             {
                 this->cpyCell(cell);
