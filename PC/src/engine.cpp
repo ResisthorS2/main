@@ -3,7 +3,8 @@
 /*---------------------------Definition de fonctions ------------------------*/
 
 
-Engine::Engine(){
+Engine::Engine(SerialPort *ardui){
+    this->arduino = ardui;
     input = new Input;
     input->potentiometer_X = 0;
     input->potentiometer_Y = 0;
@@ -67,8 +68,9 @@ bool Engine::RcvFromSerial(SerialPort *arduino, std::string &msg){
     return true;
 }
 
-json Engine::updateComponents(SerialPort *arduino, json j_msg_rcv1, std::string raw_msg)
+json Engine::updateComponents(SerialPort *arduino, json j_msg_rcv1)
 {
+            std::string raw_msg;
             j_msg_rcv1.clear();
             raw_msg.clear();
             while(raw_msg.back()!='\n')
@@ -98,7 +100,7 @@ json Engine::updateComponents(SerialPort *arduino, json j_msg_rcv1, std::string 
                 } 
                 catch (json::exception& e) {}
             }
-
+            this->j_msg_rcv = j_msg_rcv1;
             return j_msg_rcv1;
 
 }

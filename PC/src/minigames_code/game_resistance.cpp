@@ -1,7 +1,6 @@
 #include "../libs/minigames.h"
-
-
-
+#define BASE 0
+#define MULT 1
 
 using namespace std;
 
@@ -41,7 +40,7 @@ double findResistance(double valeur) {
 }
 
 // Fonction principale du jeu
-int MiniGame::play_resistanceGame(int key[6], int cell_type) {
+int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
     
 
     while(1)
@@ -63,7 +62,90 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type) {
 
         double resistance_choisie;
         cout << "Entrez votre valeur de resistance (en Ohms) : ";
-        cin >> resistance_choisie;
+        //cin >> resistance_choisie;
+        double base = 0.0;
+        double mult = 0.0;
+        bool mode = BASE;
+        int index_base = 0;
+        int index_mult = 0;
+        
+        std::string raw_msg;
+        while(1)
+        {
+            //if(!RcvFromSerial(arduino, raw_msg)){
+            if(engine->RcvFromSerial(engine->arduino, raw_msg)){
+                std::cerr << "Erreur lors de la reception du message. " << std::endl;
+            }
+            //if(raw_msg.size()>0){
+            if(raw_msg.size()>0){
+                engine->j_msg_rcv = json::parse(raw_msg);
+                std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
+            }
+
+            engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+
+
+            if(engine->j_msg_rcv["btn_180"] == "HIGH")
+            {
+                if(mode == BASE)
+                {
+                    index_base--;
+                    if(index_base < 0)
+                        index_base = 24-1;
+                    base = e24_series[index_base];
+                }
+                if(mode == MULT)
+                {
+                    index_mult--;
+                    if(index_mult < 0)
+                        index_mult = 7-1;
+                    mult = multiplicateurs[index_mult];
+                }
+            }
+
+            //if(j_msg_rcv["btn_up"] == "HIGH")
+            if(engine->j_msg_rcv["btn_up"] == "HIGH")
+            {
+                if(mode == BASE)
+                {
+                    index_base++;
+                    if(index_base > 24-1)
+                        index_base = 0;
+                    base = e24_series[index_base];
+                }
+                if(mode == MULT)
+                {
+                    index_mult++;
+                    if(index_mult > 7-1)
+                        index_mult = 0;
+                    mult = multiplicateurs[index_mult];
+                }
+            }
+
+            //if(j_msg_rcv["btn_left"] == "HIGH")
+            if(engine->j_msg_rcv["btn_left"] == "HIGH")
+            {
+                if(mode == BASE)
+                    mode = MULT;
+                if(mode == MULT)
+                    mode = BASE;
+            }
+
+            //if(j_msg_rcv["btn_right"] == "HIGH")
+            if(engine->j_msg_rcv["btn_right"] == "HIGH")
+            {
+                if(mode == BASE)
+                    mode = MULT;
+                if(mode == MULT)
+                    mode = BASE;
+            }
+            //if(j_msg_rcv["btn_quit"] == "HIGH")
+            if(engine->j_msg_rcv["btn_select"] == "HIGH")
+            {
+                break;
+            }
+        }
+        resistance_choisie = base * mult;
 
         double resistance_proche = findResistance(resistance_voulue);
         cout << "La resistance la plus proche dans la serie E24 est : " << resistance_proche << " Ohms" << endl;
@@ -72,21 +154,32 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type) {
             cout << "Felicitations! Vous avez choisi la resistance exacte!" << endl;
             cout << "Appuyer sur une touche pour sortir du local" << endl;
             char wait;
-            std::cin >> wait;
-            for(int i = 0; i < 6; i++)
+            //cin >> wait;
+            while(1)
             {
-                if(key[i] == -1)
+                //if(!RcvFromSerial(arduino, raw_msg)){
+                if(engine->RcvFromSerial(engine->arduino, raw_msg)){
+                    std::cerr << "Erreur lors de la reception du message. " << std::endl;
+                }
+                //if(raw_msg.size()>0){
+                if(raw_msg.size()>0){
+                    engine->j_msg_rcv = json::parse(raw_msg);
+                    std::cout << "Message de l'Arduino: " << engine->j_msg_rcv << std::endl;
+                }
+
+                engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+
+                //if(j_msg_rcv["btn_quit"] == "HIGH")
+                if(engine->j_msg_rcv["btn_select"] == "HIGH")
                 {
-                    key[i] = 3016;
                     break;
                 }
             }
             return 0; // Fin du jeu sans erreur
         } else {
             cout << "Desole, vous n'avez pas choisi la bonne resistance." << endl;
-            cout << "Appuyer sur une touche pour réessayer" << endl;
+            cout << "Appuyer sur une touche pour reessayer" << endl;
         }
     }
     
 }
-

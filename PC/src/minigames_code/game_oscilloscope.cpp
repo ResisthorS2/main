@@ -23,7 +23,7 @@ enum fctState{
     clear = 4
 };
 
-int MiniGame::play_oscilloscopeGame(int key[6], int cell_type) {
+int MiniGame::play_oscilloscopeGame(int key[6], int cell_type, Engine* engine) {
     
     
     fct.sine = "Sine";
@@ -37,6 +37,8 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type) {
     int gameState = 1;
     while(gameState)
     {
+        engine->updateComponents(engine->arduino, engine->j_msg_rcv);
+        int potVal = engine->j_msg_rcv["pot"];
         string fonction;
         switch (random)
         {
@@ -105,25 +107,14 @@ int MiniGame::play_oscilloscopeGame(int key[6], int cell_type) {
         }
 
         // pot val goes from 0 to 1024
-        double potValue;
-        cin >> potValue;
-
-        if (potValue == 1000 && fonctionState == noisy) {
+        if (potVal == 1000 && fonctionState == noisy) {
             fonctionState = lessNoisy;
-        } else if(potValue == 10 && fonctionState == lessNoisy){
+        } else if(potVal == 10 && fonctionState == lessNoisy){
             fonctionState = almostClear;
-        } else if(potValue == 500 && fonctionState == almostClear){
+        } else if(potVal == 500 && fonctionState == almostClear){
             fonctionState = clear;
         }
     }
-    /**for(int i = 0; i < 6; i++)
-    {
-        if(key[i] == -1)
-        {
-            key[i] = 3024;
-            break;
-        }
-    }**/
     return 0;
     // Fin du jeu sans erreur
 }

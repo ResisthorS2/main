@@ -54,7 +54,7 @@ int main(){
         exit(1);
     }
     #include "./src/libs/engine.h"
-    Engine *engine = new Engine();
+    Engine *engine = new Engine(arduino);
 
     if(TEST != 1)
     {    
