@@ -121,23 +121,19 @@ int MiniGame::play_laboGame(int key[6], int cell__type, Engine* engine){
 
         cout<<"Utiliser a ou d pour deplacer le pointeur et selectionner avec w"<<endl;
 
-        string clavier;
-
-   
-
-        if(*engine->input->btn_left == HIGH){
+        if(engine->input->btn_left == HIGH){
             if(pointeur>1){
                 pointeur--;
             }
         }
 
-        if(*engine->input->btn_right){
+        if(engine->input->btn_right){
             if(pointeur<5){
                 pointeur++;
             }
         }
         
-        if(*engine->input->btn_select){
+        if(engine->input->btn_select){
             if(count == position_mots[pointeur - 1]){
                 count++;
             }
@@ -167,7 +163,7 @@ allumer les LED
     cout<<"L'ordianteur de l'universite a planter, relancer l'ordinateur en appuyant sur le bouton central"<<endl;
     bool arret_boucle=true;
     while(arret_boucle)
-    if(*engine->input->btn_select){
+    if(engine->input->btn_select){
         cout<<"Redémarage en cours"<<endl;
 
         system("cls");

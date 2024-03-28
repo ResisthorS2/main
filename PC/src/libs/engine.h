@@ -9,17 +9,17 @@ using json = nlohmann::json;
 
 struct input
         {
-            int *potentiometer_X;
-            int *potentiometer_Y;
-            int *motor;
-            int *btn_180;
-            int *btn_up;
-            int *btn_left;
-            int *btn_right;
-            int *btn_select;
-            int *accelerometer_X;
-            int *accelerometer_Y;
-            int *accelerometer_Z;
+            int potentiometer_X;
+            int potentiometer_Y;
+            int motor;
+            int btn_180;
+            int btn_up;
+            int btn_left;
+            int btn_right;
+            int btn_select;
+            int accelerometer_X;
+            int accelerometer_Y;
+            int accelerometer_Z;
         };
         typedef struct input Input;
 
@@ -31,11 +31,11 @@ struct input
 class Engine
 {
     public:
-        Engine(SerialPort *arduino);
+        Engine();
         ~Engine();	
         bool SendToSerial(SerialPort *arduino, json j_msg);
         bool RcvFromSerial(SerialPort *arduino, std::string &msg);
-        void updateComponents(json j_msg_rcv);
+        void updateComponents(json j_msg_rcv, std::string raw_msg);
         json j_msg_send, j_msg_rcv;
         std::string dialogue;
         SerialPort *arduino;
