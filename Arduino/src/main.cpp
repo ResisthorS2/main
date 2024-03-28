@@ -23,6 +23,7 @@ int pinLED = 38;
 void sendMsg();
 void readMsg();
 void serialEvent();
+int OneToZero(int value);
 /*---------------------------- Fonctions "Main" -----------------------------*/
 
 void setup()
@@ -104,11 +105,11 @@ void loop()
     jsg_msg["btn_right"] = digitalRead(50);
     jsg_msg["btn_select"] = digitalRead(52);
 
-    digitalWrite(35, jsg_msg["btn_180"]);
-    digitalWrite(33, jsg_msg["btn_up"]);
-    digitalWrite(31, jsg_msg["btn_left"]);
-    digitalWrite(32, jsg_msg["btn_right"]);
-    digitalWrite(36, jsg_msg["btn_select"]);
+    digitalWrite(35, OneToZero(jsg_msg["btn_180"]));
+    digitalWrite(33, OneToZero(jsg_msg["btn_up"]));
+    digitalWrite(31, OneToZero(jsg_msg["btn_left"]));
+    digitalWrite(32, OneToZero(jsg_msg["btn_right"]));
+    digitalWrite(36, OneToZero(jsg_msg["btn_select"]));
 
 
 
@@ -266,5 +267,17 @@ void readMsg()
     {
         // mettre la led a la valeur doc["led"]
         digitalWrite(pinLED, doc["led"].as<bool>());
+    }
+}
+
+int OneToZero(int value)
+{
+    if(value == 1)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
     }
 }
