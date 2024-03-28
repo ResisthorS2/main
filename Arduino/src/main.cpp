@@ -37,6 +37,16 @@ void setup()
     pinMode(33, OUTPUT);
     pinMode(32, OUTPUT);
     pinMode(31, OUTPUT);
+    pinMode(49, OUTPUT);
+    pinMode(46, OUTPUT);
+    pinMode(47, OUTPUT);
+    pinMode(44, OUTPUT);
+    pinMode(45, OUTPUT);
+    pinMode(42, OUTPUT);
+    pinMode(43, OUTPUT);
+    pinMode(38, OUTPUT);
+    pinMode(40, OUTPUT);
+    pinMode(41, OUTPUT);
 
     pinMode(22, INPUT_PULLUP);
 }
@@ -57,6 +67,7 @@ int accSate_X = 1;
 int accSate_Y = 1;
 int accSate_Z = 1;
 int potState = 1;
+bool depart = true;
 
 
 
@@ -65,6 +76,33 @@ int potState = 1;
 void loop()
 {
 
+    if(depart == true)
+    {
+        digitalWrite(49, HIGH);
+        digitalWrite(46, HIGH);
+        digitalWrite(47, HIGH);
+        digitalWrite(44, HIGH);
+        digitalWrite(45, HIGH);
+        digitalWrite(42, HIGH);
+        digitalWrite(43, HIGH);
+        digitalWrite(38, HIGH);
+        digitalWrite(40, HIGH);
+        digitalWrite(41, HIGH);
+
+        delay(1000);
+
+        digitalWrite(49, LOW);
+        digitalWrite(46, LOW);
+        digitalWrite(47, LOW);
+        digitalWrite(44, LOW);
+        digitalWrite(45, LOW);
+        digitalWrite(42, LOW);
+        digitalWrite(43, LOW);
+        digitalWrite(38, LOW);
+        digitalWrite(40, LOW);
+        digitalWrite(41, LOW);
+        depart = false;
+    }
     // Lecture du message Json
     
     /**JsonVariant parse_msg;
@@ -110,6 +148,11 @@ void loop()
     digitalWrite(31, OneToZero(jsg_msg["btn_left"]));
     digitalWrite(32, OneToZero(jsg_msg["btn_right"]));
     digitalWrite(36, OneToZero(jsg_msg["btn_select"]));
+
+
+
+
+
 
 
 
