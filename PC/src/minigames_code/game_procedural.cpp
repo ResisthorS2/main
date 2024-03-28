@@ -139,6 +139,13 @@ int MiniGame::play_proceduralGame(int key[6], int cell__type, Engine* engine){
             }
         }
 
+
+
+        if(count>0)engine->SendToSerial(31, HIGH);
+        if(count>1)engine->SendToSerial(32, HIGH);
+        if(count>2)engine->SendToSerial(33, HIGH);
+        if(count>3)engine->SendToSerial(34, HIGH);
+        if(count>4)engine->SendToSerial(35, HIGH);
 /*
 =============================================================================================================================================
 allumer les LED
