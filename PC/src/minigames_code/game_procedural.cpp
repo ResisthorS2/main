@@ -160,6 +160,7 @@ allumer les LED
     std::cout<<std::endl;
 
     std::cout << "Appuyer sur une touche afin de retourner sur la carte" << std::endl;
+    engine->addObjects(key, 3018);
 
     return 0;
     

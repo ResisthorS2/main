@@ -27,7 +27,9 @@ struct input
         {
             int motor;
             int led;
+            int bargraph;
         };
+        typedef struct output Output;
 class Engine
 {
     public:
@@ -36,10 +38,12 @@ class Engine
         bool SendToSerial(SerialPort *arduino, json j_msg);
         bool RcvFromSerial(SerialPort *arduino, std::string &msg);
         json updateComponents(SerialPort *arduino, json j_msg_rcv);
+        void addObjects(int key[6], int new_key);
         json j_msg_send, j_msg_rcv;
         std::string dialogue;
         SerialPort *arduino;
         Input * input;
+        Output * output;
         
 
 };

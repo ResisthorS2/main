@@ -202,6 +202,6 @@ allumer les LED
     }
 
 
-
+    engine->addObjects(key, 3016);
     return 0;
 }

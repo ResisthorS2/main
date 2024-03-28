@@ -175,6 +175,7 @@ int MiniGame::play_resistanceGame(int key[6], int cell_type, Engine* engine) {
                     break;
                 }
             }
+            engine->addObjects(key, 3024);
             return 0; // Fin du jeu sans erreur
         } else {
             cout << "Desole, vous n'avez pas choisi la bonne resistance." << endl;

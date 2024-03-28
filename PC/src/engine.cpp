@@ -104,3 +104,16 @@ json Engine::updateComponents(SerialPort *arduino, json j_msg_rcv1)
             return j_msg_rcv1;
 
 }
+
+void Engine::addObjects(int key[6], int new_key)
+{
+    for(int i = 0; i < 6; i++)
+    {
+        if(key[i] == -1)
+        {
+            this->output->bargraph = i;
+            return;
+        }
+    }
+
+}
